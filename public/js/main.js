@@ -1,0 +1,438 @@
+import { dom } from "./dom.js";
+import { state } from "./state.js";
+import { holdSlot } from "./api.js";
+import { calculateAmount } from "./pricing.js";
+import { showModal } from "./modal.js";
+import { startCountdown } from "./timer.js";
+import { startPayment } from "./payment.js";
+import { updateAvailableSlots, populateEndTimes } from "./slots.js";
+
+/* ===============================
+   MOBILE MENU
+================================ */
+const mobileMenuButton = document.getElementById("mobile-menu-button");
+const mobileMenu = document.getElementById("mobile-menu");
+
+mobileMenuButton?.addEventListener("click", () => {
+  mobileMenu?.classList.toggle("hidden");
+});
+
+/* ===============================
+   DOM READY
+================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  /* ===============================
+     RESTORE USER FORM
+  ================================ */
+  const savedForm = JSON.parse(localStorage.getItem("userFormData")) || {};
+
+  dom.fullNameInput.value = savedForm.fullName || "";
+  dom.emailInput.value = savedForm.email || "";
+  dom.phoneInput.value = savedForm.phone || "";
+  dom.dateInput.value = savedForm.date || "";
+
+  state.booking.name = dom.fullNameInput.value;
+  state.booking.email = dom.emailInput.value;
+  state.booking.phone = dom.phoneInput.value;
+  state.booking.date = dom.dateInput.value;
+
+  function saveForm() {
+    localStorage.setItem(
+      "userFormData",
+      JSON.stringify({
+        fullName: dom.fullNameInput.value,
+        email: dom.emailInput.value,
+        phone: dom.phoneInput.value,
+        date: dom.dateInput.value,
+      })
+    );
+  }
+
+  dom.fullNameInput.addEventListener("input", e => {
+    state.booking.name = e.target.value;
+    saveForm();
+  });
+
+  dom.emailInput.addEventListener("input", e => {
+    state.booking.email = e.target.value;
+    saveForm();
+  });
+
+  dom.phoneInput.addEventListener("input", e => {
+    state.booking.phone = e.target.value;
+    saveForm();
+  });
+
+  /* ===============================
+     DATE CHANGE
+  ================================ */
+  dom.dateInput.addEventListener("change", () => {
+    state.booking.date = dom.dateInput.value;
+
+    state.booking.startTime = "";
+    state.booking.endTime = "";
+
+    dom.startTime.value = "";
+    dom.endTime.value = "";
+
+    resetSummary();
+    updateAvailableSlots();
+    saveForm();
+  });
+
+  /* ===============================
+     TIME CHANGE
+  ================================ */
+  dom.startTime.addEventListener("change", () => {
+    state.booking.startTime = dom.startTime.value;
+    state.booking.endTime = "";
+    dom.endTime.value = "";
+
+    populateEndTimes();
+
+    resetSummary();
+  });
+
+  dom.endTime.addEventListener("change", () => {
+    state.booking.endTime = dom.endTime.value;
+    if (state.booking.startTime) {
+      updateSummary();
+    }
+  });
+
+  /* ===============================
+     SUMMARY
+  ================================ */
+
+  function updateSummary() {
+    console.log("Updating summary with booking:", state.booking);
+
+    const { date, startTime, endTime } = state.booking;
+
+    if (!date || !startTime || !endTime) {
+      resetSummary();
+      return;
+    }
+
+    // parse start/end into real Date objects
+    const [sh, sm] = startTime.split(":").map(Number);
+    let start = new Date(date);
+    start.setHours(sh, sm, 0, 0);
+
+    const [eh, em] = endTime.split(":").map(Number);
+    let end = new Date(date);
+    end.setHours(eh, em, 0, 0);
+
+    // handle next day crossing
+    if (end <= start) end.setDate(end.getDate() + 1);
+
+    const { total, advance } = calculateAmount(start, end);
+    console.log("Calculated amount:", { total, advance });
+
+    if (total <= 0) {
+      resetSummary();
+      return;
+    }
+
+    // calculate total hours
+    const hours = (end - start) / (1000 * 60 * 60);
+
+    dom.selectedTime.textContent = `${startTime} - ${endTime} (${hours.toFixed(
+      2
+    )} hrs)`;
+    dom.bookingFees.textContent = `₹${total}`;
+    dom.advanceAmount.textContent = `₹${advance}`;
+    dom.totalPayable.textContent = `₹${advance}`;
+
+    state.booking.totalFee = total;
+    state.booking.advance = advance;
+  }
+
+  function resetSummary() {
+    dom.selectedTime.textContent = "-";
+    dom.bookingFees.textContent = "₹0";
+    dom.advanceAmount.textContent = "₹0";
+    dom.totalPayable.textContent = "₹0";
+  }
+
+  /* ===============================
+     RESTORE HELD BOOKING
+  ================================ */
+  (function restoreHeld() {
+    const saved = JSON.parse(localStorage.getItem("heldLock"));
+    console.log("Restoring held lock from LS:", saved);
+
+    if (!saved) return;
+
+    if (new Date(saved.expiresAt).getTime() <= Date.now()) {
+      localStorage.removeItem("heldLock");
+      return;
+    }
+
+    state.holdLockId = saved.lockId;
+    console.log("State holdLockId set to:", state.holdLockId);
+
+    Object.assign(state.booking, saved.bookingData);
+
+    dom.bookingSection.classList.add("hidden");
+    dom.paymentSection.classList.remove("hidden");
+
+    startCountdown(saved.expiresAt);
+  })();
+
+  /* ===============================
+     HOLD SLOT
+  ================================ */
+  dom.bookingForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    if(dom.confirmButton){
+      dom.confirmButton.disabled = true;
+      dom.confirmButton.classList.add("opacity-50", "cursor-not-allowed");
+      dom.confirmButton.textContent = "Please wait...";
+    }
+
+    const { date, startTime, endTime } = state.booking;
+
+    if (!startTime || !endTime) {
+      showModal("Error", "Select valid time range", "error");
+      return;
+    }
+
+    try {
+      // ✅ ISO ONLY for backend
+      const startISO = new Date(`${date}T${startTime}:00`).toISOString();
+      const endISO = new Date(`${date}T${endTime}:00`).toISOString();
+
+      const payload = {
+        start: startISO,
+        end: endISO,
+        customerName: state.booking.name,
+        customerEmail: state.booking.email,
+        customerPhone: state.booking.phone,
+      };
+
+      const { lockId, expiresAt } = await holdSlot(payload);
+
+      state.holdLockId = lockId;
+
+      localStorage.setItem(
+        "heldLock",
+        JSON.stringify({
+          lockId,
+          expiresAt,
+          bookingData: state.booking,
+        })
+      );
+
+      dom.bookingSection.classList.add("hidden");
+      dom.paymentSection.classList.remove("hidden");
+
+      showModal("Slot Held for 15 Minutes", "Proceed to payment", "success");
+      dom.confirmButton.textContent = "Confirm & Pay";
+      dom.confirmButton.disabled = false;
+      dom.confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
+      startCountdown(expiresAt);
+    } catch (err) {
+      dom.confirmButton.textContent = "Confirm & Pay";
+      dom.confirmButton.disabled = false;
+      dom.confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
+      showModal("Error", err.message, "error");
+    }
+  });
+
+  /* ===============================
+     PAYMENT
+  ================================ */
+  dom.paymentButton.addEventListener("click", async () => {
+    dom.paymentButton.disabled = true;
+    dom.paymentButton.textContent = "Redirecting...";
+
+    if (!state.holdLockId) {
+      showModal("Error", "No active booking", "error");
+      return;
+    }
+    try {
+      await startPayment(state.holdLockId, {
+        ...state.booking,
+        totalAmount: state.booking.totalFee,
+      });
+    } catch (error) {
+      showModal("Error", error.message, "error");
+    } finally {
+      dom.paymentButton.disabled = false;
+      dom.paymentButton.textContent = "Pay Now";
+    }
+  });
+
+  dom.cancelPaymentButton.addEventListener("click", async () => {
+    dom.cancelPaymentButton.disabled = true;
+    dom.cancelPaymentButton.textContent = "Cancelling...";
+
+    try {
+      //Stop countdown
+      if (state.holdTimer) {
+        clearInterval(state.holdTimer);
+        state.holdTimer = null;
+      }
+
+      //ALWAYS resolve lockId safely
+      const lockId =
+        state.holdLockId ||
+        JSON.parse(localStorage.getItem("heldLock"))?.lockId;
+
+      console.log("Cancelling lockId:", lockId);
+
+      if (!lockId) {
+        throw new Error("No active slot lock found");
+      }
+
+      //Release slot lock
+      const res = await fetch(`/api/slots/release/${lockId}`, {
+        method: "PATCH",
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to release slot lock");
+      }
+
+      //Cleanup frontend state
+      localStorage.removeItem("heldLock");
+      state.holdLockId = null;
+      state.booking = {};
+
+      dom.paymentSection.classList.add("hidden");
+      dom.bookingSection.classList.remove("hidden");
+
+      resetSummary();
+      showModal("Cancelled", "Slot released successfully", "info");
+    } catch (error) {
+      showModal("Error", error.message, "error");
+    } finally {
+      dom.cancelPaymentButton.disabled = false;
+      dom.cancelPaymentButton.textContent = "Cancel";
+    }
+  });
+
+  /* ===============================
+     INIT
+  ================================ */
+  updateAvailableSlots();
+
+  dom.downloadSlipButton.addEventListener("click", () => {
+    dom.downloadSlipButton.disabled = true;
+    dom.downloadSlipButton.textContent = "Generating...";
+
+    try {
+      console.log("Download clicked — state.booking:", state.booking);
+      generatePDF();
+    } catch (error) {
+      showModal("Error", error.message, "error");
+    } finally {
+      dom.downloadSlipButton.disabled = false;
+      dom.downloadSlipButton.textContent = "Download Slip";
+    }
+  });
+});
+
+function generatePDF() {
+  if (!window.jspdf) return alert("PDF library not loaded");
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "pt", format: "A4" });
+
+  const b = state.booking;
+
+  const bookingId = state.bookingId
+    ? state.bookingId.slice(-6).toUpperCase()
+    : "XXXXXX";
+
+  let y = 50;
+
+  /* ================= BRAND HEADER ================= */
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(26);
+  doc.setTextColor("#145531");
+  doc.text("THE ROYAL TURF", 40, y);
+
+  doc.setFont("helvetica", "italic");
+  doc.setFontSize(12);
+  doc.setTextColor("#555");
+  doc.text("Where Kings Play", 40, y + 18);
+
+  doc.setDrawColor("#D4AF37");
+  doc.setLineWidth(1.5);
+  doc.line(40, y + 40, 555, y + 40);
+
+  /* ================= INVOICE META ================= */
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(11);
+  doc.setTextColor("#000");
+
+  doc.text(`Invoice No: RT-${bookingId}`, 400, 55);
+  doc.text(`Invoice Date: ${new Date().toLocaleDateString("en-IN")}`, 400, 70);
+  doc.text(`Payment Status: Adv PAID`, 400, 85);
+
+  /* ================= CUSTOMER DETAILS ================= */
+  y = 120;
+  doc.setFont("helvetica", "bold");
+  doc.text("BILLED TO", 40, y);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(`Name: ${b.name || "N/A"}`, 40, y + 18);
+  doc.text(`Email: ${b.email || "N/A"}`, 40, y + 34);
+  doc.text(`Phone: ${b.phone || "N/A"}`, 40, y + 50);
+
+  /* ================= BOOKING DETAILS ================= */
+  y = 200;
+  doc.setFont("helvetica", "bold");
+  doc.text("BOOKING DETAILS", 40, y);
+
+  doc.setFont("helvetica", "normal");
+  doc.text(`Date: ${b.date}`, 40, y + 20);
+  doc.text(`Time Slot: ${b.startTime} – ${b.endTime}`, 40, y + 36);
+
+  /* ================= AMOUNT SUMMARY ================= */
+  y = 270;
+  doc.setDrawColor("#E5E7EB");
+  doc.rect(350, y - 30, 185, 120);
+
+  doc.setFont("helvetica", "normal");
+  doc.text("Booking Fee", 360, y);
+  doc.text(`₹${b.totalFee.toLocaleString("en-IN")}`, 520, y, { align: "right" });
+
+  doc.text("Advance Paid", 360, y + 25);
+  doc.text(`₹${b.advance.toLocaleString("en-IN")}`, 520, y + 25, {
+    align: "right",
+  });
+
+  doc.setFont("times", "bold");
+  doc.text("Total Amount", 360, y + 60);
+  doc.text(
+    `₹${b.totalFee.toLocaleString("en-IN")}`,
+    520,
+    y + 60,
+    { align: "right" }
+  );
+
+  /* ================= FOOTER ================= */
+  y = 420;
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "italic");
+  doc.setTextColor("#666");
+
+  doc.text(
+    "This is a system-generated invoice and does not require a signature.",
+    40,
+    y
+  );
+
+  doc.text(
+    "The Royal Turf | Contact: +91 8272952122 / 7044385501 | info@royalturf.com",
+    40,
+    y + 15
+  );
+
+  doc.save(`RoyalTurf_Invoice_${bookingId}.pdf`);
+}
+

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Royal Turf</title>
+  <link rel="stylesheet" href="dashboardOutput.css">
+  <style>
+    @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+    @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+    @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined);
+  </style>
+</head>
+
+<body>
+  <div id="The Royal Turf">
+    <div class="bg-gray-100 min-h-screen p-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl shadow-md p-6 md:col-span-1 lg:col-span-1 h-[calc(100vh-13rem)]">
+          <nav>
+            <ul class="space-y-2">
+              <li
+                class="bg-primary-50 text-primary-700 font-medium rounded-lg p-3 flex items-center space-x-3 cursor-pointer">
+                <span class="material-symbols-outlined">dashboard</span> <span>Dashboard</span>
+              </li>
+              <li
+                class="hover:bg-gray-100 rounded-lg p-3 flex items-center space-x-3 cursor-pointer transition-colors duration-200">
+                <span class="material-symbols-outlined">calendar_month</span> <span>Bookings</span>
+              </li>
+              <li
+                class="hover:bg-gray-100 rounded-lg p-3 flex items-center space-x-3 cursor-pointer transition-colors duration-200">
+                <span class="material-symbols-outlined">person</span> <span>Customers</span>
+              </li>
+              <li
+                class="hover:bg-gray-100 rounded-lg p-3 flex items-center space-x-3 cursor-pointer transition-colors duration-200">
+                <span class="material-symbols-outlined">inventory</span> <span>Inventory</span>
+              </li>
+              <li
+                class="hover:bg-gray-100 rounded-lg p-3 flex items-center space-x-3 cursor-pointer transition-colors duration-200">
+                <span class="material-symbols-outlined">analytics</span> <span>Analytics</span>
+              </li>
+              <li
+                class="hover:bg-gray-100 rounded-lg p-3 flex items-center space-x-3 cursor-pointer transition-colors duration-200">
+                <span class="material-symbols-outlined">payments</span> <span>Finance</span>
+              </li>
+              <li
+                class="hover:bg-gray-100 rounded-lg p-3 flex items-center space-x-3 cursor-pointer transition-colors duration-200">
+                <span class="material-symbols-outlined">settings</span> <span>Settings</span>
+              </li>
+            </ul>
+          </nav>
+          <div class="mt-8 bg-primary-50 p-4 rounded-lg">
+            <div class="flex justify-between items-center mb-3">
+              <p class="font-medium">Premium Plan</p>
+              <span class="bg-primary-600 text-white text-xs px-2 py-1 rounded-full">Active</span>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">Your plan expires in 15 days</p>
+            <button
+              class="w-full bg-primary-600 text-white rounded-lg py-2 hover:bg-primary-700 transition-colors duration-200 flex items-center justify-center space-x-2">
+              <span class="material-symbols-outlined text-sm">upgrade</span> <span>Upgrade Plan</span>
+            </button>
+          </div>
+        </div>
+        <div class="md:col-span-2 lg:col-span-3 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-gray-500 text-sm">Total Bookings</p>
+                  <h2 class="text-3xl font-bold mt-1">1,248</h2>
+                  <p class="text-green-600 text-sm flex items-center mt-2">
+                    <span class="material-symbols-outlined text-sm">trending_up</span>
+                    <span>+12.5% from last month</span>
+                  </p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-full">
+                  <span class="material-symbols-outlined text-blue-600">menu_book</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-gray-500 text-sm">Total Revenue</p>
+                  <h2 class="text-3xl font-bold mt-1">$48,295</h2>
+                  <p class="text-green-600 text-sm flex items-center mt-2">
+                    <span class="material-symbols-outlined text-sm">trending_up</span>
+                    <span>+8.2% from last month</span>
+                  </p>
+                </div>
+                <div class="bg-green-100 p-3 rounded-full">
+                  <span class="material-symbols-outlined text-green-600">payments</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="text-gray-500 text-sm">New Customers</p>
+                  <h2 class="text-3xl font-bold mt-1">145</h2>
+                </div>
+                <div class="bg-purple-100 p-3 rounded-full">
+                  <span class="material-symbols-outlined text-purple-600">person_add</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-4">
+              <p class="text-green-600 text-sm flex items-center mt-2">
+                <span class="material-symbols-outlined text-sm">trending_up</span>
+                <span>+18.3% from last month</span>
+              </p>
+              <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="text-gray-500 text-sm">Cancellation Rate</p>
+                    <h2 class="text-3xl font-bold mt-1">3.2%</h2>
+                    <p class="text-red-600 text-sm flex items-center mt-2">
+                      <span class="material-symbols-outlined text-sm">trending_down</span>
+                      <span>+0.8% from last month</span>
+                    </p>
+                  </div>
+                  <div class="bg-red-100 p-3 rounded-full">
+                    <span class="material-symbols-outlined text-red-600">cancel</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-lg">Booking Trends</h3>
+                <select
+                  class="text-sm border border-gray-300 rounded-lg px-3 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  <option>Last 7 Days</option>
+                  <option>Last 30 Days</option>
+                  <option>Last 90 Days</option>
+                </select>
+              </div>
+              <div class="h-80">
+                <div data-chart="chart_0"></div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+              <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-lg">Revenue by Booking Type</h3>
+                <select
+                  class="text-sm border border-gray-300 rounded-lg px-3 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500">
+                  <option>Last 30 Days</option>
+                  <option>Last 90 Days</option>
+                  <option>Last Year</option>
+                </select>
+              </div>
+              <div class="h-80">
+                <div data-chart="chart_1"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="font-bold text-lg">Recent Bookings</h3>
+              <button
+                class="text-primary-600 hover:text-primary-700 flex items-center space-x-1 transition-colors duration-200">
+                <span>View All</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Booking ID
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Customer
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Type
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Amount
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#BK-1023</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/32.jpg" alt=""
+                          keywords="user, avatar, profile" />
+                        <div class="ml-4">
+                          <div class="text-sm font-medium">Michael Johnson</div>
+                          <div class="text-sm text-gray-500">michael.j@example.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">Hotel Room</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">May 15, 2023</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">$325</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Confirmed</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <div class="flex space-x-2">
+                        <button class="p-1 rounded-full hover:bg-gray-200 transition-colors duration-200">
+                          <span class="material-symbols-outlined text-sm">visibility</span>
+                        </button>
+                        <button class="p-1 rounded-full hover:bg-gray-200 transition-colors duration-200">
+                          <span class="material-symbols-outlined text-sm">edit</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">#BK-1022</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center">
+                        <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/women/28.jpg" alt=""
+                          keywords="user, avatar, profile" />
+                        <div class="ml-4">
+                          <div class="text-sm font-medium">Emma Wilson</div>
+                          <div class="text-sm text-gray-500">emma.w@example.com</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">Vacation Rental</td>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Royal Turf - Gallery</title>
+    <!-- Standard Tailwind CSS CDN for styling -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols for icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            /* A light gray background */
+        }
+
+        /* Custom CSS to define the masonry layout */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .masonry-grid {
+                column-count: 4;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .masonry-grid {
+                column-count: 5;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .masonry-grid {
+                column-count: 6;
+            }
+        }
+
+        /* Item within the masonry grid */
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .masonry-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .masonry-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .masonry-item img,
+        .masonry-item iframe {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+            color: white;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+        }
+
+        /* Styles for the modal */
+        #modal {
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+   <!-- Header Section -->
+       <header id="site-header" class="fixed top-4 left-1/2 z-50 w-[92%] max-w-7xl
+         -translate-x-1/2 transition-all duration-300">
+            <div id="header-inner" class="flex items-center justify-between
+           rounded-full bg-white
+           px-6 py-3
+           shadow-xl backdrop-blur-md
+           transition-all duration-300">
+                <!-- Logo and Site Title -->
+                <a href="/index.html">
+                    <div id="header-brand" class=" flex items-center gap-3 transition-all duration-300">
+                        <span id="header-title" class="text-lg font-bold text-slate-900 whitespace-nowrap">
+                            The Royal Turf
+                        </span>
+                    </div>
+                </a>
+                <!-- Desktop Navigation -->
+                <nav id="desktop-menu" class="hidden md:flex items-center gap-8
+                text-sm font-medium text-slate-700">
+                    <a href="/index.html" class="hover:text-emerald-600 transition-colors duration-300">Home</a>
+                    <a href="/features.html" class="hover:text-emerald-600 transition-colors duration-300">Features</a>
+                    <a href="/booking.html" class="hover:text-emerald-600 transition-colors duration-300">Bookings</a>
+                    <a href="/gallery.html" class="hover:text-emerald-600 transition-colors duration-300">Gallery</a>
+                    <a href="/contact.html" class="hover:text-emerald-600 transition-colors duration-300">Contact</a>
+                </nav>
+                <div class="flex flex-row">
+                    <a href="/booking.html" class="hidden sm:inline-flex rounded-full
+              bg-emerald-600 px-5 py-2
+              text-sm font-semibold text-white
+              shadow hover:bg-emerald-700 transition" id="header-cta">
+                        Book Your Slot
+                    </a>
+                    <!-- Mobile Menu Button -->
+                    <div class="flex items-center space-x-4">
+                        <button id="mobile-menu-button" class="md:hidden text-slate-800">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation (hidden by default) -->
+            <div id="mobile-menu" class="md:hidden hidden
+         bg-slate-950/70 backdrop-blur
+         border-t border-slate-800
+         shadow-xl
+         transition-all duration-300 ease-out ">
+
+                <nav class="flex flex-col px-4 py-4 rounded-lg space-y-1">
+                    <a href="index.html" class="rounded-lg px-4 py-3
+              text-slate-200 bg-slate-500/20
+              hover:bg-slate-800 hover:text-white
+              transition-colors duration-200">
+                        Home
+                    </a>
+                    <a href="features.html" class="rounded-lg px-4 py-3
+              text-slate-200 bg-slate-500/20
+              hover:bg-slate-800 hover:text-white
+              transition-colors duration-200">
+                        features
+                    </a>
+                    <a href="booking.html" class="rounded-lg px-4 py-3
+              text-slate-200 bg-slate-500/20
+              hover:bg-slate-800 hover:text-white
+              transition-colors duration-200">
+                        Bookings
+                    </a>
+                    <a href="gallery.html" class="rounded-lg px-4 py-3
+              text-slate-200 bg-slate-500/20
+              hover:bg-slate-800 hover:text-white
+              transition-colors duration-200">
+                        Gallery
+                    </a>
+                    <a href="contact.html" class="rounded-lg px-4 py-3
+              text-slate-200 bg-slate-500/20
+              hover:bg-slate-800 hover:text-white
+              transition-colors duration-200">
+                        Contact
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+    <main class="max-w-7xl mx-auto py-10 px-4 mt-12">
+        <h1 class="text-4xl font-extrabold mb-8 text-center text-gray-800">Our Gallery</h1>
+        <p class="text-center text-gray-600 mb-12">Take a look at our premium facilities and happy customers.</p>
+
+        <!-- Gallery Grid Container -->
+        <div class="masonry-grid">
+            <!-- Landscape Image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0011.jpg', 'Game Day Action', 'image')">
+                <img src="/img/IMG-20250824-WA0011.jpg" alt="Game Day Action" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Game Day Action</h2>
+                </div>
+            </div>
+
+            <!-- Video Thumbnail -->
+            <div class="masonry-item cursor-pointer relative"
+                onclick="openModal('/img/VID-20250824-WA0002.mp4', 'See the action in motion!', 'video')">
+                <img src="/img/IMG-20250824-WA0012.jpg" alt="A video thumbnail" loading="lazy"
+                    class="w-full h-auto" />
+                <div
+                    class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 transition-opacity hover:opacity-100">
+                    <span class="material-symbols-outlined text-white text-5xl">play_circle</span>
+                </div>
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Watch a game!</h2>
+                </div>
+            </div>
+
+            <!-- Portrait image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0013.jpg', 'Players Practicing', 'image')">
+                <img src="/img/IMG-20250824-WA0013.jpg" alt="Players Practicing" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Players Practicing</h2>
+                </div>
+            </div>
+
+            <!-- Portrait image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0010.jpg', 'Locker Room', 'image')">
+                <img src="/img/IMG-20250824-WA0010.jpg" alt="Locker Room" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Locker Room</h2>
+                </div>
+            </div>
+
+            <!-- Landscape image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0014.jpg', 'Turf Aerial View', 'image')">
+                <img src="/img/IMG-20250824-WA0014.jpg" alt="Turf Aerial View" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Turf Aerial View</h2>
+                </div>
+            </div>
+
+            <!-- Portrait image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0015.jpg', 'Corner Kick', 'image')">
+                <img src="/img/IMG-20250824-WA0015.jpg" alt="Corner Kick" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Corner Kick</h2>
+                </div>
+            </div>
+
+            <!-- Landscape image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0016.jpg', 'Team Photo', 'image')">
+                <img src="/img/IMG-20250824-WA0016.jpg" alt="Team Photo" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Team Photo</h2>
+                </div>
+            </div>
+
+            <!-- Portrait image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0017.jpg', 'Evening Match', 'image')">
+                <img src="/img/IMG-20250824-WA0017.jpg" alt="Evening Match" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Evening Match</h2>
+                </div>
+            </div>
+
+            <!-- Portrait image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0018.jpg', 'Royal Turf Main Ground', 'image')">
+                <img src="/img/IMG-20250824-WA0018.jpg" alt="Royal Turf Main Ground" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Royal Turf Main Ground</h2>
+                </div>
+            </div>
+
+            <!-- Portrait image -->
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0019.jpg', 'Turf Entrance', 'image')">
+                <img src="/img/IMG-20250824-WA0019.jpg" alt="Turf Entrance" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Turf Entrance</h2>
+                </div>
+            </div>
+
+            <div class="masonry-item cursor-pointer"
+                onclick="openModal('/img/IMG-20250824-WA0020.jpg', 'Turf Entrance', 'image')">
+                <img src="/img/IMG-20250824-WA0020.jpg" alt="Turf Entrance" loading="lazy" />
+                <div class="overlay">
+                    <h2 class="font-semibold text-lg">Turf Entrance</h2>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for full-screen image/video view -->
+    <div id="modal" class="fixed inset-0 hidden items-center justify-center p-4">
+        <div class="relative max-w-5xl max-h-full w-full">
+            <button
+                class="absolute top-4 right-4 text-white text-4xl font-light hover:text-gray-300 transition-colors z-10"
+                onclick="closeModal()">
+                &times;
+            </button>
+            <div class="relative w-full h-full flex items-center justify-center">
+                <img id="modal-image" src="" alt="" class="max-w-full max-h-full rounded-xl shadow-lg"
+                    style="display: none;">
+                <iframe id="modal-video" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen class="rounded-xl shadow-lg w-full aspect-video" style="display: none;"></iframe>
+            </div>
+            <div id="modal-caption"
+                class="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 text-white text-lg font-semibold text-center">
+            </div>
+        </div>
+    </div>
+
+      <!-- Footer Section -->
+        <footer class="bg-slate-900 text-slate-400 py-8 px-4">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Brand Info -->
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <h3 class="text-xl font-bold text-white">The Royal Turf</h3>
+                        </div>
+                        <p class="text-sm text-slate-400 mb-4">Providing premium turf booking services for all your
+                            sporting needs.
+                        </p>
+                        <div class="flex space-x-4">
+                            <!-- Youtube -->
+                            <a href="https://www.youtube.com/@royal_turf" target="_blank" rel="noopener noreferrer">
+                                <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                                </svg>
+                            </a>
+
+                            <!-- Instagram -->
+                            <a href="https://www.instagram.com/_royal.turf_/#" target="_blank"
+                                rel="noopener noreferrer">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <defs>
+                                        <linearGradient id="insta-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#833AB4" />
+                                            <stop offset="50%" stop-color="#E1306C" />
+                                            <stop offset="100%" stop-color="#FFDC80" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path fill="url(#insta-grad)"
+                                        d="M12 0C8.74 0 8.33.01 7.05.05 3.17.23.23 3.17.05 7.05.01 8.33 0 8.74 0 12s.01 3.67.05 4.95c.18 3.88 3.12 6.82 6.95 7 1.28.04 1.69.05 4.95.05s3.67-.01 4.95-.05c3.88-.18 6.82-3.12 7-6.95.04-1.28.05-1.69.05-4.95s-.01-3.67-.05-4.95C23.77 3.17 20.83.23 17 .05 15.67.01 15.26 0 12 0zm0 2.16c3.2 0 3.56.02 4.82.07 3.19.14 4.64 1.59 4.78 4.78.05 1.26.07 1.62.07 4.82s-.02 3.56-.07 4.82c-.14 3.19-1.59 4.64-4.78 4.78-1.26.05-1.62.07-4.82.07s-3.56-.02-4.82-.07c-3.19-.14-4.64-1.59-4.78-4.78-.05-1.26-.07-1.62-.07-4.82s.02-3.56.07-4.82c.14-3.19 1.59-4.64 4.78-4.78 1.26-.05 1.62-.07 4.82-.07zM5.66 12a6.34 6.34 0 1 1 12.68 0 6.34 6.34 0 0 1-12.68 0zm6.34-4.88a4.88 4.88 0 1 0 0 9.76 4.88 4.88 0 0 0 0-9.76zM16.88 5.56a1.48 1.48 0 1 1-2.96 0 1.48 1.48 0 0 1 2.96 0z" />
+                                </svg>
+                            </a>
+
+                            <!-- Google -->
+                            <a href="https://share.google/bRLocWkXIdii6uodS" target="_blank" rel="noopener noreferrer">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="#4285F4"
+                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                    <path fill="#34A853"
+                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                    <path fill="#FBBC05"
+                                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                                    <path fill="#EA4335"
+                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Quick Links -->
+                    <div>
+                        <h3 class="text-lg font-bold text-emerald-400 mb-4">Quick Links</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="/index.html" class="hover:text-emerald-300 transition-colors duration-300">Home</a>
+                            </li>
+                            <li><a href="/features.html"
+                                    class="hover:text-emerald-300 transition-colors duration-300">Features</a></li>
+                            <li><a href="/booking.html"
+                                    class="hover:text-emerald-300 transition-colors duration-300">Bookings</a></li>
+                            <li><a href="/gallery.html"
+                                    class="hover:text-emerald-300 transition-colors duration-300">Gallery</a></li>
+                            <li><a href="/contact.html"
+                                    class="hover:text-emerald-300 transition-colors duration-300">Contact</a></li>
+                        </ul>
+                    </div>
+                    <!-- Opening Hours -->
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4">Opening Hours</h3>
+                        <ul class="space-y-2 text-gray-400">
+                            <li class="flex justify-between"><span>Monday - Friday</span> <span>7:00 AM - 1:00 AM</span>
+                            </li>
+                            <li class="flex justify-between"><span>Saturday</span> <span>7:00 AM - 1:00 AM</span></li>
+                            <li class="flex justify-between"><span>Sunday</span> <span>7:00 AM - 1:00 AM</span></li>
+                        </ul>
+                    </div>
+                    <!-- Contact Info -->
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-4">Contact Us</h3>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex items-start space-x-2">
+                                <span class="material-symbols-outlined text-emerald-400">location_on</span>
+                                <span class="text-sm">36, Topsia Road, Uttar Panchannogram Kolkata - 39</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="material-symbols-outlined text-emerald-400">phone</span>
+                                <span class="text-sm">+91 8272952122</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <span class="material-symbols-outlined text-emerald-400">email</span>
+                                <span class="text-sm">info@royalturf.com</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-600 text-center text-slate-400">
+                    <p>© 2025 Royal Turf. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+    <script type="module" src="/js/gallery.js"></script>
+</body>
+
+</html>
