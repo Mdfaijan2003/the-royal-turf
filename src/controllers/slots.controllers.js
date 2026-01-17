@@ -4,6 +4,14 @@ import mongoose from "mongoose";
 import SlotLock from "../models/slotlock.js";
 import Booking from "../models/booking.js";
 
+// Helper: convert to IST without timezone shift
+const IST_OFFSET = 5.5 * 60 * 60 * 1000; // +05:30 hrs
+
+function startOfISTDay(dateStr) {
+  const d = new Date(dateStr + "T00:00:00Z"); // interpret date as UTC midnight
+  return new Date(d.getTime() - IST_OFFSET);
+}
+
 // GET /slots?date=YYYY-MM-DD
 export async function getSlots(req, res) {
   try {
@@ -12,21 +20,30 @@ export async function getSlots(req, res) {
       return res.status(400).json({ error: "Date is required" });
     }
 
+    // const intervalMinutes = 60;
+    // const openHour = 6; // 6 AM
+    // const closeHour = 1; // 1 AM next day
+
+    // const baseDate = new Date(date);
+    // baseDate.setHours(0, 0, 0, 0);
+
+    // // Start = 06:00 same day
+    // const startOfDay = new Date(baseDate);
+    // startOfDay.setHours(openHour, 0, 0, 0);
+
+    // // End = 01:00 next day
+    // const endOfDay = new Date(baseDate);
+    // endOfDay.setDate(endOfDay.getDate() + 1);
+    // endOfDay.setHours(closeHour, 0, 0, 0);
+
     const intervalMinutes = 60;
-    const openHour = 6; // 6 AM
-    const closeHour = 1; // 1 AM next day
+    const openHour = 6;
+    const closeHour = 1;
 
-    const baseDate = new Date(date);
-    baseDate.setHours(0, 0, 0, 0);
+    const base = startOfISTDay(date);
 
-    // Start = 06:00 same day
-    const startOfDay = new Date(baseDate);
-    startOfDay.setHours(openHour, 0, 0, 0);
-
-    // End = 01:00 next day
-    const endOfDay = new Date(baseDate);
-    endOfDay.setDate(endOfDay.getDate() + 1);
-    endOfDay.setHours(closeHour, 0, 0, 0);
+    const startOfDay = new Date(base.getTime() + openHour * 3600000);
+    const endOfDay = new Date(base.getTime() + 24 * 3600000 + closeHour * 3600000);
 
     const now = new Date();
 

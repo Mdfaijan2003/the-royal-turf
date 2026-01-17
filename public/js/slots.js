@@ -39,11 +39,15 @@ export async function updateAvailableSlots() {
 
       const startOption = document.createElement("option");
       startOption.value = formatTime(startDate);
-      startOption.text = startDate.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
+      // startOption.text = startDate.toLocaleTimeString([], {
+      //   hour: "2-digit",
+      //   minute: "2-digit",
+      //   hour12: true,
+      // });
+
+      startOption.text = formatIST(startDate);
+
+
 
       if (slot.status === "BOOKED") {
         startOption.disabled = true;
@@ -95,11 +99,14 @@ export function populateEndTimes() {
 
     const option = document.createElement("option");
     option.value = formatTime(slot.end);
-    option.textContent = slot.end.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+    // option.textContent = slot.end.toLocaleTimeString([], {
+    //   hour: "2-digit",
+    //   minute: "2-digit",
+    //   hour12: true,
+    // });
+
+    option.textContent = formatIST(slot.end);
+
     option.style.color = "#047857";
     option.style.backgroundColor = "#d1fae5";
     dom.endTime.appendChild(option);
@@ -113,3 +120,17 @@ export function populateEndTimes() {
 function formatTime(date) {
   return date.toTimeString().slice(0, 5); // HH:mm (LOCAL, SAFE)
 }
+
+function formatIST(date) {
+  return date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "Asia/Kolkata"
+  }).slice(0, 8);
+}
+
+// startOption.text = formatIST(startDate);
+// option.textContent = formatIST(slot.end);
+
+
