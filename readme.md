@@ -1,8 +1,11 @@
-Three more bugs 
-1. No delete of held slots after clicking cancel button
-2. After payment hold slots are not getting Consumed ....Hence working now! 
-3. Button are not disabled when clicked
+No more bugs.....
 
 Works need to do more
 1. api for image and video upload
-2. Check booking by the email id 
+2. dashboard optimization
+3. Check data flow
+4. Razorpay Live mode
+5. Adding domain to railway
+
+
+
