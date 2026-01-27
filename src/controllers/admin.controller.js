@@ -1,13 +1,13 @@
-// src/controllers/admin.controller.js
+// // src/controllers/admin.controller.js
 
 import { Admin } from "../models/Admin.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
-// REGISTER ADMIN
+
+// // REGISTER ADMIN
 export const registerAdmin = asyncHandler(async (req, res) => {
   const { name, email, phone, password, adminSecret } = req.body;
 
@@ -20,60 +20,98 @@ export const registerAdmin = asyncHandler(async (req, res) => {
   const exists = await Admin.findOne({ $or: [{ email }, { phone }] });
   if (exists) throw new ApiError(409, "Admin already exists");
 
-  const admin = await Admin.create({ name, email, phone, password, role: "admin" });
+  const admin = await Admin.create({
+    name,
+    email,
+    phone,
+    password,
+    role: "admin",
+  });
 
-  return res.status(201).json(
-    new ApiResponse(201, { id: admin._id }, "Admin registered successfully")
-  );
+  return res
+    .status(201)
+    .json(
+      new apiResponse(201, { id: admin._id }, "Admin registered successfully")
+    );
 });
 
 // LOGIN ADMIN
-export const loginAdmin = asyncHandler(async (req, res) => {
-  const { email, phone, password } = req.body;
+export const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  if ((!email && !phone) || !password)
-    throw new ApiError(400, "Email/Phone & Password required");
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
 
-  const admin = await Admin.findOne({ $or: [{ email }, { phone }] }).select("+password");
+    const admin = await Admin.findOne({ email }).select("+password");
 
-  if (!admin) throw new ApiError(404, "Admin not found");
-  if (admin.role !== "admin") throw new ApiError(403, "Not an admin account");
+    if (!admin) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found",
+      });
+    }
 
-  console.log("INPUT:", password);
-  console.log("DB:", admin.password);
-  console.log("IS VALID:", await admin.isPasswordCorrect(password));
+    if (admin.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Not an admin account",
+      });
+    }
 
+    const isValid = await admin.isPasswordCorrect(password);
 
-  const valid = await admin.isPasswordCorrect(password);
-  if (!valid) throw new ApiError(401, "Invalid credentials");
+    if (!isValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
 
-  const accessToken = admin.generateAccessToken();
-  const refreshToken = admin.generateRefreshToken();
+    const accessToken = admin.generateAccessToken();
+    const refreshToken = admin.generateRefreshToken();
 
-  admin.refreshToken = refreshToken;
-  await admin.save({ validateBeforeSave: false });
+    admin.refreshToken = refreshToken;
+    await admin.save({ validateBeforeSave: false });
 
-  const cookieOptions = {
-    httpOnly: true,
-    sameSite: "strict",
-    maxAge: 24*60*60*1000
-  };
+    const cookieOptions = {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    };
 
-  res.cookie("accessToken", accessToken, cookieOptions);
-  res.cookie("refreshToken", refreshToken, { ...cookieOptions, maxAge: 10*24*60*60*1000 });
+    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("refreshToken", refreshToken, {
+      ...cookieOptions,
+      maxAge: 10 * 24 * 60 * 60 * 1000,
+    });
 
-  const safeAdmin = await Admin.findById(admin._id).select("-password -refreshToken");
+    const safeAdmin = await Admin.findById(admin._id).select(
+      "-password -refreshToken"
+    );
 
-  return res.status(200).json(
-    new apiResponse(200, safeAdmin, "Admin login successful")
-  );
-});
+    return res.status(200).json({
+      success: true,
+      admin: safeAdmin,
+      message: "Admin login successful",
+    });
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
 
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
 
-
-/* ======================================================
-   🔹 LOGOUT ADMIN
-====================================================== */
+// /* ======================================================
+//    🔹 LOGOUT ADMIN
+// ====================================================== */
 export const logoutAdmin = asyncHandler(async (req, res) => {
   const adminId = req.admin?._id;
 
@@ -84,13 +122,14 @@ export const logoutAdmin = asyncHandler(async (req, res) => {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
 
-  return res.status(200).json(new apiResponse(200, {}, "Logged out successfully"));
+  return res
+    .status(200)
+    .json(new apiResponse(200, {}, "Logged out successfully"));
 });
 
-
-/* ======================================================
-   🔹 REFRESH TOKEN
-====================================================== */
+// /* ======================================================
+//    🔹 REFRESH TOKEN
+// ====================================================== */
 export const refreshAccessToken = asyncHandler(async (req, res) => {
   const incomingRefresh = req.cookies.refreshToken || req.body.refreshToken;
 
@@ -120,17 +159,19 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
   };
 
   res.cookie("accessToken", newAccess, cookieOpt);
-  res.cookie("refreshToken", newRefresh, { ...cookieOpt, maxAge: 10 * 24 * 60 * 60 * 1000 });
+  res.cookie("refreshToken", newRefresh, {
+    ...cookieOpt,
+    maxAge: 10 * 24 * 60 * 60 * 1000,
+  });
 
-  return res.status(200).json(
-    new apiResponse(200, { accessToken: newAccess }, "Token refreshed")
-  );
+  return res
+    .status(200)
+    .json(new apiResponse(200, { accessToken: newAccess }, "Token refreshed"));
 });
 
-
-/* ======================================================
-   🔹 CHANGE PASSWORD
-====================================================== */
+// /* ======================================================
+//    🔹 CHANGE PASSWORD
+// ====================================================== */
 export const changeAdminPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword, confPassword } = req.body;
 
@@ -151,15 +192,20 @@ export const changeAdminPassword = asyncHandler(async (req, res) => {
   admin.refreshToken = null; // logout from all sessions
   await admin.save({ validateBeforeSave: false });
 
-  return res.status(200).json(new apiResponse(200, {}, "Password updated successfully"));
+  return res
+    .status(200)
+    .json(new apiResponse(200, {}, "Password updated successfully"));
 });
 
-
-/* ======================================================
-   🔹 CURRENT ADMIN PROFILE
-====================================================== */
+// /* ======================================================
+//    🔹 CURRENT ADMIN PROFILE
+// ====================================================== */
 export const getCurrentAdmin = asyncHandler(async (req, res) => {
-  return res.status(200).json(
-    new apiResponse(200, req.admin, "Admin info fetched")
-  );
+  return res
+    .status(200)
+    .json(new apiResponse(200, req.admin, "Admin info fetched"));
 });
+
+
+
+;

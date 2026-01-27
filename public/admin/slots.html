@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Royal Turf – Slot Control</title>
+  <link rel="stylesheet" href="/css/output.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    .bento-card {
+      transition: all 0.3s ease;
+      border: 1px solid #f1f5f9;
+    }
+
+    .bento-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgb(0 0 0 / 0.05);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+
+    /* Striped background for blocked slots */
+    .bg-striped {
+      background-image: linear-gradient(45deg, #fee2e2 25%, #fef2f2 25%, #fef2f2 50%, #fee2e2 50%, #fee2e2 75%, #fef2f2 75%, #fef2f2 100%);
+      background-size: 20px 20px;
+    }
+  </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-[#1e293b] flex">
+
+  <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
+    <div class="mb-10 px-2">
+      <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
+        <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
+        THE ROYAL TURF
+      </h2>
+    </div>
+
+    <nav class="flex-1 space-y-1">
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Management</p>
+
+      <a href="dashboard.html"
+        class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
+        </svg>
+        <span class="font-semibold text-sm">Overview</span>
+      </a>
+
+      <a href="bookings.html"
+        class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span class="font-semibold text-sm">Bookings</span>
+      </a>
+
+      <a href="#"
+        class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <span class="font-semibold text-sm">Slot Control</span>
+      </a>
+
+      <a href="#" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <span class="font-semibold text-sm">Finance</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto bg-slate-50 p-4 rounded-3xl border border-slate-100">
+      <div class="flex items-center space-x-3">
+        <img src="https://ui-avatars.com/api/?name=Admin&background=0f172a&color=fff" class="w-10 h-10 rounded-2xl"
+          alt="Admin">
+        <div>
+          <p class="text-xs font-bold">Main Admin</p>
+          <p class="text-[10px] text-slate-400">admin@royalturf.com</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 min-h-screen relative pb-32 lg:pb-12">
+
+    <header
+      class="sticky top-0 z-30 bg-white/80 backdrop-blur-xl px-6 py-6 lg:px-12 flex justify-between items-center border-b border-slate-100/50">
+      <h1 class="text-xl font-extrabold text-slate-800 lg:hidden">Slots</h1>
+      <div class="hidden lg:flex items-center space-x-2 text-sm font-medium text-slate-400">
+        <span>Management</span>
+        <span>/</span>
+        <span class="text-slate-900 font-bold">Slot Control</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button
+          class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center border border-red-100">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          Emergency Block
+        </button>
+      </div>
+    </header>
+
+    <div class="p-6 lg:p-12 space-y-8 max-w-7xl mx-auto">
+
+      <section class="flex flex-col xl:flex-row gap-4">
+
+        <div
+          class="flex-1 bg-white p-2 rounded-[1.5rem] border border-slate-100 shadow-sm flex items-center justify-between">
+          <button class="p-3 hover:bg-slate-50 rounded-2xl text-slate-400 hover:text-slate-900 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div class="text-center">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
+            <div class="flex items-center justify-center space-x-2 mt-1 cursor-pointer group">
+              <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <h2 class="text-lg font-extrabold text-slate-800 group-hover:text-yellow-600 transition">Today, 25 Jan
+              </h2>
+            </div>
+          </div>
+          <button class="p-3 hover:bg-slate-50 rounded-2xl text-slate-400 hover:text-slate-900 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          class="flex-1 bg-white p-2 rounded-[1.5rem] border border-slate-100 shadow-sm flex gap-2 overflow-x-auto custom-scrollbar pb-1 xl:pb-0">
+          <div class="relative min-w-[140px] flex-1">
+            <select
+              class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
+              <option>All Turfs</option>
+              <option>Turf A (5v5)</option>
+              <option>Turf B (7v7)</option>
+            </select>
+            <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+          <div class="relative min-w-[140px] flex-1">
+            <select
+              class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
+              <option>All Status</option>
+              <option>Available</option>
+              <option>Booked</option>
+              <option>Held (Live)</option>
+              <option>Blocked</option>
+            </select>
+            <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3 class="font-extrabold text-lg mb-6 flex items-center">
+          <span>Morning Slots</span>
+          <span class="ml-3 px-2 py-0.5 bg-slate-100 rounded text-[10px] text-slate-500 font-bold uppercase">06:00 AM -
+            12:00 PM</span>
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+          <div
+            class="bg-slate-900 rounded-[2rem] p-6 text-white relative group overflow-hidden bento-card border-slate-900">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-3xl font-black">06:00</p>
+                <p class="text-xs font-bold text-slate-400 uppercase">AM</p>
+              </div>
+              <span
+                class="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider text-slate-300">Turf
+                A</span>
+            </div>
+
+            <div class="space-y-1 mb-4">
+              <p class="text-sm font-bold text-yellow-400">Rahul Sharma</p>
+              <p class="text-xs text-slate-400">#BK-9021 • Paid</p>
+            </div>
+
+            <div
+              class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 gap-2">
+              <button class="bg-white text-slate-900 px-4 py-2 rounded-xl text-xs font-bold w-32">View Booking</button>
+              <button
+                class="bg-red-500/20 text-red-400 border border-red-500/50 px-4 py-2 rounded-xl text-xs font-bold w-32">Cancel</button>
+            </div>
+          </div>
+
+          <div
+            class="bg-yellow-50 rounded-[2rem] p-6 border-2 border-yellow-400 relative bento-card shadow-lg shadow-yellow-100">
+            <span class="absolute top-4 right-4 flex h-3 w-3">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+            </span>
+
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <p class="text-3xl font-black text-slate-800">07:00</p>
+                <p class="text-xs font-bold text-slate-400 uppercase">AM</p>
+              </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-xl border border-yellow-200 mb-3">
+              <p class="text-[10px] font-bold text-slate-400 uppercase text-center">Expires In</p>
+              <p class="text-xl font-black text-center text-yellow-600 font-mono">04:59</p>
+            </div>
+
+            <div class="flex gap-2">
+              <button class="flex-1 bg-slate-900 text-white py-2 rounded-lg text-xs font-bold">Book</button>
+              <button
+                class="flex-1 border border-slate-200 bg-white text-slate-500 py-2 rounded-lg text-xs font-bold hover:text-red-500">Release</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-[2rem] p-6 border border-slate-100 relative group bento-card">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-3xl font-black text-slate-800">08:00</p>
+                <p class="text-xs font-bold text-slate-400 uppercase">AM</p>
+              </div>
+              <span
+                class="px-3 py-1 bg-slate-50 rounded-lg text-[10px] font-bold uppercase tracking-wider text-slate-400 border border-slate-100">Turf
+                A</span>
+            </div>
+
+            <div class="flex items-center justify-between mt-6">
+              <p class="text-lg font-bold text-emerald-600">₹1,200</p>
+              <div
+                class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-yellow-400 group-hover:text-yellow-900 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+            </div>
+
+            <button
+              class="absolute top-2 right-2 p-2 text-slate-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+              </svg>
+            </button>
+          </div>
+
+          <div
+            class="bg-striped rounded-[2rem] p-6 border border-red-100 relative opacity-75 hover:opacity-100 transition bento-card">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <p class="text-3xl font-black text-slate-400 line-through decoration-red-400">09:00</p>
+                <p class="text-xs font-bold text-slate-400 uppercase">AM</p>
+              </div>
+              <span
+                class="px-3 py-1 bg-red-100 rounded-lg text-[10px] font-bold uppercase tracking-wider text-red-600">Blocked</span>
+            </div>
+
+            <p class="text-xs font-medium text-red-400 bg-white/50 p-2 rounded-lg text-center border border-red-100">
+              Maintenance</p>
+
+            <button
+              class="w-full mt-4 py-2 bg-white border border-red-100 text-red-500 rounded-xl text-xs font-bold hover:bg-red-50 transition shadow-sm">
+              Unblock Slot
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="pt-4 border-t border-slate-200/50">
+        <h3 class="font-extrabold text-lg mb-6 flex items-center text-slate-400">
+          <span>Evening Slots</span>
+          <span class="ml-3 px-2 py-0.5 bg-slate-50 rounded text-[10px] text-slate-400 font-bold uppercase">04:00 PM -
+            11:00 PM</span>
+        </h3>
+        <div class="text-center py-10">
+          <button
+            class="text-sm font-bold text-slate-400 hover:text-slate-900 flex items-center justify-center mx-auto">
+            Show All Evening Slots
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+<nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-6">
+        <div class="bg-[#1A1C1E]/95 backdrop-blur-xl px-10 py-4 rounded-[2rem] flex items-center space-x-12 shadow-2xl">
+            <a href="/admin/dashboard.html" class="text-yellow-400">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                </svg>
+            </a>
+            <a href="/admin/booking.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10" />
+                </svg>
+            </a>
+            <a href="/admin/slots.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </a>
+            <a href="/admin/finance.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 9V7a5 5 0 00-10 0v2m2 4h10a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm7 5v2m-3-2h6" />
+                </svg>
+            </a>
+
+            <a href="/admin/setting.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+</body>
+
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Royal Turf – Finance</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+    .bento-card { transition: all 0.3s ease; border: 1px solid #f1f5f9; }
+    .bento-card:hover { transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgb(0 0 0 / 0.05); }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+  </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-[#1e293b] flex">
+
+  <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
+    <div class="mb-10 px-2">
+        <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
+            <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
+            THE ROYAL TURF
+        </h2>
+    </div>
+
+    <nav class="flex-1 space-y-1">
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Management</p>
+      
+      <a href="dashboard.html" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" /></svg>
+        <span class="font-semibold text-sm">Overview</span>
+      </a>
+
+      <a href="bookings.html" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        <span class="font-semibold text-sm">Bookings</span>
+      </a>
+
+      <a href="slots.html" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+        <span class="font-semibold text-sm">Slot Control</span>
+      </a>
+      
+      <a href="#" class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+        <span class="font-semibold text-sm">Finance</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto bg-slate-50 p-4 rounded-3xl border border-slate-100">
+        <div class="flex items-center space-x-3">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=0f172a&color=fff" class="w-10 h-10 rounded-2xl" alt="Admin">
+            <div>
+                <p class="text-xs font-bold">Main Admin</p>
+                <p class="text-[10px] text-slate-400">admin@royalturf.com</p>
+            </div>
+        </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 min-h-screen relative pb-32 lg:pb-12">
+    
+    <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-xl px-6 py-6 lg:px-12 flex justify-between items-center border-b border-slate-100/50">
+        <h1 class="text-xl font-extrabold text-slate-800 lg:hidden">Finance</h1>
+        <div class="hidden lg:flex items-center space-x-2 text-sm font-medium text-slate-400">
+            <span>Management</span>
+            <span>/</span>
+            <span class="text-slate-900 font-bold">Transactions</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center shadow-sm">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                Export Report
+            </button>
+        </div>
+    </header>
+
+    <div class="p-6 lg:p-12 space-y-8 max-w-7xl mx-auto">
+
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-yellow-400 rounded-[2rem] p-6 bento-card relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-xs font-bold text-yellow-900/60 uppercase tracking-widest">Total Revenue (Jan)</p>
+                    <h3 class="text-3xl font-black text-yellow-950 mt-2">₹42,500</h3>
+                </div>
+                <svg class="absolute -right-6 -bottom-6 w-32 h-32 text-yellow-500/20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2z"/></svg>
+            </div>
+
+            <div class="bg-white rounded-[2rem] p-6 bento-card flex flex-col justify-between">
+                <div class="flex justify-between items-start">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Collected Today</p>
+                    <span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-1 rounded-lg">+12%</span>
+                </div>
+                <h3 class="text-3xl font-black text-slate-800 mt-2">₹4,800</h3>
+            </div>
+
+            <div class="bg-white rounded-[2rem] p-6 bento-card flex flex-col justify-between border-l-4 border-l-orange-400">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pending Dues</p>
+                <div>
+                    <h3 class="text-3xl font-black text-orange-500 mt-2">₹1,200</h3>
+                    <p class="text-[10px] text-slate-400 mt-1">2 Bookings Unpaid</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-[2rem] p-6 bento-card text-white flex flex-col justify-between">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Refunds Processed</p>
+                <div>
+                    <h3 class="text-3xl font-black mt-2">₹600</h3>
+                    <p class="text-[10px] text-slate-500 mt-1">1 Transaction Reversed</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-2 rounded-[1.5rem] border border-slate-100 flex flex-col md:flex-row gap-2 shadow-sm">
+            <div class="relative flex-1">
+                <svg class="w-5 h-5 absolute left-4 top-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                <input type="text" placeholder="Search Transaction ID, Booking ID or Name..." class="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-sm font-medium focus:ring-2 ring-yellow-400 outline-none transition">
+            </div>
+            
+            <div class="flex space-x-2 overflow-x-auto custom-scrollbar pb-1 md:pb-0">
+                <div class="relative min-w-[140px]">
+                    <select class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
+                        <option>This Month</option>
+                        <option>Last Month</option>
+                        <option>Today</option>
+                    </select>
+                    <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+
+                <div class="relative min-w-[140px]">
+                    <select class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
+                        <option>All Methods</option>
+                        <option>Razorpay</option>
+                        <option>Cash</option>
+                        <option>UPI</option>
+                    </select>
+                    <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+            
+            <div class="hidden md:block overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50/50 text-slate-400 text-[11px] uppercase tracking-widest font-bold border-b border-slate-100">
+                            <th class="px-8 py-5">Transaction Details</th>
+                            <th class="px-6 py-5">Linked Booking</th>
+                            <th class="px-6 py-5">Customer</th>
+                            <th class="px-6 py-5">Amount</th>
+                            <th class="px-6 py-5">Status</th>
+                            <th class="px-8 py-5 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50 text-sm">
+                        
+                        <tr class="hover:bg-slate-50/50 transition group">
+                            <td class="px-8 py-5">
+                                <div class="font-bold text-slate-800">#TXN-109283</div>
+                                <div class="text-xs text-slate-400 font-medium mt-0.5">25 Jan • 04:30 PM</div>
+                                <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 mt-1 inline-block">Razorpay</span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <a href="#" class="group/link flex items-center space-x-2 text-slate-600 hover:text-yellow-600 transition">
+                                    <span class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-xs font-bold">BK</span>
+                                    <div>
+                                        <p class="font-bold text-xs underline decoration-slate-300 group-hover/link:decoration-yellow-400">#BK-9021</p>
+                                        <p class="text-[10px] text-slate-400">Turf A • 6 PM</p>
+                                    </div>
+                                </a>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-[10px]">RS</div>
+                                    <span class="font-bold text-slate-700 text-xs">Rahul Sharma</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="font-black text-slate-800">₹1,200</div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span> Success
+                                </span>
+                            </td>
+                            <td class="px-8 py-5 text-right">
+                                <button class="text-slate-400 hover:text-slate-900 font-bold text-xs">Invoice ↗</button>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50/50 transition group">
+                            <td class="px-8 py-5">
+                                <div class="font-bold text-slate-800">#TXN-109282</div>
+                                <div class="text-xs text-slate-400 font-medium mt-0.5">25 Jan • 02:15 PM</div>
+                                <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 mt-1 inline-block">UPI (PhonePe)</span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <a href="#" class="group/link flex items-center space-x-2 text-slate-600 hover:text-yellow-600 transition">
+                                    <span class="w-8 h-8 rounded-lg bg-red-50 text-red-500 flex items-center justify-center text-xs font-bold">!</span>
+                                    <div>
+                                        <p class="font-bold text-xs underline decoration-slate-300 group-hover/link:decoration-yellow-400">#BK-9020</p>
+                                        <p class="text-[10px] text-slate-400">Turf B • 8 PM</p>
+                                    </div>
+                                </a>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center font-bold text-[10px]">JD</div>
+                                    <span class="font-bold text-slate-700 text-xs">John Doe</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="font-black text-slate-400">₹600</div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-red-50 text-red-600 border border-red-100">
+                                    Failed
+                                </span>
+                            </td>
+                            <td class="px-8 py-5 text-right">
+                                <button class="text-xs font-bold text-slate-500 hover:text-slate-900 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Retry Link</button>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50/50 transition group">
+                            <td class="px-8 py-5">
+                                <div class="font-bold text-slate-400 line-through decoration-slate-300">#TXN-109280</div>
+                                <div class="text-xs text-slate-400 font-medium mt-0.5">24 Jan • 09:00 AM</div>
+                                <span class="text-[10px] text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100 mt-1 inline-block">Cash</span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center space-x-2 text-slate-400">
+                                    <span class="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-xs font-bold">BK</span>
+                                    <div>
+                                        <p class="font-bold text-xs line-through">#BK-9018</p>
+                                        <p class="text-[10px] text-slate-400">Cancelled</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center font-bold text-[10px]">AK</div>
+                                    <span class="font-bold text-slate-400 text-xs">Amit K</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="font-black text-slate-400">- ₹600</div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-purple-50 text-purple-600 border border-purple-100">
+                                    Refunded
+                                </span>
+                            </td>
+                            <td class="px-8 py-5 text-right">
+                                <button class="text-slate-300 cursor-not-allowed font-bold text-xs">View Details</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="md:hidden p-4 space-y-4">
+                
+                <div class="bg-slate-50 p-5 rounded-[2rem] border border-slate-100 relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-bold text-slate-800">#TXN-109283</p>
+                            <p class="text-xs text-slate-400">25 Jan • Razorpay</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700">Success</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between bg-white p-3 rounded-2xl border border-slate-100 mb-4">
+                        <div class="flex items-center space-x-2">
+                             <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">BK</div>
+                             <div>
+                                 <p class="text-xs font-bold text-slate-700">#BK-9021</p>
+                                 <p class="text-[10px] text-slate-400">Turf A</p>
+                             </div>
+                        </div>
+                        <p class="font-black text-lg text-slate-800">₹1,200</p>
+                    </div>
+
+                    <div class="flex space-x-2">
+                        <button class="flex-1 py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">Details</button>
+                        <button class="flex-1 py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">Invoice</button>
+                    </div>
+                </div>
+
+                 <div class="bg-red-50 p-5 rounded-[2rem] border border-red-100 relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <p class="font-bold text-slate-800">#TXN-109282</p>
+                            <p class="text-xs text-red-400">25 Jan • UPI</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-red-100 text-red-600">Failed</span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between bg-white/50 p-3 rounded-2xl border border-red-100 mb-4">
+                        <div class="flex items-center space-x-2">
+                             <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-[10px] font-bold text-red-400">BK</div>
+                             <div>
+                                 <p class="text-xs font-bold text-slate-700">#BK-9020</p>
+                                 <p class="text-[10px] text-red-400">Payment Failed</p>
+                             </div>
+                        </div>
+                        <p class="font-black text-lg text-slate-400">₹600</p>
+                    </div>
+
+                    <button class="w-full py-3 rounded-xl bg-white border border-red-200 text-xs font-bold text-red-600 shadow-sm">Send Retry Link</button>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+  </main>
+
+ <nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-6">
+        <div class="bg-[#1A1C1E]/95 backdrop-blur-xl px-10 py-4 rounded-[2rem] flex items-center space-x-12 shadow-2xl">
+            <a href="/admin/dashboard.html" class="text-yellow-400">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                </svg>
+            </a>
+            <a href="/admin/booking.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10" />
+                </svg>
+            </a>
+            <a href="/admin/slots.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </a>
+            <a href="/admin/finance.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 9V7a5 5 0 00-10 0v2m2 4h10a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm7 5v2m-3-2h6" />
+                </svg>
+            </a>
+
+            <a href="/admin/setting.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+</body>
+</html>

@@ -63,8 +63,8 @@ app.use((req, res, next) => {
       "script-src 'self' https://checkout.razorpay.com https://cdnjs.cloudflare.com",
 
       // Styles & Fonts
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-      "font-src 'self' https://fonts.gstatic.com data:",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" ,
+      "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data: ",
 
       // Images
       "img-src 'self' data: https:",
@@ -97,6 +97,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/webhook", express.raw({ type: "application/json" }), webHookrouter);
 
+// 1️⃣ API routes FIRST
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/bookings", verifyAdminJWT, requireAdminRole, bookingRouter);
 app.use("/api/v1/healthcheck", healthRoutes);
@@ -104,18 +105,24 @@ app.use("/api/slots", slotsRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/payments", paymentRoutes);
-
-// Protected Gallery Upload (Admin Only)
 app.use("/api/gallery", verifyAdminJWT, requireAdminRole, galleryRoutes);
 
+// 2️⃣ Static files (JS, CSS, images)
 app.use(express.static(path.join(process.cwd(), "public")));
+app.use(express.static(path.join(process.cwd(), "admin")));
+
+// 3️⃣ Explicit HTML routes
+app.get("/admin/login", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "public", "admin", "login.html"));
+});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
 
-app.use((req, res, next) => {
-  if (req.path.startsWith("/api")) return next();
+// 4️⃣ SPA fallback (LAST, VERY LAST)
+app.use((req, res) => {
+  if (req.path.startsWith("/api")) return;
   res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
 
@@ -136,5 +143,18 @@ cron.schedule("* * * * *", async () => {
     console.error("Error during cron cleanup:", err);
   }
 });
+
+app.use((err, req, res, next) => {
+  console.error("GLOBAL ERROR:", err);
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+
+  res.status(statusCode).json({
+    success: false,
+    message,
+  });
+});
+
 
 export { app };

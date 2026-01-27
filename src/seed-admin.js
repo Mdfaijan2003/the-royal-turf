@@ -18,7 +18,7 @@ const seedAdmin = async () => {
     }
 
     const admin = await Admin.create({
-      name: "Royal Admin",
+      name: "The Royal Turf Admin",
       email: process.env.ADMIN_EMAIL || "admin@turf.com",
       phone: process.env.ADMIN_PHONE || "7000000000",
       password: process.env.ADMIN_PASSWORD || "admin123",

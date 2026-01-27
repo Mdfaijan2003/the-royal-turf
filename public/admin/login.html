@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Royal Turf – Admin Login</title>
+
+  <!-- Tailwind Output -->
+  <link rel="stylesheet" href="/css/output.css" />
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body class="font-sans min-h-screen flex items-center justify-center p-4
+  bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-600 relative overflow-hidden">
+
+  <!-- Decorative background pattern -->
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(16,185,129,0.15)_0%,transparent_50%),
+    radial-gradient(circle_at_80%_80%,rgba(5,150,105,0.15)_0%,transparent_50%),
+    radial-gradient(circle_at_40%_20%,rgba(4,120,87,0.15)_0%,transparent_50%)]">
+  </div>
+
+  <!-- Floating Icons -->
+  <div class="hidden md:block absolute top-10 left-10 opacity-20 animate-bounce">
+    <i class="fas fa-chess-rook text-white text-6xl"></i>
+  </div>
+
+  <div class="hidden md:block absolute bottom-10 right-10 opacity-20 animate-bounce delay-1000">
+    <i class="fas fa-trophy text-white text-6xl"></i>
+  </div>
+
+  <!-- Main Card -->
+  <div class="relative z-10 w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2
+    rounded-3xl overflow-hidden shadow-2xl bg-white/95 backdrop-blur-lg border border-white/20">
+
+    <!-- Left Branding -->
+    <div class="hidden lg:flex flex-col justify-center items-center p-12
+      bg-gradient-to-b from-emerald-900 to-emerald-700 text-white">
+
+      <div class="w-24 h-24 rounded-full bg-emerald-600 flex items-center justify-center shadow-lg mb-8">
+        <i class="fas fa-chess-rook text-5xl"></i>
+      </div>
+
+      <h1 class="text-4xl font-bold mb-2">The Royal Turf</h1>
+      <p class="text-emerald-200 mb-10 text-lg">Where Kings Play</p>
+
+      <div class="space-y-6 max-w-md">
+        <div class="flex gap-4">
+          <div class="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-calendar-check text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold">Booking Management</h3>
+            <p class="text-emerald-200 text-sm">Manage all bookings in one place</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-chart-line text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold">Analytics</h3>
+            <p class="text-emerald-200 text-sm">Track revenue & performance</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <div class="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
+            <i class="fas fa-shield-alt text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold">Secure Access</h3>
+            <p class="text-emerald-200 text-sm">Enterprise-grade admin security</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="p-10 flex flex-col justify-center">
+      <div class="max-w-md mx-auto w-full">
+
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Login</h2>
+        <p class="text-gray-600 mb-8">Sign in to access the dashboard</p>
+
+        <form id="loginForm" class="space-y-6">
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Email Address
+            </label>
+            <div class="relative">
+              <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              <input id="email" type="email" required placeholder="admin@royalturf.com" class="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300
+                  focus:outline-none focus:ring-2 focus:ring-emerald-500
+                  transition-all duration-300 focus:-translate-y-0.5" />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">
+              Password
+            </label>
+            <div class="relative">
+              <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              <input id="password" type="password" required placeholder="Enter your password" class="w-full pl-12 pr-12 py-3 rounded-lg border border-gray-300
+                  focus:outline-none focus:ring-2 focus:ring-emerald-500
+                  transition-all duration-300 focus:-translate-y-0.5" />
+              <button type="button" id="eye-button"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                <i id="toggleIcon" class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <p id="loginError" class="hidden text-center text-sm text-red-600"></p>
+
+          <!-- Button -->
+          <button type="submit" class="w-full py-3 rounded-lg font-semibold text-white
+              bg-emerald-600 hover:bg-emerald-700
+              transition-all duration-300 hover:-translate-y-0.5
+              hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-emerald-300">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Support -->
+        <p class="mt-8 text-center text-sm text-gray-600">
+          Having trouble signing in?
+          <a href="https://wa.me/918272952122?text=Hello%20Admin,%20I%20need%20help%20accessing%20the%20admin%20panel."
+            target="_blank" class="font-semibold text-emerald-600 hover:underline">
+            Contact system administrator
+          </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <script type="module" src="/js/admin/login.js" defer></script>
+</body>
+
+</html>

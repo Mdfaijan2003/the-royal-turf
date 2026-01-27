@@ -2,7 +2,7 @@ import { sendEmail } from "./email.service.js";
 // import { sendSMS } from "./message.service.js";
 
 export const sendBookingConfirmationNotifications = async booking => {
-  const { _id, customerName, customerEmail, start, end, paymentAmount } =
+  const { _id, customerName, customerEmail, start, end, advanceAmount } =
     booking;
 
   console.log(booking);
@@ -71,7 +71,7 @@ export const sendBookingConfirmationNotifications = async booking => {
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">Amount Paid:</td>
-                    <td>${paymentAmount}</td>
+                    <td>${advanceAmount}</td>
                   </tr>
                 </table>
               </td>

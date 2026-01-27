@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Royal Turf – Management Suite</title>
+    <link rel="stylesheet" href="/css/output.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .bento-card {
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-[#1e293b] flex">
+
+    <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8">
+        <div class="mb-10 px-2">
+            <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
+                <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
+                THE ROYAL TURF
+            </h2>
+        </div>
+
+        <nav class="flex-1 space-y-1">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Management</p>
+            <a href="/admin/dashboard"
+                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
+                </svg>
+                <span class="font-semibold text-sm">Overview</span>
+            </a>
+            <a href="/admin/booking.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="font-semibold text-sm">Bookings</span>
+            </a>
+            <a href="/admin/slots.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span class="font-semibold text-sm">Slot Control</span>
+            </a>
+            <a href="/admin/finance.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="font-semibold text-sm">Finance</span>
+            </a>
+            <a href="#gallery"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="font-semibold text-sm">Gallery</span>
+            </a>
+            <a href="/admin/setting.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="font-semibold text-sm">Gallery</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto bg-slate-50 p-4 rounded-3xl border border-slate-100">
+            <div class="flex items-center space-x-3">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=0f172a&color=fff"
+                    class="w-10 h-10 rounded-2xl" alt="Admin">
+                <div>
+                    <p class="text-xs font-bold">Main Admin</p>
+                    <p class="text-[10px] text-slate-400">admin@royalturf.com</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 min-h-screen relative pb-24 lg:pb-12">
+
+        <header
+            class="sticky top-0 z-30 bg-white/70 backdrop-blur-xl px-6 py-6 lg:px-12 flex justify-between items-center">
+            <h1 class="text-xl font-extrabold text-slate-800 lg:hidden">Dashboard</h1>
+            <div class="hidden lg:flex items-center space-x-2 text-sm font-medium text-slate-400">
+                <span>Dashboard</span>
+                <span>/</span>
+                <span class="text-slate-900 font-bold">Home</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button
+                    class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    New Booking
+                </button>
+            </div>
+        </header>
+
+        <div class="p-6 lg:p-12 space-y-10 max-w-7xl mx-auto">
+
+            <section id="dashboard" class="grid grid-cols-4 gap-6">
+                <div
+                    class="col-span-4 lg:col-span-2 bg-yellow-400 rounded-[2.5rem] p-8 bento-card flex justify-between items-end overflow-hidden relative">
+                    <div>
+                        <h3 class="text-yellow-900/60 font-bold uppercase tracking-widest text-xs">Today's Revenue</h3>
+                        <p id="todays-revenue" class="text-4xl font-black text-yellow-950 mt-2"></p>
+                        <p class="text-sm font-bold text-yellow-800/80 mt-1"> <span id="percent"
+                                class="font-extrabold"></span>% from yesterday</p>
+                    </div>
+                    <div class="bg-yellow-950 text-white px-4 py-2 rounded-2xl text-xs font-bold z-10">Live Stats</div>
+                    <svg class="absolute -right-10 -top-10 w-48 h-48 text-yellow-500/20" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+
+                <div
+                    class="col-span-2 lg:col-span-1 bg-white p-8 rounded-[2.5rem] bento-card flex flex-col justify-between">
+                    <div class="text-slate-400"><svg class="w-6 h-6" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg></div>
+                    <div>
+                        <p id="todays-total-bookings" class="text-3xl font-black"></p>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Total Bookings</p>
+                    </div>
+                </div>
+
+                <div
+                    class="col-span-2 lg:col-span-1 bg-[#1e293b] p-8 rounded-[2.5rem] bento-card flex flex-col justify-between text-white">
+                    <div class="text-yellow-400"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L1 21h22L12 2z" />
+                        </svg></div>
+                    <div>
+                        <p class="text-3xl font-black"> <span id="occupancy-rate"></span>%</p>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Occupancy Rate</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="slots" class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-extrabold tracking-tight">Slot Management</h2>
+                    <button class="text-sm font-bold text-red-500 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Emergency Reset
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                    <div class="bg-white border-2 border-slate-100 p-4 rounded-3xl text-center bento-card">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">06:00 AM</p>
+                        <p class="text-xs font-bold mt-1 text-emerald-600">Available</p>
+                    </div>
+                    <div
+                        class="bg-slate-900 border-2 border-slate-900 p-4 rounded-3xl text-center text-white bento-card">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase">07:00 AM</p>
+                        <p class="text-xs font-bold mt-1 text-yellow-400 italic">Booked</p>
+                    </div>
+                    <div class="bg-white border-2 border-red-100 p-4 rounded-3xl text-center bento-card">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">08:00 AM</p>
+                        <p class="text-xs font-bold mt-1 text-red-500">Blocked</p>
+                        <button class="text-[8px] font-black uppercase mt-1 underline">Unlock</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bookings" class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="font-extrabold text-lg">Booking Ledger</h3>
+                        <div class="flex space-x-2">
+                            <input type="text" placeholder="Search customer..."
+                                class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-yellow-400 outline-none w-40">
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div
+                            class="flex items-center justify-between p-5 hover:bg-slate-50 rounded-[1.5rem] transition border border-transparent hover:border-slate-100">
+                            <div class="flex items-center space-x-4">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-yellow-100 flex items-center justify-center font-bold text-yellow-700">
+                                    RS</div>
+                                <div>
+                                    <p class="font-bold text-sm">Rahul Sharma</p>
+                                    <p class="text-xs text-slate-400">#BK-9021 • Cash Payment</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold uppercase">Paid</span>
+                                <p class="text-sm font-black mt-1">₹1,200</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 p-8">
+                    <h3 class="font-extrabold text-lg mb-6">Finance Overview</h3>
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center border-b border-slate-50 pb-4">
+                            <p class="text-xs font-bold text-slate-400 uppercase">Online (Razorpay)</p>
+                            <p class="font-black text-emerald-600">₹8,400</p>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-slate-50 pb-4">
+                            <p class="text-xs font-bold text-slate-400 uppercase">Offline (Cash)</p>
+                            <p class="font-black text-blue-600">₹5,850</p>
+                        </div>
+                        <div class="bg-slate-50 p-6 rounded-3xl mt-4">
+                            <p class="text-xs font-bold text-slate-400 uppercase">Refunds Pending</p>
+                            <p class="text-2xl font-black text-red-500 mt-1">02</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gallery" class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-extrabold tracking-tight">Turf Gallery</h2>
+                    <button class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">+ Upload
+                        Media</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="aspect-square bg-slate-200 rounded-[2rem] overflow-hidden relative group">
+                        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=400"
+                            class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500"
+                            alt="Turf">
+                        <div
+                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <button class="bg-red-500 p-2 rounded-full text-white">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-6">
+        <div class="bg-[#1A1C1E]/95 backdrop-blur-xl px-10 py-4 rounded-[2rem] flex items-center space-x-12 shadow-2xl">
+            <a href="/admin/dashboard.html" class="text-yellow-400">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                </svg>
+            </a>
+            <a href="/admin/booking.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10" />
+                </svg>
+            </a>
+            <a href="/admin/slots.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </a>
+            <a href="/admin/finance.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 9V7a5 5 0 00-10 0v2m2 4h10a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm7 5v2m-3-2h6" />
+                </svg>
+            </a>
+
+            <a href="/admin/setting.html" class="text-slate-500 hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+</body>
+
+</html>
