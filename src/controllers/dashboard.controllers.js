@@ -8,11 +8,15 @@ export const getDashboardSummary = async (req, res) => {
     // 📅 Date handling (default = today)
     const date = req.query.date ? new Date(req.query.date) : new Date();
 
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    // const startOfDay = new Date(date);
+    // startOfDay.setHours(0, 0, 0, 0);
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    // const endOfDay = new Date(date);
+    // endOfDay.setHours(23, 59, 59, 999);
+
+    // new added dayjs
+    const startOfDay = dayjs(date).startOf("day").toDate();
+    const endOfDay = dayjs(date).endOf("day").toDate();
 
     // Yesterday range (for % comparison)
     const yesterdayStart = new Date(startOfDay);
@@ -37,6 +41,9 @@ export const getDashboardSummary = async (req, res) => {
           paymentMethod: 1,
           durationHours: {
             $divide: [{ $subtract: ["$end", "$start"] }, 1000 * 60 * 60],
+          },
+          manualPaid: {
+            $sum: "$manualPayments.amount"
           },
         },
       },

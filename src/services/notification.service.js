@@ -1,4 +1,6 @@
 import { sendEmail } from "./email.service.js";
+import transporter from "../config/mailer.js";
+
 // import { sendSMS } from "./message.service.js";
 
 export const sendBookingConfirmationNotifications = async booking => {
@@ -216,3 +218,23 @@ export const sendBookingConfirmationNotifications = async booking => {
   //   message: `New booking by ${customerName}. Amount ₹${paymentAmount}`,
   // });
 };
+
+export async function sendPaymentRequestEmail({ to, name, amount, orderId, bookingId }) {
+  const link = `${process.env.APP_BASE_URL}?order_id=${orderId}`;
+
+  const html = `
+    <h2>Payment Request for Your Turf Booking</h2>
+    <p>Hi ${name},</p>
+    <p>Please pay <strong>₹${amount}</strong> to confirm your booking.</p>
+    <p><a href="${link}" style="background:#0d6efd;color:white;padding:10px 18px;border-radius:6px;text-decoration:none">Pay Now</a></p>
+    <p>Booking ID: ${bookingId}</p>
+    <p>If you have questions, reply to this email.</p>
+  `;
+
+  await transporter.sendMail({
+    from: process.env.SMTP_USER,
+    to,
+    subject: "Payment Request - Turf Booking",
+    html
+  })
+}

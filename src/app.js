@@ -156,5 +156,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+//new
+app.use("/webhook", express.raw({ type: "application/json" }), webHookrouter);
+
+
 
 export { app };

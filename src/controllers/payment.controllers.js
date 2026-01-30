@@ -2,6 +2,8 @@ import razorpay from "../config/razorpay.js";
 import crypto from "crypto";
 import Booking from "../models/booking.js";
 import SlotLock from "../models/slotlock.js";
+import PaymentRequest from "../models/paymentRequest.js";
+
 import { computeSlotsForDate } from "../controllers/slots.controllers.js";
 
 import { sendBookingConfirmationNotifications } from "../services/notification.service.js";
@@ -169,5 +171,56 @@ export const verifyPayment = async (req, res) => {
   } catch (err) {
     console.error("Verify payment error:", err);
     res.status(500).json({ error: "Payment verification error" });
+  }
+};
+
+
+//new added functions for payment requests
+export const verifyRemainingPayment = async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+    const request = await PaymentRequest.findOne({ orderId: razorpay_order_id });
+    if (!request) return res.status(404).json({ error: "Payment request not found" });
+
+    const booking = await Booking.findById(request.booking);
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    // verify signature
+    const sign = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest("hex");
+
+    if (sign !== razorpay_signature) {
+      return res.status(400).json({ error: "Invalid payment signature" });
+    }
+
+    // Update booking
+    booking.remainingAmount -= request.amount;
+    booking.manualPayments.push({
+      amount: request.amount,
+      method: "ONLINE",
+      date: new Date()
+    });
+
+    if (booking.remainingAmount === 0) {
+      booking.status = "PAID";
+      booking.completed = true;
+      booking.completedAt = new Date();
+    } else {
+      booking.status = "PARTIAL";
+    }
+
+    await booking.save();
+
+    request.status = "PAID";
+    request.paidAt = new Date();
+    await request.save();
+
+    return res.json({ success: true });
+
+  } catch (err) {
+    console.error("verifyRemainingPayment Error:", err);
+    return res.status(500).json({ error: "Failed to verify payment" });
   }
 };
