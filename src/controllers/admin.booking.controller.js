@@ -6,6 +6,7 @@ import PaymentRequest from "../models/paymentRequest.js";
 import { sendPaymentRequestEmail } from "../services/notification.service.js";
 import { Parser } from "json2csv";
 import PDFDocument from "pdfkit";
+import { logAdminAction } from "../services/audit.service.js";
 
 
 export const adminListBookings = async (req, res) => {
@@ -26,7 +27,7 @@ export const adminListBookings = async (req, res) => {
     const query = {};
 
     // 1️⃣ STATUS FILTER (PAID | CANCELLED)
-    if (status) query.status = status;
+    if (status) query.status = status.toUpperCase();
 
     // 2️⃣ DATE FILTER EXACT
     if (date) {
@@ -75,7 +76,7 @@ export const adminListBookings = async (req, res) => {
       .sort(sort)
       .skip(skip)
       .limit(limitNum)
-      .lean();
+      .lean({ virtuals: true });
 
     // 8️⃣ COMPUTED FIELDS FOR UI
     const rows = bookings.map((b) => ({
@@ -112,7 +113,8 @@ export const adminGetBookingDetails = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const booking = await Booking.findById(id).lean();
+    // const booking = await Booking.findById(id).lean();
+    const booking = await Booking.findById(id).lean({ virtuals: true });
     if (!booking) {
       return res.status(404).json({ error: "Booking not found" });
     }
@@ -170,14 +172,29 @@ export const adminCancelBooking = async (req, res) => {
 
     // 1️⃣ Mark cancelled
     booking.status = "CANCELLED";
+    booking.completed = false;
     booking.cancelledAt = new Date();
 
     // Clear dues — business rule:
     // Customer already paid advance, do we refund?
     // For now we just mark cancellation without financial logic.
-    booking.remainingAmount = 0;
+
+    // booking.remainingAmount = 0;
 
     await booking.save();
+
+    await logAdminAction({
+      adminId: req.admin._id,
+      action: "CANCEL_BOOKING",
+      entityType: "BOOKING",
+      entityId: booking._id,
+      meta: {
+        start: booking.start,
+        end: booking.end,
+        customerName: booking.customerName,
+      },
+    });
+
 
     // 2️⃣ Release slot for new bookings
     if (booking.slotLock) {
@@ -273,7 +290,26 @@ export const adminManualPayment = async (req, res) => {
       booking.status = "PARTIAL"; // new state you requested
     }
 
+    // // ✅ DO NOT CHANGE status here
+    // if (booking.remainingAmount === 0) {
+    //   booking.completed = true;
+    //   booking.completedAt = new Date();
+    // }
+
     await booking.save();
+
+    await logAdminAction({
+      adminId: req.admin._id,
+      action: "ADD_MANUAL_PAYMENT",
+      entityType: "BOOKING",
+      entityId: booking._id,
+      meta: {
+        amount,
+        method,
+        remainingAmount: booking.remainingAmount,
+      },
+    });
+
 
     return res.json({
       success: true,
@@ -394,7 +430,6 @@ export const adminExportBookings = async (req, res) => {
 
     const parser = new Parser({ fields, eol: "\n\n" });
     const csv = parser.parse(bookings);
-    eol: "\n\n";
     res.header("Content-Type", "text/csv");
     res.attachment("bookings.csv");
     return res.send(csv);
@@ -482,7 +517,124 @@ export const adminExportBookingsPDF = async (req, res) => {
   }
 };
 
+export const adminManualBookingCreate = async (req, res) => {
+  try {
+    const {
+      start,
+      end,
+      customerName,
+      customerPhone,
+      customerEmail,
+      totalAmount,
+      paidAmount = 0,
+      paymentMethod = "CASH",
+    } = req.body;
+
+    if (!start || !end || !customerName || !customerPhone || !totalAmount) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+
+    if (endTime <= startTime) {
+      return res.status(400).json({ error: "Invalid time range" });
+    }
+
+    // ❌ Check PAID booking conflict
+    const bookingConflict = await Booking.findOne({
+      status: { $ne: "CANCELLED" },
+      start: { $lt: endTime },
+      end: { $gt: startTime },
+    });
+
+    if (bookingConflict) {
+      return res.status(409).json({ error: "Slot already booked" });
+    }
+
+    // ❌ Check HELD slots
+    const heldConflict = await SlotLock.findOne({
+      status: "HELD",
+      start: { $lt: endTime },
+      end: { $gt: startTime },
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (heldConflict) {
+      return res.status(409).json({ error: "Slot currently held" });
+    }
+
+    // ❌ Check BLOCKED slots
+    const blockedConflict = await SlotLock.findOne({
+      status: "CANCELLED",
+      start: { $lt: endTime },
+      end: { $gt: startTime },
+      blockedReason: { $exists: true },
+    });
+
+    if (blockedConflict) {
+      return res.status(409).json({ error: "Slot is blocked by admin" });
+    }
+
+    // ✅ Create slot lock (CONSUMED)
+    const slotLock = await SlotLock.create({
+      start: startTime,
+      end: endTime,
+      status: "CONSUMED",
+      expiresAt: new Date("2099-12-31"),
+    });
+
+    const remainingAmount = Math.max(totalAmount - paidAmount, 0);
+
+    // ✅ Create booking
+    const booking = await Booking.create({
+      slotLock: slotLock._id,
+      start: startTime,
+      end: endTime,
+      customerName,
+      customerPhone,
+      customerEmail,
+      totalAmount,
+      advanceAmount: paidAmount,
+      remainingAmount,
+      paymentMethod: paymentMethod === "MANUAL",
+      status: remainingAmount === 0 ? "PAID" : "PARTIAL",
+      manualPayments:
+        paidAmount > 0
+          ? [
+              {
+                amount: paidAmount,
+                method: paymentMethod,
+              },
+            ]
+          : [],
+      completed: false,
+    });
+
+    await logAdminAction({
+      adminId: req.admin._id,
+      action: "CREATE_MANUAL_BOOKING",
+      entityType: "BOOKING",
+      entityId: booking._id,
+      meta: {
+        start,
+        end,
+        totalAmount,
+        paidAmount,
+        customerName,
+        customerPhone,
+      },
+    });
 
 
-
+    return res.status(201).json({
+      success: true,
+      message: "Manual booking created successfully",
+      booking,
+    });
+  } catch (err) {
+    console.error("adminManualBookingCreate error:", err);
+    return res.status(500).json({ error: "Failed to create manual booking" });
+  }
+};
 

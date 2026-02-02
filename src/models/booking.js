@@ -78,4 +78,15 @@ bookingSchema.virtual("paymentStatus").get(function () {
   return "PARTIAL";
 });
 
+bookingSchema.virtual("sessionStatus").get(function () {
+  if (this.status === "CANCELLED") return "CANCELLED";
+  if (this.completed) return "COMPLETED";
+  if (this.start > new Date()) return "UPCOMING";
+  return "ONGOING";
+});
+
+bookingSchema.set("toJSON", { virtuals: true });
+bookingSchema.set("toObject", { virtuals: true });
+
+
 export default mongoose.model("Booking", bookingSchema);
