@@ -3,6 +3,8 @@ import crypto from "crypto";
 import Booking from "../models/booking.js";
 import SlotLock from "../models/slotlock.js";
 import { computeSlotsForDate } from "../controllers/slots.controllers.js";
+import FinanceIncome from "../models/FinanceIncome.model.js";
+
 
 import { sendBookingConfirmationNotifications } from "../services/notification.service.js";
 
@@ -56,7 +58,6 @@ export const createOrder = async (req, res) => {
   }
 };
 
-
 /**
  * ================================
  * VERIFY PAYMENT
@@ -98,7 +99,7 @@ export const verifyPayment = async (req, res) => {
     if (!lock) {
       return res.status(400).json({ error: "Slot lock expired or invalid" });
     }
-    */  
+    */
 
     // Step 1: Find lock (NO status filter here yet)
     const lock = await SlotLock.findById(lockId);
@@ -115,12 +116,13 @@ export const verifyPayment = async (req, res) => {
     }
 
     // Step 3: Check minimum remaining time
-    const MIN_TIME_LEFT_MS = 60*1000; // 1 minute
+    const MIN_TIME_LEFT_MS = 60 * 1000; // 1 minute
     const timeLeft = lock.expiresAt - Date.now();
 
     if (timeLeft < MIN_TIME_LEFT_MS) {
       return res.status(409).json({
-        error: "Not enough time left to complete payment. Please retry booking.",
+        error:
+          "Not enough time left to complete payment. Please retry booking.",
         timeLeft,
       });
     }
@@ -131,7 +133,7 @@ export const verifyPayment = async (req, res) => {
         error: "Slot already consumed or released",
       });
     }
-    
+
     // 🧮 Calculate amounts
     const advanceAmount = Math.round(totalAmount * 0.3);
     const remainingAmount = totalAmount - advanceAmount;
@@ -159,6 +161,14 @@ export const verifyPayment = async (req, res) => {
 
     // Notifications
     sendBookingConfirmationNotifications(booking).catch(console.error);
+
+    await FinanceIncome.create({
+      bookingId: booking._id,
+      amount: advanceAmount,
+      paymentMethod: "RAZORPAY",
+      status: "SUCCESS",
+      transactionRef: razorpay_payment_id,
+    });
 
     res.json({
       success: true,

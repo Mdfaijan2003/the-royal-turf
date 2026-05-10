@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   dom.endTime.addEventListener("change", () => {
+    console.log("End time changed to:", dom.endTime.value);
     state.booking.endTime = dom.endTime.value;
     if (state.booking.startTime) {
       updateSummary();
@@ -185,13 +186,13 @@ document.addEventListener("DOMContentLoaded", () => {
   ================================ */
   dom.bookingForm.addEventListener("submit", async e => {
     e.preventDefault();
-    if(dom.confirmButton){
+    if (dom.confirmButton) {
       dom.confirmButton.disabled = true;
       dom.confirmButton.classList.add("opacity-50", "cursor-not-allowed");
       dom.confirmButton.textContent = "Please wait...";
     }
 
-    const { date, startTime, endTime } = state.booking;
+    let { date, startTime, endTime } = state.booking;
 
     if (!startTime || !endTime) {
       showModal("Error", "Select valid time range", "error");
@@ -199,9 +200,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      // ✅ ISO ONLY for backend
-      const startISO = new Date(`${date}T${startTime}:00`).toISOString();
-      const endISO = new Date(`${date}T${endTime}:00`).toISOString();
+      // ✅ ISO ONLY for backend — SAFE VERSION
+
+      const [sh, sm] = startTime.split(":").map(Number);
+      const [eh, em] = endTime.split(":").map(Number);
+
+      // Start datetime
+      const startDateTime = new Date(date);
+      startDateTime.setHours(sh, sm, 0, 0);
+
+      // End datetime
+      const endDateTime = new Date(date);
+      endDateTime.setHours(eh, em, 0, 0);
+
+      // ✅ Handle cross-midnight correctly
+      if (endDateTime <= startDateTime) {
+        endDateTime.setDate(endDateTime.getDate() + 1);
+      }
+
+      const startISO = startDateTime.toISOString();
+      const endISO = endDateTime.toISOString();
+
+      console.log("Holding slot with:", { startISO, endISO });
 
       const payload = {
         start: startISO,
@@ -399,7 +419,9 @@ function generatePDF() {
 
   doc.setFont("helvetica", "normal");
   doc.text("Booking Fee", 360, y);
-  doc.text(`₹${b.totalFee.toLocaleString("en-IN")}`, 520, y, { align: "right" });
+  doc.text(`₹${b.totalFee.toLocaleString("en-IN")}`, 520, y, {
+    align: "right",
+  });
 
   doc.text("Advance Paid", 360, y + 25);
   doc.text(`₹${b.advance.toLocaleString("en-IN")}`, 520, y + 25, {
@@ -408,12 +430,9 @@ function generatePDF() {
 
   doc.setFont("times", "bold");
   doc.text("Total Amount", 360, y + 60);
-  doc.text(
-    `₹${b.totalFee.toLocaleString("en-IN")}`,
-    520,
-    y + 60,
-    { align: "right" }
-  );
+  doc.text(`₹${b.totalFee.toLocaleString("en-IN")}`, 520, y + 60, {
+    align: "right",
+  });
 
   /* ================= FOOTER ================= */
   y = 420;
@@ -435,4 +454,3 @@ function generatePDF() {
 
   doc.save(`RoyalTurf_Invoice_${bookingId}.pdf`);
 }
-

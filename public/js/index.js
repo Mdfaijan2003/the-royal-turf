@@ -95,7 +95,7 @@ document?.addEventListener("DOMContentLoaded", () => {
         <span class="px-3 py-1 text-sm rounded-full ${
           b.status === "PAID"
             ? "bg-green-100 text-green-700"
-            : b.status === "HELD"
+            : (b.status === "HELD" || b.status === "BLOCKED")
             ? "bg-yellow-100 text-yellow-700"
             : "bg-gray-200 text-gray-700"
         }">

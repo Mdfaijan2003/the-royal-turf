@@ -55,6 +55,17 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    //new added
+    completed: { type: Boolean, default: false },
+    completedAt: Date,
+    cancelledAt: Date,
+    manualPayments: [
+      {
+        amount: Number,
+        method: String, // CASH | UPI | OTHER
+        date: Date,
+      }
+    ]
   },
   { timestamps: true }
 );

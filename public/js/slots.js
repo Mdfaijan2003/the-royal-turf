@@ -57,6 +57,10 @@ export async function updateAvailableSlots() {
         startOption.disabled = true;
         startOption.style.backgroundColor = "#fef3c7";
         startOption.style.color = "#92400e";
+      } else if (slot.status === "BLOCKED") {
+        startOption.disabled = true;
+        startOption.style.backgroundColor = "#f3f4f6";
+        startOption.style.color = "#4b5563";
       } else {
         startOption.style.color = "#047857";
         startOption.style.backgroundColor = "#d1fae5";
@@ -95,7 +99,7 @@ export function populateEndTimes() {
   for (const slot of state.fetchedSlots) {
     if (slot.end <= start) continue;
 
-    if (slot.status === "BOOKED" || slot.status === "HELD") break;
+    if (slot.status === "BOOKED" || slot.status === "HELD" || slot.status === "BLOCKED") break;
 
     const option = document.createElement("option");
     option.value = formatTime(slot.end);

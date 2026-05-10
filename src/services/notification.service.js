@@ -107,7 +107,11 @@ export const sendBookingConfirmationNotifications = async booking => {
   });
 
   await sendEmail({
-    to: process.env.ADMIN_EMAIL,
+    to: [
+      process.env.Zaid_Email,
+      process.env.Ishtiyaque_Email,
+      process.env.Faijan_Email,
+    ],
     subject: "New Booking Confirmed",
     html: `
     <!DOCTYPE html>
@@ -167,7 +171,7 @@ export const sendBookingConfirmationNotifications = async booking => {
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">Amount Paid:</td>
-                    <td>${paymentAmount}</td>
+                    <td>${advanceAmount}</td>
                   </tr>
                 </table>
               </td>

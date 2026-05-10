@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 import SlotLock from "../models/slotlock.js";
 import Booking from "../models/booking.js";
+import AdminBlockedSlot from "../models/adminBlockedSlot.js";
 
 // Helper: convert to IST without timezone shift
 const IST_OFFSET = 5.5 * 60 * 60 * 1000; // +05:30 hrs
@@ -20,22 +21,6 @@ export async function getSlots(req, res) {
       return res.status(400).json({ error: "Date is required" });
     }
 
-    // const intervalMinutes = 60;
-    // const openHour = 6; // 6 AM
-    // const closeHour = 1; // 1 AM next day
-
-    // const baseDate = new Date(date);
-    // baseDate.setHours(0, 0, 0, 0);
-
-    // // Start = 06:00 same day
-    // const startOfDay = new Date(baseDate);
-    // startOfDay.setHours(openHour, 0, 0, 0);
-
-    // // End = 01:00 next day
-    // const endOfDay = new Date(baseDate);
-    // endOfDay.setDate(endOfDay.getDate() + 1);
-    // endOfDay.setHours(closeHour, 0, 0, 0);
-
     const intervalMinutes = 60;
     const openHour = 6;
     const closeHour = 1;
@@ -43,7 +28,9 @@ export async function getSlots(req, res) {
     const base = startOfISTDay(date);
 
     const startOfDay = new Date(base.getTime() + openHour * 3600000);
-    const endOfDay = new Date(base.getTime() + 24 * 3600000 + closeHour * 3600000);
+    const endOfDay = new Date(
+      base.getTime() + 24 * 3600000 + closeHour * 3600000
+    );
 
     const now = new Date();
 
@@ -60,6 +47,12 @@ export async function getSlots(req, res) {
       end: { $gt: startOfDay },
       expiresAt: { $gt: now },
       status: "HELD",
+    }).lean();
+
+    // After fetching bookings + held locks
+    const blockedSlots = await AdminBlockedSlot.find({
+      start: { $lt: endOfDay },
+      end: { $gt: startOfDay },
     }).lean();
 
     const slots = [];
@@ -82,10 +75,15 @@ export async function getSlots(req, res) {
         !isBooked &&
         heldLocks.some(h => slotStart < h.end && slotEnd > h.start);
 
+      const isBlocked =
+        !isBooked &&
+        !isHeld &&
+        blockedSlots.some(b => slotStart < b.end && slotEnd > b.start);
+
       let status = "AVAILABLE";
       if (isBooked) status = "BOOKED";
       else if (isHeld) status = "HELD";
-
+      else if (isBlocked) status = "BLOCKED";
       slots.push({
         start: slotStart,
         end: slotEnd,
@@ -115,11 +113,14 @@ export async function holdSlot(req, res) {
   const newStart = new Date(start);
   const newEnd = new Date(end);
 
+  console.log("Hold Slot Request:", { newStart, newEnd });
   if (isNaN(newStart) || isNaN(newEnd)) {
     return res.status(400).json({ error: "Invalid date format" });
   }
 
-  if (newEnd <= new Date()) {
+  console.log(newEnd <= new Date());
+  console.log( new Date());
+  if (newStart <= new Date()) {
     return res.status(400).json({ error: "Booking must be in the future" });
   }
 
@@ -141,6 +142,16 @@ export async function holdSlot(req, res) {
     expiresAt: { $gt: new Date() },
     status: "HELD",
   }).lean();
+
+  // After fetching bookings + held locks
+  const blockedSlots = await AdminBlockedSlot.find({
+    start: { $lt: newEnd },
+    end: { $gt: newStart },
+  }).lean();
+
+  if (blockedSlots.length > 0) {
+    return res.status(409).json({ error: "Slot is blocked by admin" });
+  }
 
   if (heldConflict) {
     return res.status(409).json({
@@ -234,6 +245,12 @@ export async function computeSlotsForDate(date) {
     status: "HELD",
   }).lean();
 
+  // After fetching bookings + held locks
+  const blockedSlots = await AdminBlockedSlot.find({
+    start: { $lt: endOfDay },
+    end: { $gt: startOfDay },
+  }).lean();
+
   const slots = [];
   let current = new Date(startOfDay);
 
@@ -250,9 +267,15 @@ export async function computeSlotsForDate(date) {
     const isHeld =
       !isBooked && heldLocks.some(h => slotStart < h.end && slotEnd > h.start);
 
+    const isBlocked =
+      !isBooked &&
+      !isHeld &&
+      blockedSlots.some(b => slotStart < b.end && slotEnd > b.start);
+
     let status = "AVAILABLE";
     if (isBooked) status = "BOOKED";
     else if (isHeld) status = "HELD";
+    else if (isBlocked) status = "BLOCKED";
 
     slots.push({
       start: slotStart,

@@ -137,9 +137,9 @@
                     class="col-span-4 lg:col-span-2 bg-yellow-400 rounded-[2.5rem] p-8 bento-card flex justify-between items-end overflow-hidden relative">
                     <div>
                         <h3 class="text-yellow-900/60 font-bold uppercase tracking-widest text-xs">Today's Revenue</h3>
-                        <p id="todays-revenue" class="text-4xl font-black text-yellow-950 mt-2"></p>
-                        <p class="text-sm font-bold text-yellow-800/80 mt-1"> <span id="percent"
-                                class="font-extrabold"></span>% from yesterday</p>
+                        <p id="stat-revenue" class="text-4xl font-black text-yellow-950 mt-2"></p>
+                        <p class="text-sm font-bold text-yellow-800/80 mt-1"> <span id="stat-revenue-change"
+                                class="font-extrabold"></span> from yesterday</p>
                     </div>
                     <div class="bg-yellow-950 text-white px-4 py-2 rounded-2xl text-xs font-bold z-10">Live Stats</div>
                     <svg class="absolute -right-10 -top-10 w-48 h-48 text-yellow-500/20" fill="currentColor"
@@ -156,7 +156,7 @@
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg></div>
                     <div>
-                        <p id="todays-total-bookings" class="text-3xl font-black"></p>
+                        <p id="stat-bookings" class="text-3xl font-black"></p>
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Total Bookings</p>
                     </div>
                 </div>
@@ -167,15 +167,18 @@
                             <path d="M12 2L1 21h22L12 2z" />
                         </svg></div>
                     <div>
-                        <p class="text-3xl font-black"> <span id="occupancy-rate"></span>%</p>
+                        <p class="text-3xl font-black"> <span id="stat-occupancy"></span></p>
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Occupancy Rate</p>
                     </div>
                 </div>
             </section>
 
+            <!-- Slots Management -->
             <section id="slots" class="space-y-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-extrabold tracking-tight">Slot Management</h2>
+                    <input type="date" name="slot-date" id="slot-date"
+                        class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-yellow-400 outline-none">
                     <button class="text-sm font-bold text-red-500 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -184,68 +187,43 @@
                         Emergency Reset
                     </button>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                    <div class="bg-white border-2 border-slate-100 p-4 rounded-3xl text-center bento-card">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">06:00 AM</p>
-                        <p class="text-xs font-bold mt-1 text-emerald-600">Available</p>
-                    </div>
-                    <div
-                        class="bg-slate-900 border-2 border-slate-900 p-4 rounded-3xl text-center text-white bento-card">
-                        <p class="text-[10px] font-bold text-slate-500 uppercase">07:00 AM</p>
-                        <p class="text-xs font-bold mt-1 text-yellow-400 italic">Booked</p>
-                    </div>
-                    <div class="bg-white border-2 border-red-100 p-4 rounded-3xl text-center bento-card">
-                        <p class="text-[10px] font-bold text-slate-400 uppercase">08:00 AM</p>
-                        <p class="text-xs font-bold mt-1 text-red-500">Blocked</p>
-                        <button class="text-[8px] font-black uppercase mt-1 underline">Unlock</button>
-                    </div>
+                <div id="slot-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+
                 </div>
             </section>
 
+
+            <!-- Ledger -->
             <section id="bookings" class="grid lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2 bg-white rounded-[2.5rem] border border-slate-100 p-8">
                     <div class="flex items-center justify-between mb-8">
                         <h3 class="font-extrabold text-lg">Booking Ledger</h3>
                         <div class="flex space-x-2">
-                            <input type="text" placeholder="Search customer..."
+                            <input id="ledger-search" type="text" placeholder="Search customer..."
                                 class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-yellow-400 outline-none w-40">
                         </div>
                     </div>
-                    <div class="space-y-4">
-                        <div
-                            class="flex items-center justify-between p-5 hover:bg-slate-50 rounded-[1.5rem] transition border border-transparent hover:border-slate-100">
-                            <div class="flex items-center space-x-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-yellow-100 flex items-center justify-center font-bold text-yellow-700">
-                                    RS</div>
-                                <div>
-                                    <p class="font-bold text-sm">Rahul Sharma</p>
-                                    <p class="text-xs text-slate-400">#BK-9021 • Cash Payment</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span
-                                    class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold uppercase">Paid</span>
-                                <p class="text-sm font-black mt-1">₹1,200</p>
-                            </div>
-                        </div>
+                    <!-- List data as per search -->
+                    <div id="booking-ledger" class="space-y-4">
                     </div>
                 </div>
+
+                <!-- Finance Overview -->
 
                 <div class="bg-white rounded-[2.5rem] border border-slate-100 p-8">
                     <h3 class="font-extrabold text-lg mb-6">Finance Overview</h3>
                     <div class="space-y-6">
                         <div class="flex justify-between items-center border-b border-slate-50 pb-4">
                             <p class="text-xs font-bold text-slate-400 uppercase">Online (Razorpay)</p>
-                            <p class="font-black text-emerald-600">₹8,400</p>
+                            <p id="finance-online" class="font-black text-emerald-600">₹8,400</p>
                         </div>
                         <div class="flex justify-between items-center border-b border-slate-50 pb-4">
                             <p class="text-xs font-bold text-slate-400 uppercase">Offline (Cash)</p>
-                            <p class="font-black text-blue-600">₹5,850</p>
+                            <p class="font-black text-blue-600">₹ <span id="finance-offline"></span></p>
                         </div>
                         <div class="bg-slate-50 p-6 rounded-3xl mt-4">
-                            <p class="text-xs font-bold text-slate-400 uppercase">Refunds Pending</p>
-                            <p class="text-2xl font-black text-red-500 mt-1">02</p>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Funds Pending to Collect</p>
+                            <p class="text-2xl font-black text-red-500 mt-1" id="finance-remaining">02</p>
                         </div>
                     </div>
                 </div>
@@ -254,10 +232,17 @@
             <section id="gallery" class="space-y-6">
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-extrabold tracking-tight">Turf Gallery</h2>
-                    <button class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">+ Upload
-                        Media</button>
+                    <button id="upload-media-btn"
+                        class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">
+                        + Upload Media
+                    </button>
+                    
+
+
+                    <input type="file" id="gallery-file-input" accept="image/*" multiple hidden />
+
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="aspect-square bg-slate-200 rounded-[2rem] overflow-hidden relative group">
                         <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=400"
                             class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500"
@@ -315,6 +300,7 @@
         </div>
     </nav>
 
+    <script type="module" src="/js/admin/dashboard.js" defer></script>
 </body>
 
 </html>

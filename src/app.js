@@ -41,9 +41,8 @@ const helmetMiddleware = helmet({
 });
 
 app.use((req, res, next) => {
-  // 👇 EXACT URL seen by Express
   if (req.path === "/booking.html") {
-    return next(); // 🚫 helmet skipped ONLY here
+    return next(); // helmet skipped ONLY here
   }
 
   helmetMiddleware(req, res, next);
@@ -60,10 +59,10 @@ app.use((req, res, next) => {
       "default-src 'self'",
 
       // Scripts
-      "script-src 'self' https://checkout.razorpay.com https://cdnjs.cloudflare.com",
+      "script-src 'self' https://checkout.razorpay.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
 
       // Styles & Fonts
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" ,
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
       "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data: ",
 
       // Images
@@ -100,6 +99,7 @@ app.use("/webhook", express.raw({ type: "application/json" }), webHookrouter);
 // 1️⃣ API routes FIRST
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/bookings", verifyAdminJWT, requireAdminRole, bookingRouter);
+app.use("/api/admin/finance", verifyAdminJWT, requireAdminRole, adminRoutes);
 app.use("/api/v1/healthcheck", healthRoutes);
 app.use("/api/slots", slotsRouter);
 app.use("/api/bookings", bookingRouter);
@@ -107,11 +107,11 @@ app.use("/api/contact", contactRouter);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/gallery", verifyAdminJWT, requireAdminRole, galleryRoutes);
 
-// 2️⃣ Static files (JS, CSS, images)
+// Static files (JS, CSS, images)
 app.use(express.static(path.join(process.cwd(), "public")));
 app.use(express.static(path.join(process.cwd(), "admin")));
 
-// 3️⃣ Explicit HTML routes
+//  Explicit HTML routes
 app.get("/admin/login", (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "admin", "login.html"));
 });
@@ -120,7 +120,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
 
-// 4️⃣ SPA fallback (LAST, VERY LAST)
+// SPA fallback
 app.use((req, res) => {
   if (req.path.startsWith("/api")) return;
   res.sendFile(path.join(process.cwd(), "public", "index.html"));
@@ -155,6 +155,5 @@ app.use((err, req, res, next) => {
     message,
   });
 });
-
 
 export { app };
