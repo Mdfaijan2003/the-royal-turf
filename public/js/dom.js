@@ -9,17 +9,18 @@ document.addEventListener("DOMContentLoaded", () => {
   dom.fetchBookingBtn = document.getElementById("fetch-bookings-btn");
   dom.checkSlotsBtn = document.getElementById("check-slots");
   dom.slotSelectedDate = document.getElementById("slotDate");
+  dom.galleryContainer = document.getElementById("gallery-masonry");
 
   dom.bookingForm = document.getElementById("booking-form");
   dom.startTime = document.getElementById("start-time");
   dom.endTime = document.getElementById("end-time");
-  
+
   dom.selectedTime = document.getElementById("selected-time");
   dom.bookingFees = document.getElementById("booking-fees");
   dom.advanceAmount = document.getElementById("advance-amount");
   dom.totalPayable = document.getElementById("total-payable");
   dom.confirmButton = document.getElementById("confirm-pay");
-  
+
   dom.bookingSection = document.getElementById("booking-section");
   dom.paymentSection = document.getElementById("payment-section");
   dom.countdownTimer = document.getElementById("countdown-timer");

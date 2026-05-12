@@ -2,381 +2,1415 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Royal Turf</title>
     <link rel="stylesheet" href="/css/output.css">
-    <!-- Inter font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Google Material Symbols for the icons -->
+    <link rel="stylesheet" href="/css/home.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
+    <!-- <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
         }
 
-        /* Custom CSS to handle the background image and overlay */
-        .hero-bg {
-            background-image: url('/img/heroSection.jpeg');
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
+        :root {
+            --green: #059669;
+            --green-mid: #10b981;
+            --green-light: #d1fae5;
+            --green-xlight: #ecfdf5;
+            --border: rgba(5, 150, 105, 0.18);
+            --border-light: rgba(5, 150, 105, 0.1);
+            --text: #111827;
+            --muted: #6b7280;
+            --muted-light: #9ca3af;
+            --bg: #f8fffe;
+            --white: #ffffff;
+            --font-head: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
         }
-    </style>
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── PITCH GRID BG ── */
+        .pitch-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                linear-gradient(transparent 49.5%, rgba(5, 150, 105, 0.03) 49.5%, rgba(5, 150, 105, 0.03) 50.5%, transparent 50.5%),
+                linear-gradient(90deg, transparent 49.5%, rgba(5, 150, 105, 0.03) 49.5%, rgba(5, 150, 105, 0.03) 50.5%, transparent 50.5%);
+            background-size: 100px 100px;
+            pointer-events: none;
+        }
+
+        .pitch-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 255, 255, 0.65) 0%, transparent 80%);
+        }
+
+        /* ── HEADER ── */
+        #site-header {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1280px;
+            z-index: 50;
+            transition: all 0.3s;
+        }
+
+        #header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-light);
+            border-radius: 100px;
+            padding: 0.6rem 1.5rem;
+            box-shadow: 0 4px 24px rgba(5, 150, 105, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        #header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        #header-title {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            letter-spacing: 0.04em;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        #desktop-menu {
+            display: none;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @media(min-width:768px) {
+            #desktop-menu {
+                display: flex;
+            }
+        }
+
+        #desktop-menu a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        #desktop-menu a:hover {
+            color: var(--green);
+        }
+
+        #header-cta {
+            display: none;
+            background: var(--green);
+            color: #fff;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 100px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        @media(min-width:640px) {
+            #header-cta {
+                display: inline-flex;
+                align-items: center;
+            }
+        }
+
+        #header-cta:hover {
+            background: #047857;
+            transform: translateY(-1px);
+        }
+
+        #mobile-menu-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        @media(min-width:768px) {
+            #mobile-menu-button {
+                display: none;
+            }
+        }
+
+        #mobile-menu {
+            margin-top: 0.5rem;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(5, 150, 105, 0.1);
+        }
+
+        #mobile-menu.hidden {
+            display: none;
+        }
+
+        #mobile-menu nav {
+            display: flex;
+            flex-direction: column;
+            padding: 0.75rem;
+        }
+
+        #mobile-menu a {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        #mobile-menu a:hover {
+            background: var(--green-xlight);
+            color: var(--green);
+        }
+
+        /* ── PAGE WRAPPER ── */
+        .page {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        /* ── HERO SECTION ── */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+        }
+
+        /* left — text side */
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10rem 4rem 6rem 5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--green);
+            border: 1px solid var(--border);
+            background: var(--green-xlight);
+            padding: 5px 16px;
+            border-radius: 100px;
+            margin-bottom: 2rem;
+            width: fit-content;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-head);
+            font-size: clamp(4rem, 7vw, 7rem);
+            line-height: 0.9;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--green);
+            display: block;
+        }
+
+        .hero-text p {
+            font-size: 1rem;
+            color: var(--muted);
+            line-height: 1.75;
+            font-weight: 300;
+            max-width: 380px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            color: #fff;
+            background: var(--green);
+            padding: 14px 36px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--green);
+            text-decoration: none;
+            padding: 8px 0;
+            border-bottom: 1.5px solid rgba(5, 150, 105, 0.3);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--green);
+            color: #047857;
+        }
+
+        /* hero mini-stats */
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .h-stat {}
+
+        .h-stat-num {
+            font-family: var(--font-head);
+            font-size: 2.2rem;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .h-stat-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted-light);
+            margin-top: 3px;
+        }
+
+        /* right — image side */
+        .hero-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        /* overlay so image edges blend */
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(to right, var(--bg) 0%, transparent 30%),
+                linear-gradient(to top, var(--bg) 0%, transparent 20%);
+        }
+
+        /* floating card on image */
+        .hero-float-card {
+            position: absolute;
+            bottom: 3rem;
+            right: 2.5rem;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 8px 32px rgba(5, 150, 105, 0.12);
+        }
+
+        .hfc-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+        }
+
+        .hfc-val {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            color: var(--green);
+            line-height: 1;
+        }
+
+        .hfc-sub {
+            font-size: 0.75rem;
+            color: var(--muted-light);
+        }
+
+        /* ── WAVE DIVIDER ── */
+        .wave-divider {
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--green-light), var(--green), var(--green-light));
+        }
+
+        /* ── SECTION BASE ── */
+        .section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-intro {
+            padding: 4rem 5rem 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .section-label {
+            font-size: 10.5px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.6rem;
+        }
+
+        .section-label::before {
+            content: '';
+            display: block;
+            width: 22px;
+            height: 1px;
+            background: var(--green);
+        }
+
+        .section-heading {
+            font-family: var(--font-head);
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            color: var(--text);
+            line-height: 1.05;
+        }
+
+        .section-sub {
+            font-size: 0.85rem;
+            color: var(--muted-light);
+            font-weight: 300;
+            font-style: italic;
+            white-space: nowrap;
+            padding-bottom: 4px;
+        }
+
+        /* ── HOW IT WORKS ── */
+        .steps-wrap {
+            padding: 2.5rem 5rem 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .step-card {
+            background: var(--white);
+            border: 1px solid rgba(5, 150, 105, 0.11);
+            border-radius: 16px;
+            padding: 2rem 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--green-mid));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .step-card:hover {
+            border-color: rgba(5, 150, 105, 0.32);
+            box-shadow: 0 10px 36px rgba(5, 150, 105, 0.09), 0 2px 6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-3px);
+        }
+
+        .step-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .step-num {
+            font-family: var(--font-head);
+            font-size: 3.5rem;
+            color: rgba(5, 150, 105, 0.1);
+            line-height: 1;
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--green-xlight);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            position: relative;
+            z-index: 1;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .step-card:hover .step-icon {
+            background: var(--green-light);
+            border-color: var(--border);
+        }
+
+        .step-icon .material-symbols-outlined {
+            font-size: 1.4rem;
+            color: var(--green);
+        }
+
+        .step-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-desc {
+            font-size: 0.83rem;
+            color: var(--muted);
+            line-height: 1.65;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── BOOKING LOOKUP ── */
+        .lookup-section {
+            margin-top: 3.5rem;
+            background: var(--white);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            padding: 4rem 5rem;
+        }
+
+        .lookup-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .lookup-text .section-label {
+            margin-bottom: 0.5rem;
+        }
+
+        .lookup-text .section-heading {
+            margin-bottom: 0.75rem;
+        }
+
+        .lookup-text p {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .lookup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .lookup-field label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        #booking-email {
+            width: 100%;
+            padding: 0.9rem 1.1rem;
+            background: var(--bg);
+            border: 1px solid rgba(5, 150, 105, 0.15);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        #booking-email::placeholder {
+            color: var(--muted-light);
+        }
+
+        #booking-email:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+            background: var(--white);
+        }
+
+        #fetch-bookings-btn {
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            color: #fff;
+            background: var(--green);
+            border: none;
+            border-radius: 100px;
+            padding: 13px 32px;
+            cursor: pointer;
+            width: fit-content;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);
+        }
+
+        #fetch-bookings-btn:hover {
+            background: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
+        }
+
+        #booking-results {
+            margin-top: 1.25rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        #booking-results.hidden {
+            display: none;
+        }
+
+        #booking-skeleton {
+            margin-top: 1.25rem;
+        }
+
+        #booking-skeleton.hidden {
+            display: none;
+        }
+
+        .skeleton-bar {
+            height: 14px;
+            background: var(--green-xlight);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* ── SLOT CHECKER ── */
+        .slots-section {
+            padding: 4rem 5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slots-controls {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+
+        .slot-date-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .slot-date-wrap label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+        }
+
+        #slotDate {
+            padding: 0.85rem 1.1rem;
+            background: var(--white);
+            border: 1px solid rgba(5, 150, 105, 0.15);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.25s, box-shadow 0.25s;
+            cursor: pointer;
+        }
+
+        #slotDate:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        #check-slots {
+            font-family: var(--font-head);
+            font-size: 1.05rem;
+            letter-spacing: 0.06em;
+            color: #fff;
+            background: var(--green);
+            border: none;
+            border-radius: 100px;
+            padding: 13px 28px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);
+            white-space: nowrap;
+        }
+
+        #check-slots:hover {
+            background: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
+        }
+
+        #slotsLoading {
+            display: none;
+            text-align: center;
+            color: var(--muted);
+            padding: 3rem 0;
+        }
+
+        #slotsLoading.hidden {
+            display: none;
+        }
+
+        #slotsEmpty {
+            display: none;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        #slotsEmpty.hidden {
+            display: none;
+        }
+
+        #slotsEmpty p {
+            font-size: 1rem;
+            color: var(--muted);
+        }
+
+        #slotsContainer {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        /* ── CTA STRIP ── */
+        .cta-strip {
+            background: var(--green);
+            padding: 4rem 5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .cta-text h2 {
+            font-family: var(--font-head);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            color: #fff;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.4rem;
+        }
+
+        .cta-text p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+        }
+
+        .cta-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cta-btn-primary {
+            display: inline-block;
+            font-family: var(--font-head);
+            font-size: 1.15rem;
+            letter-spacing: 0.08em;
+            color: var(--green);
+            background: #fff;
+            padding: 15px 44px;
+            border-radius: 100px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14);
+        }
+
+        .cta-btn-primary:hover {
+            background: #ecfdf5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .cta-btn-secondary {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 1px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        .cta-btn-secondary:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 4rem 5rem 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1.2fr 1.2fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: var(--font-head);
+            font-size: 1.4rem;
+            letter-spacing: 0.04em;
+            color: #fff;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.82rem;
+            line-height: 1.65;
+            color: #64748b;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .footer-socials a {
+            display: flex;
+            align-items: center;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .footer-socials a:hover {
+            opacity: 1;
+        }
+
+        .footer-col h3 {
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--green-mid);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul li a {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--green-mid);
+        }
+
+        .footer-hours li {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: #64748b;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-hours li:last-child {
+            border: none;
+        }
+
+        .footer-contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .footer-contact-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .footer-contact-list .material-symbols-outlined {
+            font-size: 1rem;
+            color: var(--green-mid);
+            margin-top: 1px;
+            flex-shrink: 0;
+        }
+
+        .footer-contact-list span:last-child {
+            font-size: 0.82rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        /* ── ANIMATIONS ── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.55s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:960px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text {
+                padding: 9rem 2.5rem 4rem;
+            }
+
+            .hero-image {
+                display: none;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .lookup-inner {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            #slotsContainer {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section-intro,
+            .steps-wrap,
+            .slots-section,
+            .lookup-section,
+            .cta-strip,
+            footer {
+                padding-left: 2.5rem;
+                padding-right: 2.5rem;
+            }
+
+            .cta-strip {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .cta-actions {
+                align-items: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media(max-width:560px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            #slotsContainer {
+                grid-template-columns: 1fr;
+            }
+
+            .slots-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #check-slots {
+                width: 100%;
+                text-align: center;
+            }
+
+            .section-intro,
+            .steps-wrap,
+            .slots-section,
+            .lookup-section,
+            .cta-strip,
+            footer {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .section-intro {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+        }
+    </style> -->
 </head>
 
 <body>
-    <div class="min-h-screen bg-slate-50">
-        <!-- Header Section -->
-        <header id="site-header" class="fixed top-4 left-1/2 z-50 w-[92%] max-w-7xl
-         -translate-x-1/2 transition-all duration-300">
-            <div id="header-inner" class="flex items-center justify-between
-           rounded-full bg-white
-           px-6 py-3
-           shadow-xl backdrop-blur-md
-           transition-all duration-300">
-                <!-- Logo and Site Title -->
-                <a href="/index.html">
-                    <div id="header-brand" class=" flex items-center gap-3 transition-all duration-300">
-                        <span id="header-title" class="text-lg font-bold text-slate-900 whitespace-nowrap">
-                            The Royal Turf
-                        </span>
-                    </div>
+
+    <div class="pitch-bg"></div>
+
+    <div class="page">
+
+        <!-- ── HEADER ── -->
+        <header id="site-header">
+            <div id="header-inner">
+                <a href="/index.html" id="header-brand">
+                    <span id="header-title">The Royal Turf</span>
                 </a>
-                <!-- Desktop Navigation -->
-                <nav id="desktop-menu" class="hidden md:flex items-center gap-8
-                text-sm font-medium text-slate-700">
-                    <a href="/index.html" class="hover:text-emerald-600 transition-colors duration-300">Home</a>
-                    <a href="/features.html" class="hover:text-emerald-600 transition-colors duration-300">Features</a>
-                    <a href="/booking.html" class="hover:text-emerald-600 transition-colors duration-300">Bookings</a>
-                    <a href="/gallery.html" class="hover:text-emerald-600 transition-colors duration-300">Gallery</a>
-                    <a href="/contact.html" class="hover:text-emerald-600 transition-colors duration-300">Contact</a>
+
+                <nav id="desktop-menu">
+                    <a href="/index.html">Home</a>
+                    <a href="/features.html">Features</a>
+                    <a href="/booking.html">Bookings</a>
+                    <a href="/gallery.html">Gallery</a>
+                    <a href="/contact.html">Contact</a>
                 </nav>
-                <div class="flex flex-row">
-                    <a href="/booking.html" class="hidden sm:inline-flex rounded-full
-              bg-emerald-600 px-5 py-2
-              text-sm font-semibold text-white
-              shadow hover:bg-emerald-700 transition" id="header-cta">
-                        Book Your Slot
-                    </a>
-                    <!-- Mobile Menu Button -->
-                    <div class="flex items-center space-x-4">
-                        <button id="mobile-menu-button" class="md:hidden text-slate-800">
-                            <span class="material-symbols-outlined">menu</span>
-                        </button>
-                    </div>
+
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <a href="/booking.html" id="header-cta">Book Your Slot</a>
+                    <button id="mobile-menu-button" aria-label="Open menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Mobile Navigation (hidden by default) -->
-            <div id="mobile-menu" class="md:hidden hidden
-         bg-slate-950/70 backdrop-blur
-         border-t border-slate-800
-         shadow-xl
-         transition-all duration-300 ease-out ">
-
-                <nav class="flex flex-col px-4 py-4 rounded-lg space-y-1">
-                    <a href="index.html" class="rounded-lg px-4 py-3
-              text-slate-200 bg-slate-500/20
-              hover:bg-slate-800 hover:text-white
-              transition-colors duration-200">
-                        Home
-                    </a>
-                    <a href="features.html" class="rounded-lg px-4 py-3
-              text-slate-200 bg-slate-500/20
-              hover:bg-slate-800 hover:text-white
-              transition-colors duration-200">
-                        features
-                    </a>
-                    <a href="booking.html" class="rounded-lg px-4 py-3
-              text-slate-200 bg-slate-500/20
-              hover:bg-slate-800 hover:text-white
-              transition-colors duration-200">
-                        Bookings
-                    </a>
-                    <a href="gallery.html" class="rounded-lg px-4 py-3
-              text-slate-200 bg-slate-500/20
-              hover:bg-slate-800 hover:text-white
-              transition-colors duration-200">
-                        Gallery
-                    </a>
-                    <a href="contact.html" class="rounded-lg px-4 py-3
-              text-slate-200 bg-slate-500/20
-              hover:bg-slate-800 hover:text-white
-              transition-colors duration-200">
-                        Contact
-                    </a>
+            <div id="mobile-menu" class="hidden">
+                <nav>
+                    <a href="/index.html">Home</a>
+                    <a href="/features.html">Features</a>
+                    <a href="/booking.html">Bookings</a>
+                    <a href="/gallery.html">Gallery</a>
+                    <a href="/contact.html">Contact</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Hero Section -->
-        <section class="relative h-[500px] hero-bg">
-            <div class="absolute inset-0 bg-slate-950/70 "></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="text-center text-white px-4">
-                    <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Experience Premium Turf Booking
-                    </h2>
-                    <p class="text-xl mb-8">Book your slot at the finest sporting turf in the city</p>
-                    <a href="booking.html"
-                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300 transform hover:scale-105">
-                        Book Now
+        <!-- ── HERO ── -->
+        <section class="hero-section">
+
+            <!-- Text side -->
+            <div class="hero-text">
+                <div class="hero-badge fade-up">Premium Football Facility · Kolkata</div>
+                <h1 class="fade-up">
+                    The Royal<br>
+                    <span>Turf</span>
+                </h1>
+                <p class="fade-up">Book your slot at the finest sporting turf in the city — FIFA-certified, always
+                    ready, always yours.</p>
+                <div class="hero-actions fade-up">
+                    <a href="/booking.html" class="btn-primary">
+                        <span class="material-symbols-outlined" style="font-size:1.1rem;">calendar_month</span>
+                        Book Your Slot
+                    </a>
+                    <a href="/features.html" class="btn-secondary">
+                        Explore Facilities
+                        <span class="material-symbols-outlined" style="font-size:1rem;">arrow_forward</span>
                     </a>
                 </div>
+                <div class="hero-stats fade-up">
+                    <div class="h-stat">
+                        <div class="h-stat-num">FIFA</div>
+                        <div class="h-stat-label">Certified</div>
+                    </div>
+                    <div class="h-stat">
+                        <div class="h-stat-num">10+</div>
+                        <div class="h-stat-label">Spectator Seats</div>
+                    </div>
+                    <div class="h-stat">
+                        <div class="h-stat-num">24/7</div>
+                        <div class="h-stat-label">Booking Open</div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Image side -->
+            <div class="hero-image">
+                <img src="/img/heroSection.jpeg" alt="The Royal Turf football pitch" />
+                <div class="hero-float-card">
+                    <span class="hfc-label">Open Today</span>
+                    <span class="hfc-val">6AM–1AM</span>
+                    <span class="hfc-sub">7 days a week · No rest days</span>
+                </div>
+            </div>
+
         </section>
 
-        <section class="py-16 px-4 bg-slate-100">
-            <div class="container mx-auto">
-                <h2 class="text-3xl font-bold text-center text-slate-900 mb-12 relative">
-                    <span class="inline-block relative z-10">Simple, Fast Booking</span>
-                    <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-1 w-24 bg-green-500"></span>
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Step 1 Card -->
-                    <a href="booking.html">
-                        <div
-                            class="bg-slate-50 rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                            <div
-                                class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="material-symbols-outlined text-emerald-700 text-3xl">calendar_month</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-slate-900 mb-2">Select a Slot</h3>
-                            <p class="text-slate-500">Choose your preferred date and time from our real-time
-                                availability
-                                calendar.</p>
+        <div class="wave-divider"></div>
+
+        <!-- ── HOW IT WORKS ── -->
+        <section class="section">
+            <div class="section-intro">
+                <div>
+                    <div class="section-label">How It Works</div>
+                    <div class="section-heading">Simple, Fast<br>Booking</div>
+                </div>
+                <span class="section-sub">3 steps to play</span>
+            </div>
+
+            <div class="steps-wrap">
+                <div class="steps-grid">
+
+                    <a href="/booking.html" class="step-card fade-up">
+                        <span class="step-num">01</span>
+                        <div class="step-icon">
+                            <span class="material-symbols-outlined">calendar_month</span>
                         </div>
+                        <div class="step-title">Select a Slot</div>
+                        <p class="step-desc">Choose your preferred date and time from our real-time availability
+                            calendar.</p>
                     </a>
-                    <!-- Step 2 Card -->
-                    <div
-                        class="bg-slate-50 rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                        <div
-                            class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="material-symbols-outlined text-emerald-700 text-3xl">credit_card</span>
+
+                    <div class="step-card fade-up" style="animation-delay:0.1s">
+                        <span class="step-num">02</span>
+                        <div class="step-icon">
+                            <span class="material-symbols-outlined">credit_card</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Pay Securely</h3>
-                        <p class="text-slate-500">Enter your details and complete your booking with our secure online
-                            payment system.
-                        </p>
+                        <div class="step-title">Pay Securely</div>
+                        <p class="step-desc">Enter your details and complete your booking with our secure online payment
+                            system.</p>
                     </div>
-                    <!-- Step 3 Card -->
-                    <div
-                        class="bg-slate-50 rounded-xl shadow-lg p-6 text-center transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                        <div
-                            class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="material-symbols-outlined text-emerald-700 text-3xl">receipt_long</span>
+
+                    <div class="step-card fade-up" style="animation-delay:0.2s">
+                        <span class="step-num">03</span>
+                        <div class="step-icon">
+                            <span class="material-symbols-outlined">receipt_long</span>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Get Your Receipt</h3>
-                        <p class="text-slate-500">Receive your unique booking ID via email and you're all set to play!
-                        </p>
+                        <div class="step-title">Get Your Receipt</div>
+                        <p class="step-desc">Receive your unique booking ID via email and you're all set to play!</p>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Booking Section -->
-        <section class="py-16 px-4 bg-slate-50 text-center shadow-md">
-            <div class="container mx-auto max-w-3xl">
-                <div class="flex justify-center flex-col mb-4 items-center">
-                    <h2 class="text-3xl font-bold text-slate-800 mb-4">Your Bookings</h2>
-                    <p class="text-slate-500 mb-8 text-xl">Enter your email to view your royal turf bookings.</p>
-                </div>
-                <!-- Input Picker -->
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <div>
-                        <label for="booking-email" class="block text-sm font-semibold text-slate-700 mb-2">
-                            Email Address
-                        </label>
-                        <input type="email" id="booking-email" placeholder="name@example.com" class="w-full rounded-xl border border-slate-300 px-4 py-3
-             focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200" required />
+        <!-- ── BOOKING LOOKUP ── -->
+        <section class="lookup-section">
+            <div class="lookup-inner">
 
-                    </div>
-                    <button id="fetch-bookings-btn" class="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white
-               shadow-md  hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-                        View Bookings
-                    </button>
+                <div class="lookup-text">
+                    <div class="section-label">My Bookings</div>
+                    <div class="section-heading" style="margin-bottom:0.75rem;">Track Your<br>Reservations</div>
+                    <p>Already booked a slot? Enter your email address below and we'll pull up all your Royal Turf
+                        bookings instantly.</p>
                 </div>
 
-                <!-- Result -->
-                <div id="booking-results" class="mt-8 grid grid-cols-1 gap-6 hidden"></div>
-                <!-- Status Messages -->
-                <div id="booking-skeleton" class="mt-8 hidden space-y-4">
-                    <div class="animate-pulse flex space-x-4">
-                        <div class="flex-1 space-y-4 py-1">
-                            <div class="h-4 bg-slate-200 rounded w-3/4"></div>
-                            <div class="space-y-2">
-                                <div class="h-4 bg-slate-200 rounded"></div>
-                                <div class="h-4 bg-slate-200 rounded w-5/6"></div>
-                            </div>
-                        </div>
+                <div class="lookup-form">
+                    <div class="lookup-field">
+                        <label for="booking-email">Email Address</label>
+                        <input type="email" id="booking-email" placeholder="name@example.com" required />
+                    </div>
+                    <button id="fetch-bookings-btn">View My Bookings</button>
+
+                    <!-- Skeleton — preserved for JS -->
+                    <div id="booking-skeleton" class="hidden">
+                        <div class="skeleton-bar" style="width:75%;"></div>
+                        <div class="skeleton-bar" style="width:100%;"></div>
+                        <div class="skeleton-bar" style="width:85%;"></div>
                     </div>
                 </div>
+
+            </div>
+
+            <!-- Results container — preserved for JS -->
+            <div id="booking-results" class="hidden" style="margin-top:2rem;"></div>
+        </section>
+
+        <!-- ── CTA STRIP ── -->
+        <section class="cta-strip">
+            <div class="cta-text">
+                <h2>Ready for the Royal Treatment?</h2>
+                <p>Book your slot now and experience premium turf like never before.</p>
+            </div>
+            <div class="cta-actions">
+                <a href="/booking.html" class="cta-btn-primary">Book Now</a>
+                <a href="/contact.html" class="cta-btn-secondary">Contact Us</a>
             </div>
         </section>
 
+        <!-- ── SLOT CHECKER ── -->
+        <section class="slots-section section">
 
-        <!-- Call-to-action Section -->
-        <section class="py-16 px-4 bg-emerald-700 text-white text-center">
-            <div class="container mx-auto max-w-3xl">
-                <h2 class="text-3xl font-bold mb-4">Ready to Experience the Royal Treatment?</h2>
-                <p class="text-xl mb-8">Book your slot now and enjoy the premium turf experience</p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                    <a href="booking.html" class="rounded-xl bg-white px-8 py-4 font-semibold text-emerald-700
-          shadow-xl transition hover:bg-slate-100 duration-300 transform hover:scale-105">
-                        Book Now
-                    </a>
-                    <a href="contact.html"
-                        class="bg-transparent border-2 border-white hover:bg-slate-50 hover:text-emerald-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105">
-                        Contact Us
-                    </a>
+            <div class="section-intro" style="padding:0 0 0 0;">
+                <div>
+                    <div class="section-label">Live Availability</div>
+                    <div class="section-heading">Check Available<br>Slots</div>
                 </div>
             </div>
-        </section>
 
-
-        <!-- Dynamic Slots with Date Picker -->
-        <section class="py-16 px-4 bg-slate-50 text-center">
-            <div class="container mx-auto max-w-3xl">
-                <h2 class="text-3xl font-bold  text-slate-900 mb-8">Check Available Slots</h2>
-                <p class="block text-shadow-md font-semibold text-slate-700 mb-2">Pick a date</p>
-                <!-- Date Picker -->
-                <div class="flex justify-center mb-6 space-x-4">
-                    <input type="date" id="slotDate"
-                        class="px-4 py-2 border rounded-lg shadow focus:ring-2 focus:ring-green-600" />
-                    <button id="check-slots" class="bg-emerald-600 hover:bg-emerald-700 text-white
-               px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 transform hover:scale-105">
-                        Check
-                    </button>
+            <div class="slots-controls">
+                <div class="slot-date-wrap">
+                    <label for="slotDate">Pick a date</label>
+                    <input type="date" id="slotDate" />
                 </div>
-
-                <!-- Status Messages -->
-                <div id="slotsLoading" class="hidden text-center text-slate-400">
-                    <div class="flex justify-center mb-4">
-                        <svg class="animate-spin h-8 w-8 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                        </svg>
-                    </div>
-                    <p>Loading available slots...</p>
-                </div>
-
-                <div id="slotsEmpty" class="hidden text-center text-slate-400">
-                    <p class="text-lg">😔 No slots available for this date.</p>
-                </div>
-
-                <!-- Slots Grid -->
-                <div id="slotsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center"></div>
+                <button id="check-slots">Check Slots</button>
             </div>
+
+            <!-- Status containers-->
+            <div id="slotsLoading" class="hidden">
+                <svg style="display:block;margin:0 auto 1rem;animation:spin 1s linear infinite;width:36px;height:36px;"
+                    viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="var(--green-light)" stroke-width="3" />
+                    <path d="M4 12a8 8 0 018-8" stroke="var(--green)" stroke-width="3" stroke-linecap="round" />
+                </svg>
+                <p style="font-size:0.88rem;color:var(--muted);">Loading available slots...</p>
+            </div>
+
+
+
+            <div id="slotsEmpty" class="hidden" style="margin-top: 20px;"></div>
+
+            <div id="slotsContainer"></div>
+
         </section>
 
+        <!-- ── FOOTER ── -->
+        <footer>
+            <div class="footer-grid">
 
-
-        <!-- Footer Section -->
-        <footer class="bg-slate-900 text-slate-400 py-8 px-4">
-            <div class="container mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <!-- Brand Info -->
-                    <div>
-                        <div class="flex items-center space-x-2 mb-4">
-                            <h3 class="text-xl font-bold text-white">The Royal Turf</h3>
-                        </div>
-                        <p class="text-sm text-slate-400 mb-4">Providing premium turf booking services for all your
-                            sporting needs.
-                        </p>
-                        <div class="flex space-x-4">
-                            <!-- Youtube -->
-                            <a href="https://www.youtube.com/@royal_turf" target="_blank" rel="noopener noreferrer">
-                                <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-                                </svg>
-                            </a>
-
-                            <!-- Instagram -->
-                            <a href="https://www.instagram.com/_royal.turf_/#" target="_blank"
-                                rel="noopener noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24">
-                                    <defs>
-                                        <linearGradient id="insta-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" stop-color="#833AB4" />
-                                            <stop offset="50%" stop-color="#E1306C" />
-                                            <stop offset="100%" stop-color="#FFDC80" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path fill="url(#insta-grad)"
-                                        d="M12 0C8.74 0 8.33.01 7.05.05 3.17.23.23 3.17.05 7.05.01 8.33 0 8.74 0 12s.01 3.67.05 4.95c.18 3.88 3.12 6.82 6.95 7 1.28.04 1.69.05 4.95.05s3.67-.01 4.95-.05c3.88-.18 6.82-3.12 7-6.95.04-1.28.05-1.69.05-4.95s-.01-3.67-.05-4.95C23.77 3.17 20.83.23 17 .05 15.67.01 15.26 0 12 0zm0 2.16c3.2 0 3.56.02 4.82.07 3.19.14 4.64 1.59 4.78 4.78.05 1.26.07 1.62.07 4.82s-.02 3.56-.07 4.82c-.14 3.19-1.59 4.64-4.78 4.78-1.26.05-1.62.07-4.82.07s-3.56-.02-4.82-.07c-3.19-.14-4.64-1.59-4.78-4.78-.05-1.26-.07-1.62-.07-4.82s.02-3.56.07-4.82c.14-3.19 1.59-4.64 4.78-4.78 1.26-.05 1.62-.07 4.82-.07zM5.66 12a6.34 6.34 0 1 1 12.68 0 6.34 6.34 0 0 1-12.68 0zm6.34-4.88a4.88 4.88 0 1 0 0 9.76 4.88 4.88 0 0 0 0-9.76zM16.88 5.56a1.48 1.48 0 1 1-2.96 0 1.48 1.48 0 0 1 2.96 0z" />
-                                </svg>
-                            </a>
-
-                            <!-- Google -->
-                            <a href="https://share.google/bRLocWkXIdii6uodS" target="_blank" rel="noopener noreferrer">
-                                <svg width="24" height="24" viewBox="0 0 24 24">
-                                    <path fill="#4285F4"
-                                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                                    <path fill="#34A853"
-                                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                                    <path fill="#FBBC05"
-                                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                                    <path fill="#EA4335"
-                                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Quick Links -->
-                    <div>
-                        <h3 class="text-lg font-bold text-emerald-400 mb-4">Quick Links</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="/index.html" class="hover:text-emerald-300 transition-colors duration-300">Home</a>
-                            </li>
-                            <li><a href="/features.html"
-                                    class="hover:text-emerald-300 transition-colors duration-300">Features</a></li>
-                            <li><a href="/booking.html"
-                                    class="hover:text-emerald-300 transition-colors duration-300">Bookings</a></li>
-                            <li><a href="/gallery.html"
-                                    class="hover:text-emerald-300 transition-colors duration-300">Gallery</a></li>
-                            <li><a href="/contact.html"
-                                    class="hover:text-emerald-300 transition-colors duration-300">Contact</a></li>
-                        </ul>
-                    </div>
-                    <!-- Opening Hours -->
-                    <div>
-                        <h3 class="text-lg font-bold text-white mb-4">Opening Hours</h3>
-                        <ul class="space-y-2 text-gray-400">
-                            <li class="flex justify-between"><span>Monday - Friday</span> <span>7:00 AM - 1:00 AM</span>
-                            </li>
-                            <li class="flex justify-between"><span>Saturday</span> <span>7:00 AM - 1:00 AM</span></li>
-                            <li class="flex justify-between"><span>Sunday</span> <span>7:00 AM - 1:00 AM</span></li>
-                        </ul>
-                    </div>
-                    <!-- Contact Info -->
-                    <div>
-                        <h3 class="text-lg font-bold text-white mb-4">Contact Us</h3>
-                        <ul class="space-y-2 text-slate-300">
-                            <li class="flex items-start space-x-2">
-                                <span class="material-symbols-outlined text-emerald-400">location_on</span>
-                                <span class="text-sm">36, Topsia Road, Uttar Panchannogram Kolkata - 39</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <span class="material-symbols-outlined text-emerald-400">phone</span>
-                                <span class="text-sm">+91 8272952122</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <span class="material-symbols-outlined text-emerald-400">email</span>
-                                <span class="text-sm">info@royalturf.com</span>
-                            </li>
-                        </ul>
+                <div class="footer-brand">
+                    <h3>The Royal Turf</h3>
+                    <p>Providing premium turf booking services for all your sporting needs.</p>
+                    <div class="footer-socials">
+                        <a href="https://www.youtube.com/@royal_turf" target="_blank" rel="noopener noreferrer"
+                            aria-label="YouTube">
+                            <svg width="24" height="24" fill="#ef4444" viewBox="0 0 24 24">
+                                <path
+                                    d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/_royal.turf_/#" target="_blank" rel="noopener noreferrer"
+                            aria-label="Instagram">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <defs>
+                                    <linearGradient id="insta-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#833AB4" />
+                                        <stop offset="50%" stop-color="#E1306C" />
+                                        <stop offset="100%" stop-color="#FFDC80" />
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#insta-grad)"
+                                    d="M12 0C8.74 0 8.33.01 7.05.05 3.17.23.23 3.17.05 7.05.01 8.33 0 8.74 0 12s.01 3.67.05 4.95c.18 3.88 3.12 6.82 6.95 7 1.28.04 1.69.05 4.95.05s3.67-.01 4.95-.05c3.88-.18 6.82-3.12 7-6.95.04-1.28.05-1.69.05-4.95s-.01-3.67-.05-4.95C23.77 3.17 20.83.23 17 .05 15.67.01 15.26 0 12 0zm0 2.16c3.2 0 3.56.02 4.82.07 3.19.14 4.64 1.59 4.78 4.78.05 1.26.07 1.62.07 4.82s-.02 3.56-.07 4.82c-.14 3.19-1.59 4.64-4.78 4.78-1.26.05-1.62.07-4.82.07s-3.56-.02-4.82-.07c-3.19-.14-4.64-1.59-4.78-4.78-.05-1.26-.07-1.62-.07-4.82s.02-3.56.07-4.82c.14-3.19 1.59-4.64 4.78-4.78 1.26-.05 1.62-.07 4.82-.07zM5.66 12a6.34 6.34 0 1 1 12.68 0 6.34 6.34 0 0 1-12.68 0zm6.34-4.88a4.88 4.88 0 1 0 0 9.76 4.88 4.88 0 0 0 0-9.76zM16.88 5.56a1.48 1.48 0 1 1-2.96 0 1.48 1.48 0 0 1 2.96 0z" />
+                            </svg>
+                        </a>
+                        <a href="https://share.google/bRLocWkXIdii6uodS" target="_blank" rel="noopener noreferrer"
+                            aria-label="Google">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="#4285F4"
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                <path fill="#34A853"
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                <path fill="#FBBC05"
+                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                                <path fill="#EA4335"
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="mt-8 pt-6 border-t border-slate-600 text-center text-slate-400">
-                    <p>© 2025 Royal Turf. All rights reserved.</p>
+
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/index.html">Home</a></li>
+                        <li><a href="/features.html">Features</a></li>
+                        <li><a href="/booking.html">Bookings</a></li>
+                        <li><a href="/gallery.html">Gallery</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
                 </div>
+
+                <div class="footer-col">
+                    <h3>Opening Hours</h3>
+                    <ul class="footer-hours">
+                        <li><span>Monday – Friday</span><span>6:00 AM – 1:00 AM</span></li>
+                        <li><span>Saturday</span><span>6:00 AM – 1:00 AM</span></li>
+                        <li><span>Sunday</span><span>6:00 AM – 1:00 AM</span></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <span class="material-symbols-outlined">location_on</span>
+                            <span>36, Topsia Road, Uttar Panchannogram Kolkata – 39</span>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">phone</span>
+                            <span>+91 8272952122 | +91 7044385501</span>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">email</span>
+                            <span>info@royalturf.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Royal Turf. All rights reserved.</p>
             </div>
         </footer>
+
     </div>
+
+    <!-- Mobile menu toggle (lightweight, doesn't interfere with index.js) -->
+    <script>
+        document.getElementById('mobile-menu-button')
+            .addEventListener('click', function () {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+    </script>
 
     <script type="module" src="/js/index.js" defer></script>
 </body>

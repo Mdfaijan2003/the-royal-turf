@@ -24,12 +24,25 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===============================
      RESTORE USER FORM
   ================================ */
+
   const savedForm = JSON.parse(localStorage.getItem("userFormData")) || {};
 
   dom.fullNameInput.value = savedForm.fullName || "";
   dom.emailInput.value = savedForm.email || "";
   dom.phoneInput.value = savedForm.phone || "";
   dom.dateInput.value = savedForm.date || "";
+
+  const today = new Date();
+  const minDate = today.toISOString().split("T")[0];
+
+  // Max date = today + 30 days
+  const max = new Date();
+  max.setDate(max.getDate() + 7);
+
+  const maxDate = max.toISOString().split("T")[0];
+
+  dom.dateInput.min = minDate;
+  dom.dateInput.max = maxDate;
 
   state.booking.name = dom.fullNameInput.value;
   state.booking.email = dom.emailInput.value;

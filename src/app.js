@@ -105,7 +105,7 @@ app.use("/api/slots", slotsRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/contact", contactRouter);
 app.use("/api/payments", paymentRoutes);
-app.use("/api/gallery", verifyAdminJWT, requireAdminRole, galleryRoutes);
+app.use("/api/gallery", galleryRoutes);
 
 // Static files (JS, CSS, images)
 app.use(express.static(path.join(process.cwd(), "public")));

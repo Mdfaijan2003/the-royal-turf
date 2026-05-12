@@ -1,13 +1,10 @@
 // src/routes/gallery.routes.js
 
 import express from "express";
-import { getGallery} from "../controllers/gallery.controller.js";
+import { getGallery } from "../controllers/gallery.controller.js";
 
+const galleryRoutes = express.Router();
 
+galleryRoutes.get("/", getGallery);
 
-const router = express.Router();
-
-router.get("/", getGallery);
-
-
-export default router;
+export default galleryRoutes;

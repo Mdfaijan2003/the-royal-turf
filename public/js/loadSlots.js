@@ -1,26 +1,22 @@
 import { dom } from "./dom.js";
 export async function loadSlots() {
-  // Get the selected date from the input field.
-  
   const selectedDate = dom.slotSelectedDate.value;
-  
+
   if (!selectedDate) {
     alert("Please select a date first.");
     return;
   }
 
   // Get references to the UI elements for a better user experience.
-  const loading = document.getElementById("slotsLoading");
-  const empty = document.getElementById("slotsEmpty");
+  let loading = document.getElementById("slotsLoading");
+  let empty = document.getElementById("slotsEmpty");
   const container = document.getElementById("slotsContainer");
 
-  // Reset the UI to its initial state before fetching new data.
   loading.classList.remove("hidden"); // Show the loading indicator.
-  empty.classList.add("hidden"); // Hide the 'empty' message.
+  // empty.classList.add("hidden"); // Hide the 'empty' message.
   container.innerHTML = ""; // Clear any previously rendered slots.
 
   try {
-    
     const res = await fetch(`/api/slots?date=${selectedDate}`);
     // Parse the JSON data from the response.
     const data = await res.json();
@@ -33,16 +29,33 @@ export async function loadSlots() {
     const bookedSlots = allSlots.filter(slot => slot.status === "BOOKED");
 
     if (!bookedSlots || bookedSlots.length === 0) {
-      empty.classList.remove("hidden"); // Show the 'empty' message.
-      // Update the message to be more engaging and add a "Book Now" button.
+      console.log("No booked slots found for the selected date.");
+      empty.classList.remove("hidden");
+      empty.classList.add("block", "w-full", "mt-6");
+
       empty.innerHTML = `
-                <p class="text-gray-700 text-lg font-medium">✨ Great news! The whole day is available to book.</p>
-                <a href="booking"
-                        class="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300 transform hover:scale-105">
-                        Book Now
-                </a>
-            `;
-      return; // Stop the function here.
+<div style="background-color: #ffffff; border: 1px solid #d1fae5; border-top: 6px solid #059669; border-radius: 12px; padding: 48px 24px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+
+    <div style="width: 64px; height: 64px; margin: 0 auto 24px auto; border-radius: 50%; background-color: #ecfdf5; display: flex; align-items: center; justify-content: center;">
+        <span style="font-size: 32px;">⚽</span>
+    </div>
+
+    <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: #111827; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+        Entire Day <span style="color: #059669;">Available</span>
+    </h3>
+
+    <p style="font-family: 'DM Sans', sans-serif; color: #6b7280; font-size: 16px; line-height: 1.6; margin-bottom: 32px; max-width: 300px; margin-left: auto; margin-right: auto;">
+        No bookings found for this date. All slots are currently available.
+    </p>
+
+    <a href="/booking.html" style="display: inline-block; background-color: #059669; color: #ffffff; padding: 14px 32px; border-radius: 50px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.2);">
+        Book Now
+    </a>
+
+</div>
+`;
+
+      return;
     }
 
     bookedSlots.forEach(slot => {

@@ -69,54 +69,250 @@ document?.addEventListener("DOMContentLoaded", () => {
       bookings.forEach(b => {
         const shortBookingId = b._id.slice(-6).toUpperCase();
         const div = document.createElement("div");
-        div.className =
-          "bg-slate-800 border-l-4 border-indigo-600 shadow-lg rounded-xl p-5";
+        div.style.cssText = `
+  background:#1e293b;
+  border-left:4px solid #4f46e5;
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  color:#e2e8f0;
+  margin-bottom:20px;
+`;
 
         div.innerHTML = `
-      <div class="flex justify-between items-center">
-        <div>
-          <p class="font-semibold text-slate-200">Royal Turf Booking</p>
-          <p class="text-sm text-slate-300">
-            ${new Date(b.start).toLocaleDateString()} •
-            ${new Date(b.start).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })} –
-            ${new Date(b.end).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </p>
-          <p class="text-xs text-slate-300 mt-1">
-            Booking ID: ${shortBookingId}
-          </p>
-        </div>
-    
-        <span class="px-3 py-1 text-sm rounded-full ${
+
+  <!-- TOP -->
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  ">
+
+      <div style="flex:1;min-width:220px;">
+
+          <h3 style="
+            font-size:1.3rem;
+            font-weight:700;
+            color:#f8fafc;
+            margin-bottom:8px;
+          ">
+              Royal Turf Booking
+          </h3>
+
+          <div style="
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:#cbd5e1;
+            font-size:.95rem;
+            flex-wrap:wrap;
+          ">
+
+              <span>
+                ${new Date(b.start).toLocaleDateString()}
+              </span>
+
+              <span style="opacity:.5;">•</span>
+
+              <span style="font-weight:600;">
+                ${new Date(b.start).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+
+                –
+
+                ${new Date(b.end).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+
+          </div>
+
+      </div>
+
+      <div style="
+        padding:8px 14px;
+        border-radius:999px;
+        font-size:.8rem;
+        font-weight:700;
+        white-space:nowrap;
+
+        ${
           b.status === "PAID"
-            ? "bg-green-100 text-green-700"
-            : (b.status === "HELD" || b.status === "BLOCKED")
-            ? "bg-yellow-100 text-yellow-700"
-            : "bg-gray-200 text-gray-700"
-        }">
+            ? `
+              background:rgba(16,185,129,.15);
+              color:#34d399;
+              border:1px solid rgba(16,185,129,.3);
+            `
+            : `
+              background:rgba(250,204,21,.15);
+              color:#fde047;
+              border:1px solid rgba(250,204,21,.3);
+            `
+        }
+      ">
           ${b.status === "PAID" ? "Adv Paid" : b.status}
-        </span>
       </div>
 
-      <div class="mt-3 text-sm text-slate-400 space-y-1">
-        <p>Total Amount: <span class="font-bold text-slate-300">₹${b.totalAmount}</span></p>
-        <p>Advance Paid: <span class="font-bold text-slate-300">₹${b.advanceAmount}</span></p>
-        <p>Remaining to Pay: <span class="font-bold text-slate-300">₹${b.remainingAmount}</span></p>
-        <p class="text-xs text-slate-300">
-          Payment Method: ${b.paymentMethod}
-        </p>
-      </div>
-    `;
+  </div>
 
+  <!-- BOOKING ID -->
+  <div style="
+    border-top:1px solid rgba(148,163,184,.15);
+    border-bottom:1px solid rgba(148,163,184,.15);
+    padding:14px 0;
+    margin-bottom:18px;
+    font-size:.95rem;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  ">
+
+      <span style="color:#94a3b8;">
+          Booking ID:
+      </span>
+
+      <span style="
+        color:#60a5fa;
+        font-weight:700;
+        letter-spacing:.5px;
+      ">
+          ${shortBookingId}
+      </span>
+
+  </div>
+
+  <!-- PRICE GRID -->
+  <div style="
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px;
+    margin-bottom:18px;
+  ">
+
+      <!-- TOTAL -->
+      <div style="
+        background:rgba(51,65,85,.55);
+        border:1px solid rgba(148,163,184,.15);
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+      ">
+
+          <div style="
+            color:#94a3b8;
+            font-size:.72rem;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            margin-bottom:8px;
+          ">
+              Total Amount
+          </div>
+
+          <div style="
+            font-size:1.7rem;
+            font-weight:800;
+            color:#f8fafc;
+          ">
+              ₹${b.totalAmount}
+          </div>
+
+      </div>
+
+      <!-- ADVANCE -->
+      <div style="
+        background:rgba(16,185,129,.1);
+        border:1px solid rgba(16,185,129,.25);
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+      ">
+
+          <div style="
+            color:#6ee7b7;
+            font-size:.72rem;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            margin-bottom:8px;
+          ">
+              Advance Paid
+          </div>
+
+          <div style="
+            font-size:1.7rem;
+            font-weight:800;
+            color:#10b981;
+          ">
+              ₹${b.advanceAmount}
+          </div>
+
+      </div>
+
+      <!-- REMAINING -->
+      <div style="
+        background:rgba(51,65,85,.55);
+        border:1px solid rgba(148,163,184,.15);
+        border-radius:14px;
+        padding:18px;
+        text-align:center;
+      ">
+
+          <div style="
+            color:#94a3b8;
+            font-size:.72rem;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            margin-bottom:8px;
+          ">
+              Remaining
+          </div>
+
+          <div style="
+            font-size:1.7rem;
+            font-weight:800;
+            color:#f87171;
+          ">
+              ₹${b.remainingAmount}
+          </div>
+
+      </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-top:1px solid rgba(148,163,184,.15);
+    padding-top:14px;
+    font-size:.95rem;
+    flex-wrap:wrap;
+    gap:10px;
+  ">
+
+      <span style="color:#94a3b8;">
+          Payment Method
+      </span>
+
+      <span style="
+        font-weight:700;
+        color:#f8fafc;
+      ">
+          ${b.paymentMethod}
+      </span>
+
+  </div>
+`;
         results.appendChild(div);
       });
     } catch (err) {
-      console.log("Fetch bookings error:", err);  
+      console.log("Fetch bookings error:", err);
       skeleton.classList.add("hidden");
       results.classList.remove("hidden");
       results.innerHTML =
