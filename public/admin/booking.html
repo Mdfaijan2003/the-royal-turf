@@ -32,6 +32,22 @@
             background: #e2e8f0;
             border-radius: 10px;
         }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .animate-fadeUp {
+            animation: fadeUp .25s ease;
+        }
     </style>
 </head>
 
@@ -57,8 +73,8 @@
                 <span class="font-semibold text-sm">Overview</span>
             </a>
 
-            <a href="#"
-                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+            <a href="booking.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -66,19 +82,35 @@
                 <span class="font-semibold text-sm">Bookings</span>
             </a>
 
-            <a href="#" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+            <a href="slots.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 <span class="font-semibold text-sm">Slot Control</span>
             </a>
-            <a href="#" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+
+            <a href="finance.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <span class="font-semibold text-sm">Finance</span>
+            </a>
+
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 mb-3 px-2">Configuration</p>
+
+            <a href="setting.html"
+                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="font-semibold text-sm">Settings</span>
             </a>
         </nav>
 
@@ -125,18 +157,18 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <input type="text" placeholder="Search customer, ID or phone..."
+                    <input type="text" id="booking-search" placeholder="Search customer, ID or phone..."
                         class="w-full pl-12 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-sm font-medium focus:ring-2 ring-yellow-400 outline-none transition">
                 </div>
 
                 <div class="flex space-x-2 overflow-x-auto custom-scrollbar pb-1 md:pb-0">
                     <div class="relative min-w-[140px]">
-                        <select
+                        <select id="search-for"
                             class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
-                            <option>Today</option>
-                            <option>Tomorrow</option>
-                            <option>This Week</option>
-                            <option>Custom</option>
+                            <option value="today">Today</option>
+                            <option value="tomorrow">Tomorrow</option>
+                            <option value="week">This Week</option>
+                            <option value="custom">Custom</option>
                         </select>
                         <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -145,12 +177,12 @@
                     </div>
 
                     <div class="relative min-w-[140px]">
-                        <select
+                        <select id="search-by-status"
                             class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
-                            <option>All Status</option>
-                            <option>Confirmed</option>
-                            <option>Pending</option>
-                            <option>Cancelled</option>
+                            <option value="PAID">All Status</option>
+                            <option value="PAID">Confirmed</option>
+                            <option value="PAID">Pending</option>
+                            <option value="CANCELLED">Cancelled</option>
                         </select>
                         <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -174,9 +206,9 @@
                                 <th class="px-8 py-5 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-50 text-sm">
+                        <tbody class="divide-y divide-slate-50 text-sm" id="booking-data">
 
-                            <tr class="hover:bg-slate-50/50 transition group cursor-pointer">
+                            <!-- <tr class="hover:bg-slate-50/50 transition group cursor-pointer">
                                 <td class="px-8 py-5">
                                     <div class="flex items-center space-x-3">
                                         <div
@@ -254,12 +286,12 @@
                                         </svg>
                                     </button>
                                 </td>
-                            </tr>
+                            </tr> -->
 
                         </tbody>
                     </table>
 
-                    <div class="px-8 py-6 border-t border-slate-50 flex items-center justify-between">
+                    <!-- <div class="px-8 py-6 border-t border-slate-50 flex items-center justify-between">
                         <p class="text-xs font-bold text-slate-400">Showing 1-10 of 42 bookings</p>
                         <div class="flex space-x-2">
                             <button
@@ -267,76 +299,10 @@
                             <button
                                 class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50">Next</button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
-                <div class="md:hidden p-4 space-y-4">
-
-                    <div class="bg-slate-50 p-5 rounded-[2rem] border border-slate-100 relative">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 rounded-2xl bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-xs">
-                                    RS</div>
-                                <div>
-                                    <p class="font-bold text-slate-800">Rahul Sharma</p>
-                                    <p class="text-xs text-slate-400">#BK-9021 • Today</p>
-                                </div>
-                            </div>
-                            <span
-                                class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-emerald-100 text-emerald-700">Confirmed</span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 mb-4">
-                            <div class="bg-white p-3 rounded-2xl border border-slate-100">
-                                <p class="text-[10px] text-slate-400 uppercase font-bold">Slot</p>
-                                <p class="text-sm font-bold text-slate-700">06:00 PM</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-2xl border border-slate-100">
-                                <p class="text-[10px] text-slate-400 uppercase font-bold">Payment</p>
-                                <p class="text-sm font-bold text-emerald-600">₹1,200 <span
-                                        class="text-[10px] text-slate-400 font-normal">Paid</span></p>
-                            </div>
-                        </div>
-
-                        <button
-                            class="w-full py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">View
-                            Details</button>
-                    </div>
-
-                    <div class="bg-slate-50 p-5 rounded-[2rem] border border-slate-100 relative">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 rounded-2xl bg-white text-slate-500 flex items-center justify-center font-bold text-xs border border-slate-100">
-                                    AV</div>
-                                <div>
-                                    <p class="font-bold text-slate-800">Amit Verma</p>
-                                    <p class="text-xs text-slate-400">#BK-9022 • Tomorrow</p>
-                                </div>
-                            </div>
-                            <span
-                                class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-yellow-100 text-yellow-700">Pending</span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2 mb-4">
-                            <div class="bg-white p-3 rounded-2xl border border-slate-100">
-                                <p class="text-[10px] text-slate-400 uppercase font-bold">Slot</p>
-                                <p class="text-sm font-bold text-slate-700">07:00 AM</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-2xl border border-slate-100">
-                                <p class="text-[10px] text-slate-400 uppercase font-bold">Payment</p>
-                                <p class="text-sm font-bold text-yellow-600">₹600 <span
-                                        class="text-[10px] text-slate-400 font-normal">Due</span></p>
-                            </div>
-                        </div>
-
-                        <button
-                            class="w-full py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">View
-                            Details</button>
-                    </div>
-
-                </div>
+                <div id="mobile-bookings" class="md:hidden p-4 space-y-4"></div>
 
             </section>
 
@@ -379,6 +345,30 @@
         </div>
     </nav>
 
+    <div id="booking-modal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-3xl rounded-[2rem] shadow-2xl overflow-hidden animate-fadeUp">
+            <div class="flex items-center justify-between px-8 py-6 border-b border-slate-100">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-800">
+                        Booking Details
+                    </h2>
+
+                    <p id="modal-booking-id" class="text-sm text-slate-400 mt-1"></p>
+                </div>
+
+                <button id="close-booking-modal"
+                    class="w-11 h-11 rounded-2xl hover:bg-slate-100 text-slate-500 text-xl">
+                    ✕
+                </button>
+            </div>
+
+            <div id="booking-modal-content" class="p-8 overflow-y-auto max-h-[80vh]"></div>
+        </div>
+    </div>
+
+
+    <script type="module" src="/js/admin/bookings.dashboard.js"></script>
 </body>
 
 </html>

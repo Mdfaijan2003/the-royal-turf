@@ -37,7 +37,7 @@
 
 <body class="bg-[#F8FAFC] text-[#1e293b] flex">
 
-    <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8">
+    <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
         <div class="mb-10 px-2">
             <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
                 <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
@@ -47,15 +47,17 @@
 
         <nav class="flex-1 space-y-1">
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Management</p>
-            <a href="/admin/dashboard"
-                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+
+            <a href="dashboard.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
                 </svg>
                 <span class="font-semibold text-sm">Overview</span>
             </a>
-            <a href="/admin/booking.html"
+
+            <a href="booking.html"
                 class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -63,7 +65,8 @@
                 </svg>
                 <span class="font-semibold text-sm">Bookings</span>
             </a>
-            <a href="/admin/slots.html"
+
+            <a href="slots.html"
                 class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -71,7 +74,8 @@
                 </svg>
                 <span class="font-semibold text-sm">Slot Control</span>
             </a>
-            <a href="/admin/finance.html"
+
+            <a href="finance.html"
                 class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -79,21 +83,18 @@
                 </svg>
                 <span class="font-semibold text-sm">Finance</span>
             </a>
-            <a href="#gallery"
-                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 mb-3 px-2">Configuration</p>
+
+            <a href="setting.html"
+                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span class="font-semibold text-sm">Gallery</span>
-            </a>
-            <a href="/admin/setting.html"
-                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span class="font-semibold text-sm">Gallery</span>
+                <span class="font-semibold text-sm">Settings</span>
             </a>
         </nav>
 
@@ -236,7 +237,7 @@
                         class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold">
                         + Upload Media
                     </button>
-                    
+
 
 
                     <input type="file" id="gallery-file-input" accept="image/*" multiple hidden />

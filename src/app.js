@@ -6,6 +6,15 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
+import hpp from "hpp";
+import mongoSanitize from "express-mongo-sanitize";
+import {
+  apiLimiter,
+  holdSlotLimiter,
+  adminLoginLimiter,
+  paymentLimiter,
+} from "./middleware/rateLimit.middleware.js";
+
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -49,6 +58,7 @@ app.use((req, res, next) => {
 });
 
 app.use(compression());
+app.use("/api", apiLimiter);
 
 // Remove your manual CSP middleware and use:
 app.use((req, res, next) => {
@@ -82,29 +92,35 @@ app.use((req, res, next) => {
   );
   next();
 });
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL];
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
+
+app.use("/webhook", express.raw({ type: "application/json" }), webHookrouter);
 
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/webhook", express.raw({ type: "application/json" }), webHookrouter);
+app.use(hpp());
+app.use(mongoSanitize());
 
 // 1️⃣ API routes FIRST
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/bookings", verifyAdminJWT, requireAdminRole, bookingRouter);
 app.use("/api/admin/finance", verifyAdminJWT, requireAdminRole, adminRoutes);
+
 app.use("/api/v1/healthcheck", healthRoutes);
-app.use("/api/slots", slotsRouter);
+
+app.use("/api/slots", holdSlotLimiter, slotsRouter);
 app.use("/api/bookings", bookingRouter);
 app.use("/api/contact", contactRouter);
-app.use("/api/payments", paymentRoutes);
+app.use("/api/payments", paymentLimiter, paymentRoutes);
 app.use("/api/gallery", galleryRoutes);
 
 // Static files (JS, CSS, images)
@@ -112,7 +128,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 app.use(express.static(path.join(process.cwd(), "admin")));
 
 //  Explicit HTML routes
-app.get("/admin/login", (req, res) => {
+app.get("/admin/login", adminLoginLimiter, (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "admin", "login.html"));
 });
 
@@ -126,23 +142,23 @@ app.use((req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "index.html"));
 });
 
-cron.schedule("* * * * *", async () => {
-  try {
-    console.log("Running cleanup for expired holds...");
-    const now = new Date();
+// cron.schedule("* * * * *", async () => {
+//   try {
+//     console.log("Running cleanup for expired holds...");
+//     const now = new Date();
 
-    const deleted = await SlotLock.deleteMany({ expiresAt: { $lte: now } });
-    const result = await Booking.updateMany(
-      { status: "HELD", holdExpiresAt: { $lte: now } },
-      { status: "CANCELLED" }
-    );
+//     // const deleted = await SlotLock.deleteMany({ expiresAt: { $lte: now } });
+//     // const result = await Booking.updateMany(
+//     //   { status: "HELD", holdExpiresAt: { $lte: now } },
+//     //   { status: "CANCELLED" }
+//     // );
 
-    console.log(`SlotLocks deleted: ${deleted.deletedCount}`);
-    console.log(`Bookings cancelled: ${result.modifiedCount}`);
-  } catch (err) {
-    console.error("Error during cron cleanup:", err);
-  }
-});
+//     console.log(`SlotLocks deleted: ${deleted.deletedCount}`);
+//     console.log(`Bookings cancelled: ${result.modifiedCount}`);
+//   } catch (err) {
+//     console.error("Error during cron cleanup:", err);
+//   }
+// });
 
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);

@@ -43,6 +43,7 @@
 
 <body class="bg-[#F8FAFC] text-[#1e293b] flex">
 
+
   <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
     <div class="mb-10 px-2">
       <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
@@ -55,7 +56,8 @@
       <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Management</p>
 
       <a href="dashboard.html"
-        class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+        class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+        data-page="dashboard">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
@@ -63,8 +65,9 @@
         <span class="font-semibold text-sm">Overview</span>
       </a>
 
-      <a href="bookings.html"
-        class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+      <a href="booking.html"
+        class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+        data-page="booking">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -72,20 +75,36 @@
         <span class="font-semibold text-sm">Bookings</span>
       </a>
 
-      <a href="#"
-        class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+      <a href="slots.html"
+        class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+        data-page="slots">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
         <span class="font-semibold text-sm">Slot Control</span>
       </a>
 
-      <a href="#" class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+      <a href="finance.html"
+        class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+        data-page="finance">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
         </svg>
         <span class="font-semibold text-sm">Finance</span>
+      </a>
+
+      <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 mb-3 px-2">Configuration</p>
+
+      <a href="setting.html"
+        class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+        data-page="setting">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span class="font-semibold text-sm">Settings</span>
       </a>
     </nav>
 
@@ -100,6 +119,8 @@
       </div>
     </div>
   </aside>
+
+
 
   <main class="flex-1 min-h-screen relative pb-32 lg:pb-12">
 
@@ -137,12 +158,8 @@
           <div class="text-center">
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
             <div class="flex items-center justify-center space-x-2 mt-1 cursor-pointer group">
-              <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <h2 class="text-lg font-extrabold text-slate-800 group-hover:text-yellow-600 transition">Today, 25 Jan
-              </h2>
+              <input id="date-picker" type="date"
+                class="text-lg font-extrabold text-slate-800 group-hover:text-yellow-600 transition" />
             </div>
           </div>
           <button class="p-3 hover:bg-slate-50 rounded-2xl text-slate-400 hover:text-slate-900 transition">
@@ -154,7 +171,7 @@
 
         <div
           class="flex-1 bg-white p-2 rounded-[1.5rem] border border-slate-100 shadow-sm flex gap-2 overflow-x-auto custom-scrollbar pb-1 xl:pb-0">
-          <div class="relative min-w-[140px] flex-1">
+          <!-- <div class="relative min-w-[140px] flex-1">
             <select
               class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
               <option>All Turfs</option>
@@ -165,8 +182,8 @@
               stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
-          </div>
-          <div class="relative min-w-[140px] flex-1">
+          </div> -->
+          <div class="relative min-w-[140px] flex-1 text-center">
             <select
               class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
               <option>All Status</option>
@@ -185,14 +202,14 @@
 
       <section>
         <h3 class="font-extrabold text-lg mb-6 flex items-center">
-          <span>Morning Slots</span>
+          <span>Slots</span>
           <span class="ml-3 px-2 py-0.5 bg-slate-100 rounded text-[10px] text-slate-500 font-bold uppercase">06:00 AM -
-            12:00 PM</span>
+            01:00 AM</span>
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div id="slots-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 
-          <div
+          <!-- <div
             class="bg-slate-900 rounded-[2rem] p-6 text-white relative group overflow-hidden bento-card border-slate-900">
             <div class="flex justify-between items-start mb-4">
               <div>
@@ -294,10 +311,10 @@
             </button>
           </div>
 
-        </div>
+        </div> -->
       </section>
 
-      <section class="pt-4 border-t border-slate-200/50">
+      <!-- <section class="pt-4 border-t border-slate-200/50">
         <h3 class="font-extrabold text-lg mb-6 flex items-center text-slate-400">
           <span>Evening Slots</span>
           <span class="ml-3 px-2 py-0.5 bg-slate-50 rounded text-[10px] text-slate-400 font-bold uppercase">04:00 PM -
@@ -312,46 +329,82 @@
             </svg>
           </button>
         </div>
-      </section>
+      </section> -->
 
     </div>
   </main>
 
-<nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-6">
-        <div class="bg-[#1A1C1E]/95 backdrop-blur-xl px-10 py-4 rounded-[2rem] flex items-center space-x-12 shadow-2xl">
-            <a href="/admin/dashboard.html" class="text-yellow-400">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
-                </svg>
-            </a>
-            <a href="/admin/booking.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10" />
-                </svg>
-            </a>
-            <a href="/admin/slots.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-            </a>
-            <a href="/admin/finance.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 9V7a5 5 0 00-10 0v2m2 4h10a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm7 5v2m-3-2h6" />
-                </svg>
-            </a>
+  <nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-4">
+    <div
+      class="bg-[#0b0f14]/90 backdrop-blur-md border border-zinc-700/60 rounded-3xl px-4 py-3 flex items-center space-x-2 shadow-2xl">
+      <a href="dashboard.html" aria-label="Overview" class="flex flex-col items-center group text-white transition">
+        <span
+          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#3b82f6] to-[#8b5cf6] text-white shadow-lg hover:scale-105 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h7V3H3v9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 3h7v9h-7V3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 21h7" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h7" />
+          </svg>
+        </span>
+        <span class="mt-1 text-[10px] text-gray-200">Overview</span>
+      </a>
 
-            <a href="/admin/setting.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-            </a>
-        </div>
-    </nav>
+      <a href="booking.html" aria-label="Bookings" class="flex flex-col items-center group text-white transition">
+        <span
+          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#f472b6] to-[#f59e0b] text-white shadow-lg hover:scale-105 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="3" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
+        </span>
+        <span class="mt-1 text-[10px] text-gray-200">Bookings</span>
+      </a>
+
+      <a href="slots.html" aria-label="Slot Control" class="flex flex-col items-center group text-white transition">
+        <span
+          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#10b981] to-[#34d399] text-white shadow-lg hover:scale-105 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h12M4 12h7m-7 6h4" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20 6h0" />
+          </svg>
+        </span>
+        <span class="mt-1 text-[10px] text-gray-200">Slot Control</span>
+      </a>
+
+      <a href="finance.html" aria-label="Finance" class="flex flex-col items-center group text-white transition">
+        <span
+          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#f59e0b] to-[#f472b6] text-white shadow-lg hover:scale-105 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path d="M21 7H5a2 2 0 00-2 2v6h18a2 2 0 002-2V9a2 2 0 00-2-2z" />
+            <path d="M3 11h14a3 3 0 013 3v1a2 2 0 01-2 2H3z" />
+            <circle cx="16" cy="14" r="1" />
+          </svg>
+        </span>
+        <span class="mt-1 text-[10px] text-gray-200">Finance</span>
+      </a>
+
+      <a href="setting.html" aria-label="Setting" aria-current="page"
+        class="flex flex-col items-center group text-white transition">
+        <span
+          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#334155] to-[#0f172a] text-white shadow-lg ring-2 ring-white/20 hover:scale-105 transform transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.7 1.7 0 00.3-1.95l-.02-.04a1.7 1.7 0 00-1.3-1.21l-.04-.01a6 6 0 00-1.7-1.23l-.06-.02a1.7 1.7 0 00-2.02-.68l-.05.02a6 6 0 00-1.8.99l-.04.04A1.7 1.7 0 009 9.5l-.02.05a6 6 0 00-.98 1.8l-.02.05a1.7 1.7 0 00.68 2.02l.04.02a6 6 0 001.23 1.7l.01.04a1.7 1.7 0 001.95.3z" />
+          </svg>
+        </span>
+        <span class="mt-1 text-[10px] text-gray-200">Setting</span>
+      </a>
+    </div>
+  </nav>
+
+  <script type="module" src="/js/admin/slots.js"></script>
 
 </body>
 

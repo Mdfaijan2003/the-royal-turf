@@ -35,6 +35,7 @@ async function loadCharts(start, end) {
   if (!res.ok) throw new Error("Chart API failed");
   return await res.json();
 }
+
 function renderCharts(data) {
   /* ===== Revenue vs Expense ===== */
   const ctx1 = document.getElementById("revenueExpenseChart");
@@ -116,6 +117,7 @@ async function loadFinanceCharts(start, end) {
   renderPaymentSplitChart(data);
   renderExpenseCategoryChart(data);
 }
+
 function renderRevenueExpenseChart(data) {
   const ctx = document.getElementById("revenueExpenseChart");
 
@@ -147,6 +149,7 @@ function renderRevenueExpenseChart(data) {
     },
   });
 }
+
 function renderProfitTrendChart(data) {
   const ctx = document.getElementById("profitTrendChart");
 
@@ -173,6 +176,7 @@ function renderProfitTrendChart(data) {
     },
   });
 }
+
 function renderPaymentSplitChart(data) {
   const ctx = document.getElementById("paymentSplitChart");
 
@@ -195,6 +199,7 @@ function renderPaymentSplitChart(data) {
     },
   });
 }
+
 function renderExpenseCategoryChart(data) {
   const ctx = document.getElementById("expenseCategoryChart");
 
@@ -399,11 +404,23 @@ document.getElementById("add-salary-btn").onclick = () => {
   modal.classList.add("flex");
   populateSalaryStaff();
 };
+document.getElementById("add-expense-btn").onclick = () => {
+  const modal = document.getElementById("expense-modal");
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+};
 
 const cancelSalaryBtn = document.getElementById("cancel-salary");
 if (cancelSalaryBtn) {
   cancelSalaryBtn.onclick = () => {
     document.getElementById("salary-modal").classList.add("hidden");
+  };
+}
+
+const cancelExpenseBtn = document.getElementById("cancel-expense");
+if (cancelExpenseBtn) {
+  cancelExpenseBtn.onclick = () => {
+    document.getElementById("expense-modal").classList.add("hidden");
   };
 }
 
@@ -449,6 +466,46 @@ if (saveSalaryBtn) {
     document.getElementById("salary-modal").classList.add("hidden");
     loadSalarySummary();
     loadSalaryTable();
+  };
+}
+
+const saveExpenseBtn = document.getElementById("save-expense-btn");
+if (saveExpenseBtn) {
+  saveExpenseBtn.onclick = async e => {
+    e.preventDefault();
+    console.log("Saving expense...");
+
+    const payload = {
+      title: document.getElementById("expense-title").value,
+      amount: document.getElementById("expense-amount").value,
+      category: document.getElementById("expense-category").value,
+      paidVia: document.getElementById("expense-paid-via").value,
+      expenseDate: document.getElementById("expense-date").value,
+      notes: document.getElementById("expense-notes").value,
+    };
+
+    console.log(payload);
+
+    if (!payload.amount || !payload.title || !payload.expenseDate) {
+      alert("Please enter all required fields");
+      return;
+    }
+
+    const res = await fetch("/api/admin/expenses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    console.log(res);
+
+    if (!res.ok) {
+      throw new Error("Failed to add expense");
+    }
+
+    document.getElementById("expense-modal").classList.add("hidden");
+    const start = new Date();
+    const end = new Date();
+    loadExpenses(start, end);
   };
 }
 

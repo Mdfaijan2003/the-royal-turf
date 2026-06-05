@@ -24,17 +24,19 @@ export async function computeSlotsForDate(date) {
 
   const bookedRanges = paids.map(b => ({
     start: new Date(b.start),
-    end: new Date(b.end)
+    end: new Date(b.end),
   }));
 
   const heldRanges = helds.map(h => ({
     start: new Date(h.start),
     end: new Date(h.end),
-    expiresAt: h.expiresAt
+    expiresAt: h.expiresAt,
   }));
 
   const mergedBooked = mergeRanges(bookedRanges); // use your existing helper
-  const mergedHeld   = mergeRanges(heldRanges.map(h => ({start:h.start, end:h.end})));
+  const mergedHeld = mergeRanges(
+    heldRanges.map(h => ({ start: h.start, end: h.end }))
+  );
 
   const allUnavailable = mergeRanges([...mergedBooked, ...mergedHeld]);
 
@@ -52,5 +54,9 @@ export async function computeSlotsForDate(date) {
     availableRanges.push({ start: lastEnd, end: new Date(dayEnd) });
   }
 
-  return { bookedRanges: mergedBooked, heldRanges: mergedHeld, availableRanges };
+  return {
+    bookedRanges: mergedBooked,
+    heldRanges: mergedHeld,
+    availableRanges,
+  };
 }

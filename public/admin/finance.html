@@ -99,6 +99,7 @@
 </head>
 
 <body class="bg-[#F8FAFC] text-[#1e293b] flex w-full min-h-screen overflow-x-hidden">
+
     <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
         <div class="mb-10 px-2">
             <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
@@ -119,7 +120,7 @@
                 <span class="font-semibold text-sm">Overview</span>
             </a>
 
-            <a href="bookings.html"
+            <a href="booking.html"
                 class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -137,13 +138,26 @@
                 <span class="font-semibold text-sm">Slot Control</span>
             </a>
 
-            <a href="#"
-                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+            <a href="finance.html"
+                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <span class="font-semibold text-sm">Finance</span>
+            </a>
+
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 mb-3 px-2">Configuration</p>
+
+            <a href="setting.html"
+                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="font-semibold text-sm">Settings</span>
             </a>
         </nav>
 
@@ -340,7 +354,8 @@
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Pending Dues</p>
                     <div>
                         <h3 class="text-3xl font-black text-orange-500 mt-2">₹ <span id="pending-dues"></span></h3>
-                        <p class="text-[10px] text-slate-400 mt-1"><span id="pending-count"></span> Bookings Unpaid</p>
+                        <p class="text-[10px] text-slate-400 mt-1"><span id="pending-count"></span> Bookings Unpaid
+                        </p>
                     </div>
                 </div>
 
@@ -348,7 +363,8 @@
                     <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Cash Reserved</p>
                     <div>
                         <h3 class="text-3xl font-black mt-2">₹ <span id="cash-reserved"></span></h3>
-                        <p class="text-[10px] text-slate-500 mt-1"><span id="months-runway"></span> months runway</p>
+                        <p class="text-[10px] text-slate-500 mt-1"><span id="months-runway"></span> months runway
+                        </p>
                     </div>
                 </div>
             </section>
@@ -663,7 +679,7 @@
             </section>
 
             <div id="expense-modal"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden"
+                class="fixed inset-0 z-50 items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden"
                 role="dialog" aria-modal="true">
                 <div
                     class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all scale-100">
@@ -698,9 +714,6 @@
                                 class="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
                         </div>
 
-
-
-
                         <div>
                             <label for="expense-category"
                                 class="block text-sm font-medium text-slate-700 mb-1">Category</label>
@@ -708,12 +721,12 @@
                                 <select id="expense-category"
                                     class="w-full appearance-none px-4 py-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-700">
                                     <option value="" disabled selected>Select Category</option>
-                                    <option value="Maintenance">Maintenance</option>
-                                    <option value="Electricity">Electricity</option>
-                                    <option value="Water">Water</option>
-                                    <option value="Salary">Salary</option>
-                                    <option value="Marketing">Marketing</option>
-                                    <option value="Miscellaneous">Miscellaneous</option>
+                                    <option value="Maintenance">MAINTENANCE</option>
+                                    <option value="Electricity">ELECTRICITY</option>
+                                    <option value="Water">WATER</option>
+                                    <option value="Salary">SALARY</option>
+                                    <option value="Marketing">MARKETING</option>
+                                    <option value="Miscellaneous">MISC</option>
                                 </select>
                                 <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor"
@@ -739,9 +752,9 @@
                                 <select id="expense-paid-via"
                                     class="w-full appearance-none px-4 py-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-slate-700">
                                     <option value="" disabled selected>Paid Via</option>
-                                    <option value="Cash">Cash</option>
+                                    <option value="CASH">Cash</option>
                                     <option value="UPI">UPI</option>
-                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="BANK">Bank Transfer</option>
                                 </select>
                                 <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor"
@@ -755,8 +768,8 @@
 
 
                         <div>
-                            <label for="expense-notes" class="block text-sm font-medium text-slate-700 mb-1">Notes <span
-                                    class="text-slate-400 font-normal">(Optional)</span></label>
+                            <label for="expense-notes" class="block text-sm font-medium text-slate-700 mb-1">Notes
+                                <span class="text-slate-400 font-normal">(Optional)</span></label>
                             <textarea id="expense-notes" rows="2" placeholder="Add any additional details..."
                                 class="w-full px-4 py-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"></textarea>
                         </div>
@@ -805,8 +818,9 @@
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
                             Net Profit Trend
                         </p>
-    
-                        <div class="h-64 flex items-center justify-center text-slate-400 text-sm bg-slate-50 rounded-2xl">
+
+                        <div
+                            class="h-64 flex items-center justify-center text-slate-400 text-sm bg-slate-50 rounded-2xl">
                             <canvas id="profitTrendChart" height="120"></canvas>
                         </div>
                     </div>

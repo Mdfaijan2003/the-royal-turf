@@ -22,9 +22,12 @@ async function clampRange(start, end) {
 export const addExpense = async (req, res) => {
   try {
     const { title, category, amount, paidVia, expenseDate, notes } = req.body;
+    console.log("Request Body", req.body);
+
     if (!title || !category || !amount || !paidVia || !expenseDate) {
       return res.status(400).json({ error: "Missing required fields" });
     }
+
     if (amount <= 0) {
       return res.status(400).json({ error: "Amount must be greater than 0" });
     }
@@ -35,13 +38,15 @@ export const addExpense = async (req, res) => {
 
     const expense = await Expense.create({
       title,
-      category,
-      amount,
-      paidVia,
+      category: category.toUpperCase(),
+      amount: Number(amount),
+      paidVia: paidVia.toUpperCase(),
       expenseDate: date,
       notes,
       createdBy: req.admin._id, // admin from auth middleware
     });
+
+    console.log("Expense", expense);
 
     res.status(201).json({
       success: true,
@@ -60,9 +65,7 @@ export const getExpenses = async (req, res) => {
     ({ start, end } = await clampRange(start, end));
 
     if (!start || !end) {
-      return res
-        .status(400)
-        .json({ error: "start and end date are required (YYYY-MM-DD)" });
+      return res.status(400).json({ error: "Start and End required" });
     }
     const startDate = new Date(`${start}T00:00:00.000Z`);
     const endDate = new Date(`${end}T23:59:59.999Z`);

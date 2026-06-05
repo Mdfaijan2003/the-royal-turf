@@ -13,7 +13,7 @@ const bookingSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["PAID", "CANCELLED"],
+      enum: ["PAID", "CANCELLED", "PARTIAL"],
       required: true,
     },
 
@@ -39,7 +39,7 @@ const bookingSchema = new mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["ONLINE"],
+      enum: ["ONLINE", "CASH"],
       default: "ONLINE",
     },
 
@@ -48,8 +48,17 @@ const bookingSchema = new mongoose.Schema(
       default: "RAZORPAY",
     },
 
-    razorpayOrderId: String,
-    razorpayPaymentId: String,
+    razorpayOrderId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+
+    razorpayPaymentId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
 
     paymentDate: {
       type: Date,
@@ -64,8 +73,8 @@ const bookingSchema = new mongoose.Schema(
         amount: Number,
         method: String, // CASH | UPI | OTHER
         date: Date,
-      }
-    ]
+      },
+    ],
   },
   { timestamps: true }
 );

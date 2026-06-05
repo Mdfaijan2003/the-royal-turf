@@ -14,7 +14,6 @@ const slotLockSchema = new mongoose.Schema({
   expiresAt: {
     type: Date,
     required: true,
-    index: true, // important for TTL
   },
 
   status: {
@@ -22,12 +21,16 @@ const slotLockSchema = new mongoose.Schema({
     enum: ["HELD", "CONSUMED", "CANCELLED"],
     default: "HELD",
   },
+
+  blockedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Admin",
+  },
 });
 
-// ⏱ Auto-delete expired locks
-slotLockSchema.index(
-  { expireAfterSeconds: 0 }
-);
+// TTL Index
+slotLockSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const SlotLock = mongoose.model("SlotLock", slotLockSchema);
+
 export default SlotLock;

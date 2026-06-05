@@ -5,7 +5,7 @@ import {
   fetchDashboardSummary,
   fetchDashboardBookings,
 } from "./api.dashboard.js";
-import { renderSlots } from "./slots.dashboard.js";
+import { renderSlots } from "./slots.js";
 import { renderGallery } from "./gallery.dashboard.js";
 
 document.addEventListener("DOMContentLoaded", initDashboard);
@@ -34,7 +34,7 @@ function initDashboard() {
 
   dom.ledgerSearch.addEventListener("input", e => {
     const query = e.target.value.trim();
-    if(!query){
+    if (!query) {
       console.log("Empty search, loading all bookings");
     }
     console.log("Ledger search query:", query);
