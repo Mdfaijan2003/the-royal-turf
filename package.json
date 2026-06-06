@@ -24,6 +24,7 @@
     "axios": "^1.13.2",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
+    "Buffer": "^0.0.0",
     "cloudinary": "^2.8.0",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",

@@ -119,7 +119,7 @@ export async function holdSlot(req, res) {
   }
 
   console.log(newEnd <= new Date());
-  console.log( new Date());
+  console.log(new Date());
   if (newStart <= new Date()) {
     return res.status(400).json({ error: "Booking must be in the future" });
   }

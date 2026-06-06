@@ -6,7 +6,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
 
-
 // // REGISTER ADMIN
 export const registerAdmin = asyncHandler(async (req, res) => {
   const { name, email, phone, password, adminSecret } = req.body;
@@ -52,14 +51,14 @@ export const loginAdmin = async (req, res) => {
     if (!admin) {
       return res.status(404).json({
         success: false,
-        message: "Admin not found",
+        message: "Invalid Credentials",
       });
     }
 
     if (admin.role !== "admin") {
       return res.status(403).json({
         success: false,
-        message: "Not an admin account",
+        message: "Invalid Credentials",
       });
     }
 
@@ -80,7 +79,7 @@ export const loginAdmin = async (req, res) => {
 
     const cookieOptions = {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
     };
 
@@ -119,8 +118,17 @@ export const logoutAdmin = asyncHandler(async (req, res) => {
 
   await Admin.findByIdAndUpdate(adminId, { $unset: { refreshToken: "" } });
 
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
 
   return res
     .status(200)
@@ -139,9 +147,6 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 
   const admin = await Admin.findById(decoded._id);
   if (!admin) throw new ApiError(401, "Invalid token user not found");
-
-  console.log("DB refresh:", admin.refreshToken);
-  console.log("Incoming:", incomingRefresh);
 
   if (admin.refreshToken !== incomingRefresh)
     throw new ApiError(401, "Refresh token expired or reused");
@@ -205,7 +210,3 @@ export const getCurrentAdmin = asyncHandler(async (req, res) => {
     .status(200)
     .json(new apiResponse(200, req.admin, "Admin info fetched"));
 });
-
-
-
-;

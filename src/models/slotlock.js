@@ -22,6 +22,11 @@ const slotLockSchema = new mongoose.Schema({
     default: "HELD",
   },
 
+  razorpayOrderId: {
+    type: String,
+    default: null,
+  },
+
   blockedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Admin",

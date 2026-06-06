@@ -1,11 +1,14 @@
-let modal,
-  modalTitle,
-  modalMessage,
-  modalIcon,
-  modalCloseButton;
+let modal;
+let modalTitle;
+let modalMessage;
+let modalIcon;
+let modalCloseButton;
 
-// Ensure DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+  initializeModal();
+});
+
+function initializeModal() {
   modal = document.getElementById("message-modal");
   modalTitle = document.getElementById("modal-title");
   modalMessage = document.getElementById("modal-message");
@@ -20,55 +23,77 @@ document.addEventListener("DOMContentLoaded", () => {
   modalCloseButton.addEventListener("click", closeModal);
 
   modal.addEventListener("click", e => {
-    if (e.target === modal) closeModal();
+    if (e.target === modal) {
+      closeModal();
+    }
   });
-});
+}
 
-function closeModal() {
-  modal?.classList.add("hidden");
+export function closeModal() {
+  const modal = document.getElementById("message-modal");
+
+  if (modal) {
+    modal.classList.add("hidden");
+  }
 }
 
 export function showModal(title, message, type = "info") {
-  if (!modal) return;
+  modal = document.getElementById("message-modal");
+  modalTitle = document.getElementById("modal-title");
+  modalMessage = document.getElementById("modal-message");
+  modalIcon = document.getElementById("modal-icon");
+
+  if (!modal || !modalTitle || !modalMessage || !modalIcon) {
+    console.warn("⚠️ Modal DOM elements missing");
+    return;
+  }
 
   modalTitle.textContent = title;
   modalMessage.textContent = message;
 
-  modalIcon.className =
-    "mx-auto flex items-center justify-center h-12 w-12 rounded-full";
+  // Reset previous state
+  modalIcon.className = "";
   modalIcon.innerHTML = "";
 
   switch (type) {
     case "success":
-      modalIcon.classList.add("bg-green-100");
+      modalIcon.classList.add("success");
       modalIcon.innerHTML = `
-        <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>`;
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 13l4 4L19 7" />
+        </svg>
+      `;
       break;
 
     case "error":
-      modalIcon.classList.add("bg-red-100");
+      modalIcon.classList.add("error");
       modalIcon.innerHTML = `
-        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>`;
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      `;
       break;
 
     case "warning":
-      modalIcon.classList.add("bg-yellow-100");
+      modalIcon.classList.add("warning");
       modalIcon.innerHTML = `
-        <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01M5.455 19h13.09L12 5 5.455 19z" />
-        </svg>`;
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+        </svg>
+      `;
       break;
 
     default:
-      modalIcon.classList.add("bg-blue-100");
+      modalIcon.classList.add("info");
       modalIcon.innerHTML = `
-        <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>`;
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4" />
+          <path d="M12 8h.01" />
+        </svg>
+      `;
   }
 
   modal.classList.remove("hidden");

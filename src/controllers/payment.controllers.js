@@ -4,7 +4,7 @@ import Booking from "../models/booking.js";
 import SlotLock from "../models/slotlock.js";
 import { computeSlotsForDate } from "../controllers/slots.controllers.js";
 import FinanceIncome from "../models/FinanceIncome.model.js";
-
+import { calculateBookingAmount } from "../utils/pricing.js";
 
 import { sendBookingConfirmationNotifications } from "../services/notification.service.js";
 
@@ -16,11 +16,11 @@ import { sendBookingConfirmationNotifications } from "../services/notification.s
  */
 export const createOrder = async (req, res) => {
   try {
-    const { lockId, totalAmount } = req.body;
+    const { lockId } = req.body;
 
-    if (!lockId || !totalAmount) {
+    if (!lockId) {
       return res.status(400).json({
-        error: "lockId and totalAmount are required",
+        error: "lockId is required",
       });
     }
 
@@ -36,7 +36,20 @@ export const createOrder = async (req, res) => {
     }
 
     // 🧮 Calculate advance (30%)
-    const advanceAmount = Math.round(totalAmount * 0.3);
+    const pricing = calculateBookingAmount(lock.start, lock.end);
+
+    const totalAmount = pricing.total;
+    const advanceAmount = pricing.advance;
+
+    if (lock.razorpayOrderId) {
+      return res.json({
+        orderId: lock.razorpayOrderId,
+        advanceAmount,
+        totalAmount,
+        currency: "INR",
+        key: process.env.RAZORPAY_KEY_ID,
+      });
+    }
 
     // Razorpay order ONLY for advance
     const order = await razorpay.orders.create({
@@ -44,6 +57,16 @@ export const createOrder = async (req, res) => {
       currency: "INR",
       receipt: `advance_${lockId}`,
     });
+
+    await SlotLock.findOneAndUpdate(
+      {
+        _id: lockId,
+        razorpayOrderId: null,
+      },
+      {
+        razorpayOrderId: order.id,
+      }
+    );
 
     res.json({
       orderId: order.id,
@@ -74,75 +97,130 @@ export const verifyPayment = async (req, res) => {
       customerName,
       customerEmail,
       customerPhone,
-      totalAmount,
     } = req.body;
 
     // 🔐 Verify Razorpay signature
     const body = razorpay_order_id + "|" + razorpay_payment_id;
+
     const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body)
       .digest("hex");
 
-    if (expectedSignature !== razorpay_signature) {
-      return res.status(400).json({ error: "Payment verification failed" });
+    const expectedBuffer = Buffer.from(expectedSignature, "utf8");
+    const receivedBuffer = Buffer.from(razorpay_signature, "utf8");
+
+    if (
+      expectedBuffer.length !== receivedBuffer.length ||
+      !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)
+    ) {
+      return res.status(400).json({
+        error: "Payment verification failed",
+      });
     }
 
-    /*
-    // Validate lock
-    const lock = await SlotLock.findOne({//
+    const existingBooking = await Booking.findOne({
+      razorpayPaymentId: razorpay_payment_id,
+    });
+
+    if (existingBooking) {
+      return res.json({
+        success: true,
+        bookingId: existingBooking._id,
+        advancePaid: existingBooking.advanceAmount,
+        remainingToPay: existingBooking.remainingAmount,
+        alreadyProcessed: true,
+      });
+    }
+
+    const existingOrder = await Booking.findOne({
+      razorpayOrderId: razorpay_order_id,
+    });
+
+    if (existingOrder) {
+      return res.json({
+        success: true,
+        bookingId: existingOrder._id,
+        advancePaid: existingOrder.advanceAmount,
+        remainingToPay: existingOrder.remainingAmount,
+        alreadyProcessed: true,
+      });
+    }
+
+    // Step 1: Find lock WITHOUT consuming it
+    const lock = await SlotLock.findOne({
       _id: lockId,
       status: "HELD",
       expiresAt: { $gt: new Date() },
     });
 
     if (!lock) {
-      return res.status(400).json({ error: "Slot lock expired or invalid" });
-    }
-    */
-
-    // Step 1: Find lock (NO status filter here yet)
-    const lock = await SlotLock.findById(lockId);
-
-    if (!lock) {
-      return res.status(404).json({ error: "Slot lock not found" });
+      return res.status(409).json({
+        error: "Slot already consumed or expired",
+      });
     }
 
-    // Step 2: Check expired
-    if (lock.expiresAt < new Date()) {
-      return res.status(410).json({
-        error: "Slot time expired before payment completion",
+    // Step 2: Verify order belongs to lock
+    if (lock.razorpayOrderId !== razorpay_order_id) {
+      return res.status(400).json({
+        error: "Order does not belong to this slot lock",
+      });
+    }
+
+    // Step 3: Consume lock atomically
+    const consumedLock = await SlotLock.findOneAndUpdate(
+      {
+        _id: lockId,
+        status: "HELD",
+        expiresAt: { $gt: new Date() },
+      },
+      {
+        status: "CONSUMED",
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!consumedLock) {
+      return res.status(409).json({
+        error: "Slot already consumed",
       });
     }
 
     // Step 3: Check minimum remaining time
-    const MIN_TIME_LEFT_MS = 60 * 1000; // 1 minute
-    const timeLeft = lock.expiresAt - Date.now();
+    // const MIN_TIME_LEFT_MS = 60 * 1000; // 1 minute
+    // const timeLeft = lock.expiresAt - Date.now();
 
-    if (timeLeft < MIN_TIME_LEFT_MS) {
-      return res.status(409).json({
-        error:
-          "Not enough time left to complete payment. Please retry booking.",
-        timeLeft,
-      });
-    }
+    // if (timeLeft < MIN_TIME_LEFT_MS) {
+    //   return res.status(409).json({
+    //     error:
+    //       "Not enough time left to complete payment. Please retry booking.",
+    //     timeLeft,
+    //   });
+    // }
 
     // Step 4: Check lock status
-    if (lock.status !== "HELD") {
-      return res.status(409).json({
-        error: "Slot already consumed or released",
-      });
-    }
+    // if (lock.status !== "HELD") {
+    //   return res.status(409).json({
+    //     error: "Slot already consumed or released",
+    //   });
+    // }
 
     // 🧮 Calculate amounts
-    const advanceAmount = Math.round(totalAmount * 0.3);
+    const pricing = calculateBookingAmount(
+      consumedLock.start,
+      consumedLock.end
+    );
+    const totalAmount = pricing.total;
+    const advanceAmount = pricing.advance;
     const remainingAmount = totalAmount - advanceAmount;
 
     // ✅ Create booking AFTER advance payment
     const booking = await Booking.create({
-      slotLock: lock._id,
-      start: lock.start,
-      end: lock.end,
+      slotLock: consumedLock._id,
+      start: consumedLock.start,
+      end: consumedLock.end,
       status: "PAID",
       customerName,
       customerEmail,
@@ -155,9 +233,9 @@ export const verifyPayment = async (req, res) => {
       paymentDate: new Date(),
     });
 
-    // 🔒 Consume lock
-    lock.status = "CONSUMED";
-    await lock.save();
+    // // 🔒 Consume lock
+    // lock.status = "CONSUMED";
+    // await lock.save();
 
     // Notifications
     sendBookingConfirmationNotifications(booking).catch(console.error);
@@ -178,6 +256,11 @@ export const verifyPayment = async (req, res) => {
     });
   } catch (err) {
     console.error("Verify payment error:", err);
+    if (err.code === 11000) {
+      return res.status(409).json({
+        error: "Payment already processed",
+      });
+    }
     res.status(500).json({ error: "Payment verification error" });
   }
 };

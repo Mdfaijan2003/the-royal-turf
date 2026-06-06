@@ -1,3 +1,5 @@
+import { showModal } from "./modal.js";
+
 const mobileMenuButton = document.getElementById("mobile-menu-button");
 const mobileMenu = document.getElementById("mobile-menu");
 mobileMenuButton.addEventListener("click", () => {
@@ -6,6 +8,7 @@ mobileMenuButton.addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", function () {
   // Get references to the form and confirmation message
+  console.log("CONTACT JS LOADED");
   const contactForm = document.getElementById("contact-form");
   const confirmationMessage = document.getElementById("confirmation-message");
   // Load saved data
@@ -44,6 +47,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listener for the form submission
   contactForm.addEventListener("submit", async function (event) {
     event.preventDefault(); // Prevents the default form submission and page reload
+    console.log("FORM SUBMIT TRIGGERED");
+    if (
+      !validateContactForm(
+        fullNameInput.value,
+        emailInput.value,
+        messageInput.value
+      )
+    ) {
+      return;
+    }
     const submitButton = contactForm.querySelector("button[type='submit']");
     submitButton.disabled = true;
     submitButton.textContent = "Sending…"; // Optional: show loading text
@@ -62,16 +75,32 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (response.ok) {
+        localStorage.removeItem("contactFormData");
+
         contactForm.classList.add("hidden");
         confirmationMessage.classList.remove("hidden");
+
+        showModal(
+          "Message Sent",
+          "Thank you for contacting us. We will get back to you soon.",
+          "success"
+        );
       } else {
-        alert("Failed to send message. Try again later.");
+        showModal(
+          "Error",
+          "Failed to send message. Please try again later.",
+          "error"
+        );
         submitButton.disabled = false; // Re-enable on error
         submitButton.textContent = "Send Message";
         submitButton.classList.remove("opacity-50", "cursor-not-allowed");
       }
     } catch (err) {
-      alert("Error sending message.");
+      showModal(
+        "Error",
+        "Unable to send message right now. Please try again.",
+        "error"
+      );
       console.error(err);
       submitButton.disabled = false; // Re-enable on error
       submitButton.textContent = "Send Message";
@@ -86,3 +115,82 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("-----------------------------------");
   });
 });
+
+function validateContactForm(name, email, message) {
+  name = name.trim();
+  email = email.trim();
+  message = message.trim();
+
+  console.log("Validating Contact Form", {
+    name,
+    email,
+    messageLength: message.length,
+  });
+
+  // Name validation
+  if (!name || name.length < 3) {
+    console.log("Validation failed: Name too short");
+
+    showModal(
+      "Invalid Name",
+      "Name must contain at least 3 characters",
+      "error"
+    );
+    return false;
+  }
+
+  // Allows:
+  // Md Faisal
+  // Md. Faisal
+  // O'Connor
+  // Anne-Marie
+  const nameRegex = /^[A-Za-z\s.'-]+$/;
+
+  if (!nameRegex.test(name)) {
+    console.log("Validation failed: Invalid name characters");
+
+    showModal(
+      "Invalid Name",
+      "Name can only contain letters, spaces, dots, apostrophes and hyphens",
+      "error"
+    );
+    return false;
+  }
+
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    console.log("Validation failed: Invalid email");
+
+    showModal("Invalid Email", "Please enter a valid email address", "error");
+    return false;
+  }
+
+  // Message validation
+  if (message.length < 10) {
+    console.log("Validation failed: Message too short");
+
+    showModal(
+      "Invalid Message",
+      "Message must contain at least 10 characters",
+      "error"
+    );
+    return false;
+  }
+
+  if (message.length > 1000) {
+    console.log("Validation failed: Message too long");
+
+    showModal(
+      "Message Too Long",
+      "Message cannot exceed 1000 characters",
+      "error"
+    );
+    return false;
+  }
+
+  console.log("Validation passed");
+
+  return true;
+}

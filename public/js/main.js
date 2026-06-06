@@ -199,6 +199,10 @@ document.addEventListener("DOMContentLoaded", () => {
   ================================ */
   dom.bookingForm.addEventListener("submit", async e => {
     e.preventDefault();
+
+    if (!validateBookingForm()) {
+      return;
+    }
     if (dom.confirmButton) {
       dom.confirmButton.disabled = true;
       dom.confirmButton.classList.add("opacity-50", "cursor-not-allowed");
@@ -367,6 +371,52 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+function validateBookingForm() {
+  const name = state.booking.name?.trim();
+  const email = state.booking.email?.trim();
+  const phone = state.booking.phone?.trim();
+
+  if (!name || name.length < 3) {
+    showModal(
+      "Invalid Name",
+      "Name must contain at least 3 characters",
+      "error"
+    );
+    return false;
+  }
+
+  const nameRegex = /^[A-Za-z\s]+$/;
+
+  if (!nameRegex.test(name)) {
+    showModal(
+      "Invalid Name",
+      "Name can only contain letters and spaces",
+      "error"
+    );
+    return false;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    showModal("Invalid Email", "Please enter a valid email address", "error");
+    return false;
+  }
+
+  const phoneRegex = /^[6-9]\d{9}$/;
+
+  if (!phoneRegex.test(phone)) {
+    showModal(
+      "Invalid Phone Number",
+      "Enter a valid 10 digit mobile number",
+      "error"
+    );
+    return false;
+  }
+
+  return true;
+}
 
 function generatePDF() {
   if (!window.jspdf) return alert("PDF library not loaded");
