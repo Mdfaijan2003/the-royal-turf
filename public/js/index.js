@@ -11,6 +11,38 @@ const header = document.getElementById("site-header");
 const inner = document.getElementById("header-inner");
 const title = document.getElementById("header-title");
 
+const reviews = [
+  {
+    name: "Rahul Sharma",
+    review:
+      "Amazing turf with excellent floodlights and a smooth booking process. Highly recommended.",
+  },
+
+  {
+    name: "Arman Khan",
+    review:
+      "Best turf experience in the area. Clean, spacious and professionally managed.",
+  },
+
+  {
+    name: "Soham Das",
+    review:
+      "Affordable pricing with outstanding maintenance. Will definitely book again.",
+  },
+
+  {
+    name: "Ritik Roy",
+    review:
+      "The online booking system is super easy and the turf quality is top-notch.",
+  },
+
+  {
+    name: "Ayan Mondal",
+    review:
+      "Perfect place for weekend matches. Loved the atmosphere and management.",
+  },
+];
+
 window?.addEventListener("scroll", () => {
   if (window.scrollY > 80) {
     // Shrink state
@@ -36,6 +68,11 @@ window?.addEventListener("scroll", () => {
 });
 
 document?.addEventListener("DOMContentLoaded", () => {
+  const year = document.getElementById("current-year");
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
+
   dom.checkSlotsBtn?.addEventListener("click", e => {
     loadSlots();
   });
@@ -319,4 +356,65 @@ document?.addEventListener("DOMContentLoaded", () => {
         "<p class='text-center text-red-500'>Failed to load bookings</p>";
     }
   });
+
+  let currentReview = 0;
+
+  const reviewText = document.getElementById("review-text");
+  const reviewName = document.getElementById("review-name");
+  const reviewAvatar = document.getElementById("review-avatar");
+  const dots = document.getElementById("review-dots");
+
+  function renderReview(index) {
+    const r = reviews[index];
+
+    reviewText.textContent = r.review;
+
+    reviewName.textContent = r.name;
+
+    reviewAvatar.textContent = r.name
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .substring(0, 2);
+
+    dots.innerHTML = "";
+
+    reviews.forEach((_, i) => {
+      const dot = document.createElement("div");
+
+      dot.className = "review-dot";
+
+      if (i === index) {
+        dot.classList.add("active");
+      }
+
+      dot.onclick = () => {
+        currentReview = i;
+
+        renderReview(i);
+      };
+
+      dots.appendChild(dot);
+    });
+  }
+
+  document.querySelector(".next").onclick = () => {
+    currentReview = (currentReview + 1) % reviews.length;
+
+    renderReview(currentReview);
+  };
+
+  document.querySelector(".prev").onclick = () => {
+    currentReview = (currentReview - 1 + reviews.length) % reviews.length;
+
+    renderReview(currentReview);
+  };
+
+  setInterval(() => {
+    currentReview = (currentReview + 1) % reviews.length;
+
+    renderReview(currentReview);
+  }, 5000);
+
+  renderReview(0);
 });

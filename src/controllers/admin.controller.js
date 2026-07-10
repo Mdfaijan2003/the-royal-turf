@@ -5,6 +5,16 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
+import { generateToken } from "../config/csrf.js";
+
+export const getCsrfToken = (req, res) => {
+  const csrfToken = generateToken(req);
+
+  return res.status(200).json({
+    success: true,
+    csrfToken,
+  });
+};
 
 // // REGISTER ADMIN
 export const registerAdmin = asyncHandler(async (req, res) => {

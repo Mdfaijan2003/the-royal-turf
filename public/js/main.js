@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===============================
      RESTORE USER FORM
   ================================ */
+  const year = document.getElementById("current-year");
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
 
   const savedForm = JSON.parse(localStorage.getItem("userFormData")) || {};
 

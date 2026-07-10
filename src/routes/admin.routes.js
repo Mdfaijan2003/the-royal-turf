@@ -10,6 +10,7 @@ import {
   // getCurrentAdmin
 } from "../controllers/admin.controller.js";
 
+import { getCsrfToken } from "../controllers/admin.controller.js";
 import {
   addSalary,
   getPreviousMonthSalaries,
@@ -63,10 +64,11 @@ import {
   getAllStaff,
 } from "../controllers/admin.staff.controller.js";
 import { financeCharts } from "../controllers/admin.finance.charts.controller.js";
-
+import { csrfSynchronisedProtection } from "../config/csrf.js";
 const adminRouter = Router();
 
 adminRouter.post("/login", loginAdmin);
+adminRouter.get("/csrf", verifyAdminJWT, requireAdminRole, getCsrfToken);
 
 adminRouter.get(
   "/bookings",
@@ -90,18 +92,21 @@ adminRouter.post(
   "/bookings/:id/cancel",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   adminCancelBooking
 );
 adminRouter.post(
   "/bookings/:id/complete",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   adminCompleteBooking
 );
 adminRouter.post(
   "/bookings/:id/manual-payment",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   adminManualPayment
 );
 adminRouter.get(
@@ -114,6 +119,7 @@ adminRouter.post(
   "/V2/bookings/create",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   adminManualBookingCreate
 );
 
@@ -153,6 +159,7 @@ adminRouter.post(
   "/gallery",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   upload.single("file"),
   uploadMedia
 );
@@ -160,21 +167,35 @@ adminRouter.delete(
   "/gallery/:id",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   deleteMedia
 );
 
 /* Expenses */
-adminRouter.post("/expenses", verifyAdminJWT, requireAdminRole, addExpense);
+adminRouter.post(
+  "/expenses",
+  verifyAdminJWT,
+  requireAdminRole,
+  csrfSynchronisedProtection,
+  addExpense
+);
 adminRouter.get("/expenses", verifyAdminJWT, requireAdminRole, getExpenses);
 adminRouter.delete(
   "/expenses/:id",
   verifyAdminJWT,
   requireAdminRole,
+  csrfSynchronisedProtection,
   deleteExpense
 );
 
 /* Salaries */
-adminRouter.post("/salaries", verifyAdminJWT, requireAdminRole, addSalary);
+adminRouter.post(
+  "/salaries",
+  verifyAdminJWT,
+  requireAdminRole,
+  csrfSynchronisedProtection,
+  addSalary
+);
 adminRouter.get(
   "/salaries",
   verifyAdminJWT,
@@ -199,7 +220,7 @@ adminRouter.get(
 );
 
 /* Staff */
-adminRouter.post("/staff", createStaff); // create staff
+adminRouter.post("/staff", csrfSynchronisedProtection, createStaff); // create staff
 adminRouter.get("/staff", getAllStaff);
 
 /*Charts*/

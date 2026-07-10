@@ -1,23 +1,24 @@
 import "dotenv/config";
+import "./config/env.js";
+
 import express from "express";
 import path from "path";
-import cron from "node-cron";
-import { ZodError } from "zod";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
 import hpp from "hpp";
-import mongoSanitize from "express-mongo-sanitize";
+import { ZodError } from "zod";
+
 import {
   apiLimiter,
   holdSlotLimiter,
   adminLoginLimiter,
   paymentLimiter,
 } from "./middleware/rateLimit.middleware.js";
-
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 
 import slotsRouter from "./routes/slots.routes.js";
 import bookingRouter from "./routes/booking.routes.js";
@@ -33,67 +34,65 @@ import {
   requireAdminRole,
 } from "./middleware/auth.middleware.js";
 
-import SlotLock from "./models/slotlock.js";
-import Booking from "./models/booking.js";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 const app = express();
 
-/* ===============================
-   SECURITY
-================================ */
+app.disable("x-powered-by");
 app.set("trust proxy", 1);
-// Helmet for all routes EXCEPT booking/payment
+
+/* =====================================================
+   SECURITY
+===================================================== */
+
 const helmetMiddleware = helmet({
-  contentSecurityPolicy: false, // Razorpay needs this
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
 });
 
 app.use((req, res, next) => {
-  if (req.path === "/booking.html") {
-    return next(); // helmet skipped ONLY here
+  if (req.path === "/booking") {
+    return next();
   }
 
   helmetMiddleware(req, res, next);
 });
 
 app.use(compression());
+
 app.use("/api", apiLimiter);
 
-// Remove your manual CSP middleware and use:
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
     [
-      // Default
       "default-src 'self'",
 
-      // Scripts
       "script-src 'self' https://checkout.razorpay.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
 
-      // Styles & Fonts
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
-      "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data: ",
 
-      // Images
+      "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:",
+
       "img-src 'self' data: https:",
 
-      // Network / API calls
-      "connect-src 'self' https://cdnjs.cloudflare.com https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com",
+      "connect-src 'self' https://api.razorpay.com https://lumberjack.razorpay.com https://*.razorpay.com https://cdnjs.cloudflare.com",
 
-      // ✅ IFAMES (FIXED)
-      "frame-src 'self' https://checkout.razorpay.com https://api.razorpay.com https://www.google.com https://www.google.com/maps https://maps.google.com",
+      "frame-src 'self' https://checkout.razorpay.com https://api.razorpay.com https://www.google.com https://maps.google.com",
 
-      // Hardening
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'self'",
     ].join("; ")
   );
+
   next();
 });
-const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL];
+
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL].filter(
+  Boolean
+);
 
 app.use(
   cors({
@@ -102,64 +101,117 @@ app.use(
   })
 );
 
-app.use("/webhook", express.raw({ type: "application/json" }), webHookrouter);
-
 app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  express.json({
+    limit: "10kb",
+  })
+);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "10kb",
+  })
+);
 
 app.use(hpp());
-// app.use(mongoSanitize());
 
-// 1️⃣ API routes FIRST
+/* =====================================================
+   WEBHOOK
+===================================================== */
+
+app.use(
+  "/webhook",
+  express.raw({
+    type: "application/json",
+  }),
+  webHookrouter
+);
+
+/* =====================================================
+   API ROUTES
+===================================================== */
+
 app.use("/api/admin", adminRoutes);
+
 app.use("/api/admin/bookings", verifyAdminJWT, requireAdminRole, bookingRouter);
+
 app.use("/api/admin/finance", verifyAdminJWT, requireAdminRole, adminRoutes);
 
 app.use("/api/v1/healthcheck", healthRoutes);
 
 app.use("/api/slots", holdSlotLimiter, slotsRouter);
+
 app.use("/api/bookings", bookingRouter);
+
 app.use("/api/contact", contactRouter);
+
 app.use("/api/payments", paymentLimiter, paymentRoutes);
+
 app.use("/api/gallery", galleryRoutes);
 
-// Static files (JS, CSS, images)
-app.use(express.static(path.join(process.cwd(), "public")));
-app.use(express.static(path.join(process.cwd(), "admin")));
+/* =====================================================
+   STATIC FILES
+===================================================== */
 
-//  Explicit HTML routes
+app.use(express.static(path.join(process.cwd(), "public")));
+
+/* =====================================================
+   PAGE ROUTES
+===================================================== */
+
+const servePage = (route, file) => {
+  app.get(route, (req, res) => {
+    res.sendFile(path.join(process.cwd(), "public", file));
+  });
+};
+
+servePage("/", "index.html");
+
+servePage("/booking", "booking.html");
+
+servePage("/gallery", "gallery.html");
+
+servePage("/faq", "faq.html");
+
+servePage("/contact", "contact.html");
+
+servePage("/features", "features.html");
+
+servePage("/about", "about.html");
+
+/* ==========================
+   ADMIN PAGES
+========================== */
+
 app.get("/admin/login", adminLoginLimiter, (req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "admin", "login.html"));
 });
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "public", "index.html"));
+/* =====================================================
+   API 404
+===================================================== */
+
+app.use("/api", (req, res) => {
+  return res.status(404).json({
+    success: false,
+    message: "API route not found",
+  });
 });
 
-// SPA fallback
+/* =====================================================
+   WEBSITE 404
+===================================================== */
+
 app.use((req, res) => {
-  if (req.path.startsWith("/api")) return;
-  res.sendFile(path.join(process.cwd(), "public", "index.html"));
+  res.status(404).sendFile(path.join(process.cwd(), "public", "404.html"));
 });
 
-// cron.schedule("* * * * *", async () => {
-//   try {
-//     console.log("Running cleanup for expired holds...");
-//     const now = new Date();
-
-//     // const deleted = await SlotLock.deleteMany({ expiresAt: { $lte: now } });
-//     // const result = await Booking.updateMany(
-//     //   { status: "HELD", holdExpiresAt: { $lte: now } },
-//     //   { status: "CANCELLED" }
-//     // );
-
-//     console.log(`SlotLocks deleted: ${deleted.deletedCount}`);
-//     console.log(`Bookings cancelled: ${result.modifiedCount}`);
-//   } catch (err) {
-//     console.error("Error during cron cleanup:", err);
-//   }
-// });
+/* =====================================================
+   GLOBAL ERROR HANDLER
+===================================================== */
 
 app.use((err, req, res, next) => {
   console.error("GLOBAL ERROR:", err);
@@ -168,16 +220,18 @@ app.use((err, req, res, next) => {
     return res.status(400).json({
       success: false,
       message: "Validation error",
-      error: err.flatten(),
+      errors: err.flatten(),
     });
   }
 
   const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
 
   res.status(statusCode).json({
     success: false,
-    message,
+    message:
+      process.env.NODE_ENV === "production"
+        ? "Internal Server Error"
+        : err.message,
   });
 });
 

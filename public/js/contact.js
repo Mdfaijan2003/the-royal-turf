@@ -8,6 +8,12 @@ mobileMenuButton.addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", function () {
   // Get references to the form and confirmation message
+
+  const year = document.getElementById("current-year");
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
+
   console.log("CONTACT JS LOADED");
   const contactForm = document.getElementById("contact-form");
   const confirmationMessage = document.getElementById("confirmation-message");

@@ -1,9 +1,7 @@
 // src/server.js
-import dotenv from "dotenv";
+
 import { app } from "./src/app.js";
 import connectDB from "./src/db/index.js";
-
-dotenv.config({ path: "./.env" });
 
 // PORT config
 const PORT = process.env.PORT || 3003;
@@ -36,7 +34,6 @@ async function startServer() {
 
     process.on("SIGINT", shutdown);
     process.on("SIGTERM", shutdown);
-
   } catch (err) {
     console.error("❌ Server failed to start:", err.message);
     process.exit(1);

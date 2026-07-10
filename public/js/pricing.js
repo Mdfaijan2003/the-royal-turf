@@ -1,6 +1,5 @@
 import { state } from "./state.js";
 
-
 export function calculateAmount(start, end) {
   if (!(start instanceof Date) || !(end instanceof Date)) return resetZero();
 

@@ -1,3 +1,4 @@
+import booking from "../../../src/models/booking.js";
 import { dom } from "./dom.dashboard.js";
 
 const slotState = {
@@ -871,6 +872,44 @@ function handleSlotAction(e) {
   }
 }
 
+async function saveChanges(bookingId, paidOn, isCompleted) {
+  try {
+    if (!bookingId || paidOn === null || paidOn === undefined) {
+      throw new Error("Booking ID or Paid Amount is missing");
+    }
+
+    const payload = {
+      bookingId,
+      paidOn,
+      isCompleted,
+    };
+
+    const res = await fetch("/api/admin/V2/bookings/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || "Update failed");
+    }
+
+    closeViewBookingModal();
+
+    await renderSlots(slotState.currentDate);
+
+    return data;
+  } catch (error) {
+    console.error("Update Error:", error);
+
+    throw error;
+  }
+}
+
 /* ===============================
    INITIALIZATION
 ================================ */
@@ -905,6 +944,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     submitBooking(new FormData(e.target));
   });
+
+  document
+    .getElementById("save-booking-update")
+    ?.addEventListener("click", async () => {
+      const modal = document.getElementById("view-booking-modal");
+      const bookingId = modal.dataset.currentBookingId;
+      const paidAmount = Number(
+        document.getElementById("paid-on-spot").value || 0
+      );
+      const isCompleted = document.querySelector(
+        'input[name="booking-complete"]:checked'
+      )?.value;
+
+      if (!bookingId) {
+        alert("Error: No booking ID found");
+        return;
+      }
+
+      if (paidAmount < 0) {
+        alert("Paid amount cannot be negative");
+        return;
+      }
+
+      const date = await saveChanges(bookingId, paidAmount, isCompleted);
+    });
 
   dom.slotContainer.addEventListener("click", handleSlotAction);
 

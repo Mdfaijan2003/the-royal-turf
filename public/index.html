@@ -21,1087 +21,7 @@
         rel="stylesheet" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0
-        }
 
-        :root {
-            --green: #059669;
-            --green-mid: #10b981;
-            --green-light: #d1fae5;
-            --green-xlight: #ecfdf5;
-            --border: rgba(5, 150, 105, 0.18);
-            --border-light: rgba(5, 150, 105, 0.1);
-            --text: #111827;
-            --muted: #6b7280;
-            --muted-light: #9ca3af;
-            --bg: #f8fffe;
-            --white: #ffffff;
-            --font-head: 'Bebas Neue', sans-serif;
-            --font-body: 'DM Sans', sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ── PITCH GRID BG ── */
-        .pitch-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            background:
-                linear-gradient(transparent 49.5%, rgba(5, 150, 105, 0.03) 49.5%, rgba(5, 150, 105, 0.03) 50.5%, transparent 50.5%),
-                linear-gradient(90deg, transparent 49.5%, rgba(5, 150, 105, 0.03) 49.5%, rgba(5, 150, 105, 0.03) 50.5%, transparent 50.5%);
-            background-size: 100px 100px;
-            pointer-events: none;
-        }
-
-        .pitch-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 255, 255, 0.65) 0%, transparent 80%);
-        }
-
-        /* ── HEADER ── */
-        #site-header {
-            position: fixed;
-            top: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 92%;
-            max-width: 1280px;
-            z-index: 50;
-            transition: all 0.3s;
-        }
-
-        #header-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(14px);
-            border: 1px solid var(--border-light);
-            border-radius: 100px;
-            padding: 0.6rem 1.5rem;
-            box-shadow: 0 4px 24px rgba(5, 150, 105, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
-        }
-
-        #header-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-
-        #header-title {
-            font-family: var(--font-head);
-            font-size: 1.3rem;
-            letter-spacing: 0.04em;
-            color: var(--text);
-            white-space: nowrap;
-        }
-
-        #desktop-menu {
-            display: none;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        @media(min-width:768px) {
-            #desktop-menu {
-                display: flex;
-            }
-        }
-
-        #desktop-menu a {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        #desktop-menu a:hover {
-            color: var(--green);
-        }
-
-        #header-cta {
-            display: none;
-            background: var(--green);
-            color: #fff;
-            font-size: 0.82rem;
-            font-weight: 500;
-            padding: 8px 20px;
-            border-radius: 100px;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        @media(min-width:640px) {
-            #header-cta {
-                display: inline-flex;
-                align-items: center;
-            }
-        }
-
-        #header-cta:hover {
-            background: #047857;
-            transform: translateY(-1px);
-        }
-
-        #mobile-menu-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text);
-            padding: 4px;
-            display: flex;
-            align-items: center;
-        }
-
-        @media(min-width:768px) {
-            #mobile-menu-button {
-                display: none;
-            }
-        }
-
-        #mobile-menu {
-            margin-top: 0.5rem;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(14px);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(5, 150, 105, 0.1);
-        }
-
-        #mobile-menu.hidden {
-            display: none;
-        }
-
-        #mobile-menu nav {
-            display: flex;
-            flex-direction: column;
-            padding: 0.75rem;
-        }
-
-        #mobile-menu a {
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--muted);
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        #mobile-menu a:hover {
-            background: var(--green-xlight);
-            color: var(--green);
-        }
-
-        /* ── PAGE WRAPPER ── */
-        .page {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-        }
-
-        /* ── HERO SECTION ── */
-        .hero-section {
-            position: relative;
-            min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            overflow: hidden;
-        }
-
-        /* left — text side */
-        .hero-text {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 10rem 4rem 6rem 5rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--green);
-            border: 1px solid var(--border);
-            background: var(--green-xlight);
-            padding: 5px 16px;
-            border-radius: 100px;
-            margin-bottom: 2rem;
-            width: fit-content;
-        }
-
-        .hero-text h1 {
-            font-family: var(--font-head);
-            font-size: clamp(4rem, 7vw, 7rem);
-            line-height: 0.9;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 0.01em;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-text h1 span {
-            color: var(--green);
-            display: block;
-        }
-
-        .hero-text p {
-            font-size: 1rem;
-            color: var(--muted);
-            line-height: 1.75;
-            font-weight: 300;
-            max-width: 380px;
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-head);
-            font-size: 1.1rem;
-            letter-spacing: 0.06em;
-            color: #fff;
-            background: var(--green);
-            padding: 14px 36px;
-            border-radius: 100px;
-            text-decoration: none;
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 20px rgba(5, 150, 105, 0.25);
-        }
-
-        .btn-primary:hover {
-            background: #047857;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(5, 150, 105, 0.3);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.88rem;
-            font-weight: 500;
-            color: var(--green);
-            text-decoration: none;
-            padding: 8px 0;
-            border-bottom: 1.5px solid rgba(5, 150, 105, 0.3);
-            transition: border-color 0.2s, color 0.2s;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--green);
-            color: #047857;
-        }
-
-        /* hero mini-stats */
-        .hero-stats {
-            display: flex;
-            gap: 2.5rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-light);
-        }
-
-        .h-stat {}
-
-        .h-stat-num {
-            font-family: var(--font-head);
-            font-size: 2.2rem;
-            color: var(--green);
-            line-height: 1;
-        }
-
-        .h-stat-label {
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--muted-light);
-            margin-top: 3px;
-        }
-
-        /* right — image side */
-        .hero-image {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-        }
-
-        /* overlay so image edges blend */
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            background: linear-gradient(to right, var(--bg) 0%, transparent 30%),
-                linear-gradient(to top, var(--bg) 0%, transparent 20%);
-        }
-
-        /* floating card on image */
-        .hero-float-card {
-            position: absolute;
-            bottom: 3rem;
-            right: 2.5rem;
-            z-index: 2;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.25rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            box-shadow: 0 8px 32px rgba(5, 150, 105, 0.12);
-        }
-
-        .hfc-label {
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--muted);
-        }
-
-        .hfc-val {
-            font-family: var(--font-head);
-            font-size: 1.8rem;
-            color: var(--green);
-            line-height: 1;
-        }
-
-        .hfc-sub {
-            font-size: 0.75rem;
-            color: var(--muted-light);
-        }
-
-        /* ── WAVE DIVIDER ── */
-        .wave-divider {
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--green-light), var(--green), var(--green-light));
-        }
-
-        /* ── SECTION BASE ── */
-        .section {
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-intro {
-            padding: 4rem 5rem 0;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-
-        .section-label {
-            font-size: 10.5px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--green);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 0.6rem;
-        }
-
-        .section-label::before {
-            content: '';
-            display: block;
-            width: 22px;
-            height: 1px;
-            background: var(--green);
-        }
-
-        .section-heading {
-            font-family: var(--font-head);
-            font-size: clamp(1.8rem, 3vw, 2.6rem);
-            color: var(--text);
-            line-height: 1.05;
-        }
-
-        .section-sub {
-            font-size: 0.85rem;
-            color: var(--muted-light);
-            font-weight: 300;
-            font-style: italic;
-            white-space: nowrap;
-            padding-bottom: 4px;
-        }
-
-        /* ── HOW IT WORKS ── */
-        .steps-wrap {
-            padding: 2.5rem 5rem 0;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-        }
-
-        .step-card {
-            background: var(--white);
-            border: 1px solid rgba(5, 150, 105, 0.11);
-            border-radius: 16px;
-            padding: 2rem 1.75rem;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .step-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--green), var(--green-mid));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 3px 3px 0 0;
-        }
-
-        .step-card:hover {
-            border-color: rgba(5, 150, 105, 0.32);
-            box-shadow: 0 10px 36px rgba(5, 150, 105, 0.09), 0 2px 6px rgba(0, 0, 0, 0.04);
-            transform: translateY(-3px);
-        }
-
-        .step-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .step-num {
-            font-family: var(--font-head);
-            font-size: 3.5rem;
-            color: rgba(5, 150, 105, 0.1);
-            line-height: 1;
-            position: absolute;
-            top: 1rem;
-            right: 1.25rem;
-            letter-spacing: 0.02em;
-        }
-
-        .step-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: var(--green-xlight);
-            border: 1px solid var(--border-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.25rem;
-            position: relative;
-            z-index: 1;
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .step-card:hover .step-icon {
-            background: var(--green-light);
-            border-color: var(--border);
-        }
-
-        .step-icon .material-symbols-outlined {
-            font-size: 1.4rem;
-            color: var(--green);
-        }
-
-        .step-title {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .step-desc {
-            font-size: 0.83rem;
-            color: var(--muted);
-            line-height: 1.65;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ── BOOKING LOOKUP ── */
-        .lookup-section {
-            margin-top: 3.5rem;
-            background: var(--white);
-            border-top: 1px solid var(--border-light);
-            border-bottom: 1px solid var(--border-light);
-            padding: 4rem 5rem;
-        }
-
-        .lookup-inner {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .lookup-text .section-label {
-            margin-bottom: 0.5rem;
-        }
-
-        .lookup-text .section-heading {
-            margin-bottom: 0.75rem;
-        }
-
-        .lookup-text p {
-            font-size: 0.9rem;
-            color: var(--muted);
-            line-height: 1.7;
-            font-weight: 300;
-        }
-
-        .lookup-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .lookup-field label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted);
-            margin-bottom: 0.5rem;
-        }
-
-        #booking-email {
-            width: 100%;
-            padding: 0.9rem 1.1rem;
-            background: var(--bg);
-            border: 1px solid rgba(5, 150, 105, 0.15);
-            border-radius: 10px;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
-        }
-
-        #booking-email::placeholder {
-            color: var(--muted-light);
-        }
-
-        #booking-email:focus {
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-            background: var(--white);
-        }
-
-        #fetch-bookings-btn {
-            font-family: var(--font-head);
-            font-size: 1.1rem;
-            letter-spacing: 0.06em;
-            color: #fff;
-            background: var(--green);
-            border: none;
-            border-radius: 100px;
-            padding: 13px 32px;
-            cursor: pointer;
-            width: fit-content;
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);
-        }
-
-        #fetch-bookings-btn:hover {
-            background: #047857;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
-        }
-
-        #booking-results {
-            margin-top: 1.25rem;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        #booking-results.hidden {
-            display: none;
-        }
-
-        #booking-skeleton {
-            margin-top: 1.25rem;
-        }
-
-        #booking-skeleton.hidden {
-            display: none;
-        }
-
-        .skeleton-bar {
-            height: 14px;
-            background: var(--green-xlight);
-            border-radius: 6px;
-            margin-bottom: 10px;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.4;
-            }
-        }
-
-        /* ── SLOT CHECKER ── */
-        .slots-section {
-            padding: 4rem 5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .slots-controls {
-            display: flex;
-            align-items: flex-end;
-            gap: 12px;
-            margin-top: 2rem;
-        }
-
-        .slot-date-wrap {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .slot-date-wrap label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted);
-        }
-
-        #slotDate {
-            padding: 0.85rem 1.1rem;
-            background: var(--white);
-            border: 1px solid rgba(5, 150, 105, 0.15);
-            border-radius: 10px;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            color: var(--text);
-            outline: none;
-            transition: border-color 0.25s, box-shadow 0.25s;
-            cursor: pointer;
-        }
-
-        #slotDate:focus {
-            border-color: var(--green);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-        }
-
-        #check-slots {
-            font-family: var(--font-head);
-            font-size: 1.05rem;
-            letter-spacing: 0.06em;
-            color: #fff;
-            background: var(--green);
-            border: none;
-            border-radius: 100px;
-            padding: 13px 28px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.2);
-            white-space: nowrap;
-        }
-
-        #check-slots:hover {
-            background: #047857;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
-        }
-
-        #slotsLoading {
-            display: none;
-            text-align: center;
-            color: var(--muted);
-            padding: 3rem 0;
-        }
-
-        #slotsLoading.hidden {
-            display: none;
-        }
-
-        #slotsEmpty {
-            display: none;
-            text-align: center;
-            padding: 3rem 0;
-        }
-
-        #slotsEmpty.hidden {
-            display: none;
-        }
-
-        #slotsEmpty p {
-            font-size: 1rem;
-            color: var(--muted);
-        }
-
-        #slotsContainer {
-            margin-top: 2rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        /* ── CTA STRIP ── */
-        .cta-strip {
-            background: var(--green);
-            padding: 4rem 5rem;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            align-items: center;
-            gap: 3rem;
-        }
-
-        .cta-text h2 {
-            font-family: var(--font-head);
-            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-            color: #fff;
-            letter-spacing: 0.02em;
-            margin-bottom: 0.4rem;
-        }
-
-        .cta-text p {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 300;
-        }
-
-        .cta-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .cta-btn-primary {
-            display: inline-block;
-            font-family: var(--font-head);
-            font-size: 1.15rem;
-            letter-spacing: 0.08em;
-            color: var(--green);
-            background: #fff;
-            padding: 15px 44px;
-            border-radius: 100px;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14);
-        }
-
-        .cta-btn-primary:hover {
-            background: #ecfdf5;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
-        }
-
-        .cta-btn-secondary {
-            font-size: 0.82rem;
-            color: rgba(255, 255, 255, 0.75);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 1px;
-            transition: color 0.2s, border-color 0.2s;
-        }
-
-        .cta-btn-secondary:hover {
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* ── FOOTER ── */
-        footer {
-            background: #0f172a;
-            color: #94a3b8;
-            padding: 4rem 5rem 2rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1.2fr 1.2fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand h3 {
-            font-family: var(--font-head);
-            font-size: 1.4rem;
-            letter-spacing: 0.04em;
-            color: #fff;
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-brand p {
-            font-size: 0.82rem;
-            line-height: 1.65;
-            color: #64748b;
-            margin-bottom: 1.25rem;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .footer-socials a {
-            display: flex;
-            align-items: center;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-
-        .footer-socials a:hover {
-            opacity: 1;
-        }
-
-        .footer-col h3 {
-            font-size: 0.72rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--green-mid);
-            margin-bottom: 1rem;
-        }
-
-        .footer-col ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .footer-col ul li a {
-            font-size: 0.85rem;
-            color: #64748b;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-col ul li a:hover {
-            color: var(--green-mid);
-        }
-
-        .footer-hours li {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.82rem;
-            color: #64748b;
-            padding: 0.3rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .footer-hours li:last-child {
-            border: none;
-        }
-
-        .footer-contact-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-
-        .footer-contact-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.6rem;
-        }
-
-        .footer-contact-list .material-symbols-outlined {
-            font-size: 1rem;
-            color: var(--green-mid);
-            margin-top: 1px;
-            flex-shrink: 0;
-        }
-
-        .footer-contact-list span:last-child {
-            font-size: 0.82rem;
-            color: #64748b;
-            line-height: 1.5;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
-            padding-top: 1.5rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #475569;
-        }
-
-        /* ── ANIMATIONS ── */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.55s ease forwards;
-        }
-
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        /* ── RESPONSIVE ── */
-        @media(max-width:960px) {
-            .hero-section {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-text {
-                padding: 9rem 2.5rem 4rem;
-            }
-
-            .hero-image {
-                display: none;
-            }
-
-            .steps-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .lookup-inner {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            #slotsContainer {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .section-intro,
-            .steps-wrap,
-            .slots-section,
-            .lookup-section,
-            .cta-strip,
-            footer {
-                padding-left: 2.5rem;
-                padding-right: 2.5rem;
-            }
-
-            .cta-strip {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .cta-actions {
-                align-items: center;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
-            }
-        }
-
-        @media(max-width:560px) {
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #slotsContainer {
-                grid-template-columns: 1fr;
-            }
-
-            .slots-controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            #check-slots {
-                width: 100%;
-                text-align: center;
-            }
-
-            .section-intro,
-            .steps-wrap,
-            .slots-section,
-            .lookup-section,
-            .cta-strip,
-            footer {
-                padding-left: 1.25rem;
-                padding-right: 1.25rem;
-            }
-
-            .section-intro {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-stats {
-                gap: 1.5rem;
-                flex-wrap: wrap;
-            }
-        }
-    </style> -->
 </head>
 
 <body>
@@ -1113,20 +33,21 @@
         <!-- ── HEADER ── -->
         <header id="site-header">
             <div id="header-inner">
-                <a href="/index.html" id="header-brand">
+                <a href="/" id="header-brand">
                     <span id="header-title">The Royal Turf</span>
                 </a>
 
                 <nav id="desktop-menu">
-                    <a href="/index.html">Home</a>
-                    <a href="/features.html">Features</a>
-                    <a href="/booking.html">Bookings</a>
-                    <a href="/gallery.html">Gallery</a>
-                    <a href="/contact.html">Contact</a>
+                    <a href="/">Home</a>
+                    <a href="/features">Features</a>
+                    <a href="/booking">Bookings</a>
+                    <a href="/gallery">Gallery</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/faq">FAQ</a>
                 </nav>
 
                 <div style="display:flex;align-items:center;gap:12px;">
-                    <a href="/booking.html" id="header-cta">Book Your Slot</a>
+                    <a href="/booking" id="header-cta">Book Your Slot</a>
                     <button id="mobile-menu-button" aria-label="Open menu">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
@@ -1135,11 +56,12 @@
 
             <div id="mobile-menu" class="hidden">
                 <nav>
-                    <a href="/index.html">Home</a>
-                    <a href="/features.html">Features</a>
-                    <a href="/booking.html">Bookings</a>
-                    <a href="/gallery.html">Gallery</a>
-                    <a href="/contact.html">Contact</a>
+                    <a href="/">Home</a>
+                    <a href="/features">Features</a>
+                    <a href="/booking">Bookings</a>
+                    <a href="/gallery">Gallery</a>
+                    <a href="/contact">Contact</a>
+                    <a href="/faq">FAQ</a>
                 </nav>
             </div>
         </header>
@@ -1149,7 +71,7 @@
 
             <!-- Text side -->
             <div class="hero-text">
-                <div class="hero-badge fade-up">Premium Football Facility · Kolkata</div>
+                <div class="hero-badge fade-up">Premium Sports Facility · Kolkata</div>
                 <h1 class="fade-up">
                     The Royal<br>
                     <span>Turf</span>
@@ -1157,11 +79,11 @@
                 <p class="fade-up">Book your slot at the finest sporting turf in the city — FIFA-certified, always
                     ready, always yours.</p>
                 <div class="hero-actions fade-up">
-                    <a href="/booking.html" class="btn-primary">
+                    <a href="/booking" class="btn-primary">
                         <span class="material-symbols-outlined" style="font-size:1.1rem;">calendar_month</span>
                         Book Your Slot
                     </a>
-                    <a href="/features.html" class="btn-secondary">
+                    <a href="/features" class="btn-secondary">
                         Explore Facilities
                         <span class="material-symbols-outlined" style="font-size:1rem;">arrow_forward</span>
                     </a>
@@ -1172,7 +94,7 @@
                         <div class="h-stat-label">Certified</div>
                     </div>
                     <div class="h-stat">
-                        <div class="h-stat-num">10+</div>
+                        <div class="h-stat-num">20+</div>
                         <div class="h-stat-label">Spectator Seats</div>
                     </div>
                     <div class="h-stat">
@@ -1209,7 +131,7 @@
             <div class="steps-wrap">
                 <div class="steps-grid">
 
-                    <a href="/booking.html" class="step-card fade-up">
+                    <a href="/booking" class="step-card fade-up">
                         <span class="step-num">01</span>
                         <div class="step-icon">
                             <span class="material-symbols-outlined">calendar_month</span>
@@ -1281,10 +203,96 @@
                 <p>Book your slot now and experience premium turf like never before.</p>
             </div>
             <div class="cta-actions">
-                <a href="/booking.html" class="cta-btn-primary">Book Now</a>
-                <a href="/contact.html" class="cta-btn-secondary">Contact Us</a>
+                <a href="/booking" class="cta-btn-primary">Book Now</a>
+                <a href="/contact" class="cta-btn-secondary">Contact Us</a>
             </div>
         </section>
+
+
+
+        <section class="google-reviews-section">
+            <div class="reviews-header">
+                <span class="review-badge">
+                    <img src="\img\review img1.jpg" alt="Google" />
+                    Verified Google Reviews
+                </span>
+
+                <h2>What Players Say</h2>
+
+                <p>
+                    Trusted by players who have experienced Royal Turf firsthand.
+                </p>
+
+                <div class="review-summary">
+                    <!-- <span class="rating">4.7</span>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div> -->
+                    <div
+                        style="font-family: sans-serif; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                        <!-- Text Rating -->
+                        <span class="rating" style="font-weight: bold; color: #333;">4.7</span>
+
+                        <!-- Star Group -->
+                        <div style="display: inline-flex; color: #fbbc04; font-size: 22px; letter-spacing: 2px;">
+                            <span>★</span><span>★</span><span>★</span><span>★</span>
+                            <!-- The 70% Fractional Star -->
+                            <div style="display: inline-block; position: relative; color: #ccc;">
+                                ★
+                                <div
+                                    style="position: absolute; top: 0; left: 0; width: 70%; overflow: hidden; color: #fbbc04;">
+                                    ★</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <span class="count">
+                        Based on Real Google Reviews
+                    </span>
+                </div>
+            </div>
+
+            <div class="review-slider">
+
+                <button class="review-nav prev">
+                    ❮
+                </button>
+
+                <div id="review-card" class="review-card">
+
+                    <div class="review-stars">
+                        ★★★★★
+                    </div>
+
+                    <p id="review-text"></p>
+
+                    <div class="review-user">
+
+                        <div id="review-avatar" class="review-avatar"></div>
+
+                        <div>
+
+                            <h4 id="review-name"></h4>
+
+                            <span>Google Review</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="review-nav next">
+                    ❯
+                </button>
+            </div>
+            <div class="review-dots" id="review-dots"></div>
+            <a class="google-review-btn" href="https://share.google/wVvubxqKNW5CPwiUM" target="_blank"
+                rel="noopener noreferrer">
+                View All Reviews on Google
+            </a>
+        </section>
+
+        <div class="wave-divider"></div>
 
         <!-- ── SLOT CHECKER ── -->
         <section class="slots-section section">
@@ -1370,11 +378,11 @@
                 <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="/index.html">Home</a></li>
-                        <li><a href="/features.html">Features</a></li>
-                        <li><a href="/booking.html">Bookings</a></li>
-                        <li><a href="/gallery.html">Gallery</a></li>
-                        <li><a href="/contact.html">Contact</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/booking">Bookings</a></li>
+                        <li><a href="/gallery">Gallery</a></li>
+                        <li><a href="/contact">Contact</a></li>
                     </ul>
                 </div>
 
@@ -1396,7 +404,7 @@
                         </li>
                         <li>
                             <span class="material-symbols-outlined">phone</span>
-                            <span>+91 8272952122 | +91 7044385501</span>
+                            <span>+91 7980925034 | +91 7044385501</span>
                         </li>
                         <li>
                             <span class="material-symbols-outlined">email</span>
@@ -1407,13 +415,31 @@
 
             </div>
             <div class="footer-bottom">
-                <p>© 2025 Royal Turf. All rights reserved.</p>
+                <p>© <span id="current-year"></span> Royal Turf. All rights reserved.</p>
             </div>
         </footer>
 
     </div>
 
-    <!-- Mobile menu toggle (lightweight, doesn't interfere with index.js) -->
+    <div class="wa-container">
+        <div class="wa-tooltip">
+            <span class="wa-dot"></span>
+            Need help? Chat with us
+        </div>
+        <a href="https://wa.me/917980925034?text=Hi%20Royal%20Turf,%20I%20need%20help%20with%20booking." class="wa-btn"
+            target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 175.216 175.552" width="30" height="30"
+                aria-hidden="true">
+                <path fill="#fff"
+                    d="M87.184 25.227c-33.733 0-61.166 27.423-61.178 61.13a60.98 60.98 0 0 0 8.177 30.544L24.79 149.138l33.139-8.6a61.126 61.126 0 0 0 29.255 7.456c33.724 0 61.17-27.426 61.17-61.135 0-16.335-6.35-31.666-17.895-43.251A60.985 60.985 0 0 0 87.184 25.227z" />
+                <path fill="#25D366"
+                    d="M87.184 30.634c-30.769 0-55.77 24.99-55.78 55.723a55.595 55.595 0 0 0 7.464 27.821l1.16 1.842-4.923 17.97 18.467-4.833 1.78 1.055a55.659 55.659 0 0 0 31.832 9.891c30.76 0 55.77-24.992 55.77-55.724a55.382 55.382 0 0 0-16.298-39.424 55.381 55.381 0 0 0-39.472-16.32z" />
+                <path fill="#fff"
+                    d="M68.772 55.603c-1.378-3.061-2.828-3.123-4.137-3.176l-3.524-.043c-1.226 0-3.218.46-4.902 2.3s-6.435 6.287-6.435 15.332 6.588 17.785 7.506 19.013 12.718 20.381 31.405 27.75c15.529 6.124 18.689 4.906 22.061 4.6s10.877-4.447 12.408-8.74 1.533-7.971 1.073-8.74-1.685-1.226-3.525-2.146-10.877-5.367-12.562-5.981-2.91-.919-4.137.921-4.746 5.979-5.819 7.206-2.144 1.381-3.984.462-7.76-2.861-14.784-9.124c-5.465-4.873-9.154-10.891-10.228-12.73s-.114-2.835.808-3.751c.825-.820 1.838-2.147 2.759-3.22s1.224-1.84 1.836-3.065.307-2.301-.153-3.22-4.032-10.011-5.67-13.696z" />
+            </svg>
+        </a>
+    </div>
+    <!-- Mobile menu toggle (lightweight, doesn't interfere with .js) -->
     <script>
         document.getElementById('mobile-menu-button')
             .addEventListener('click', function () {

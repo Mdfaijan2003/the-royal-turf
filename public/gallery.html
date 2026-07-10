@@ -50,20 +50,21 @@
     <!-- ── HEADER ── -->
     <header id="site-header">
         <div id="header-inner">
-            <a href="/index.html" id="header-brand">
+            <a href="/" id="header-brand">
                 <span id="header-title">The Royal Turf</span>
             </a>
 
             <nav id="desktop-menu">
-                <a href="/index.html">Home</a>
-                <a href="/features.html">Features</a>
-                <a href="/booking.html">Bookings</a>
-                <a href="/gallery.html" class="active">Gallery</a>
-                <a href="/contact.html">Contact</a>
+                <a href="/">Home</a>
+                <a href="/features">Features</a>
+                <a href="/booking">Bookings</a>
+                <a href="/gallery" class="active">Gallery</a>
+                <a href="/contact">Contact</a>
+                <a href="/faq">FAQ</a>
             </nav>
 
             <div style="display:flex;align-items:center;gap:12px;">
-                <a href="/booking.html" id="header-cta">Book Your Slot</a>
+                <a href="/booking" id="header-cta">Book Your Slot</a>
                 <button id="mobile-menu-button" aria-label="Open menu">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
@@ -72,11 +73,12 @@
 
         <div id="mobile-menu" class="hidden">
             <nav>
-                <a href="/index.html">Home</a>
-                <a href="/features.html">Features</a>
-                <a href="/booking.html">Bookings</a>
-                <a href="/gallery.html">Gallery</a>
-                <a href="/contact.html">Contact</a>
+                <a href="/">Home</a>
+                <a href="/features">Features</a>
+                <a href="/booking">Bookings</a>
+                <a href="/gallery">Gallery</a>
+                <a href="/contact">Contact</a>
+                <a href="/faq">FAQ</a>
             </nav>
         </div>
     </header>
@@ -146,7 +148,7 @@
                 <div class="gallery-cta-label">Ready to play?</div>
                 <h2>Book Your Slot</h2>
                 <p>Reserve your time on the pitch — open daily from 6:00 AM to 1:00 AM.</p>
-                <a href="/booking.html">
+                <a href="/booking">
                     Book Now
                     <span class="material-symbols-outlined">arrow_forward</span>
                 </a>
@@ -204,11 +206,12 @@
                 <div class="footer-col">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="/index.html">Home</a></li>
-                        <li><a href="/features.html">Features</a></li>
-                        <li><a href="/booking.html">Bookings</a></li>
-                        <li><a href="/gallery.html">Gallery</a></li>
-                        <li><a href="/contact.html">Contact</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/features">Features</a></li>
+                        <li><a href="/booking">Bookings</a></li>
+                        <li><a href="/gallery">Gallery</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/faq">FAQ</a></li>
                     </ul>
                 </div>
 
@@ -232,7 +235,7 @@
                         </li>
                         <li>
                             <span class="material-symbols-outlined">phone</span>
-                            <span>+91 8272952122 | +91 7044385501</span>
+                            <span>+91 7980925034 | +91 7044385501</span>
                         </li>
                         <li>
                             <span class="material-symbols-outlined">email</span>
@@ -244,16 +247,36 @@
             </div>
 
             <div class="footer-bottom">
-                <p>© 2025 Royal Turf. All rights reserved.</p>
+                <p>© <span id="current-year"></span> Royal Turf. All rights reserved.</p>
             </div>
         </footer>
 
     </div><!-- .page -->
 
+    <div class="wa-container">
+        <div class="wa-tooltip">
+            <span class="wa-dot"></span>
+            Need help? Chat with us
+        </div>
+        <a href="https://wa.me/917980925034?text=Hi%20Royal%20Turf,%20I%20need%20help%20with%20booking." class="wa-btn"
+            target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 175.216 175.552" width="30" height="30"
+                aria-hidden="true">
+                <path fill="#fff"
+                    d="M87.184 25.227c-33.733 0-61.166 27.423-61.178 61.13a60.98 60.98 0 0 0 8.177 30.544L24.79 149.138l33.139-8.6a61.126 61.126 0 0 0 29.255 7.456c33.724 0 61.17-27.426 61.17-61.135 0-16.335-6.35-31.666-17.895-43.251A60.985 60.985 0 0 0 87.184 25.227z" />
+                <path fill="#25D366"
+                    d="M87.184 30.634c-30.769 0-55.77 24.99-55.78 55.723a55.595 55.595 0 0 0 7.464 27.821l1.16 1.842-4.923 17.97 18.467-4.833 1.78 1.055a55.659 55.659 0 0 0 31.832 9.891c30.76 0 55.77-24.992 55.77-55.724a55.382 55.382 0 0 0-16.298-39.424 55.381 55.381 0 0 0-39.472-16.32z" />
+                <path fill="#fff"
+                    d="M68.772 55.603c-1.378-3.061-2.828-3.123-4.137-3.176l-3.524-.043c-1.226 0-3.218.46-4.902 2.3s-6.435 6.287-6.435 15.332 6.588 17.785 7.506 19.013 12.718 20.381 31.405 27.75c15.529 6.124 18.689 4.906 22.061 4.6s10.877-4.447 12.408-8.74 1.533-7.971 1.073-8.74-1.685-1.226-3.525-2.146-10.877-5.367-12.562-5.981-2.91-.919-4.137.921-4.746 5.979-5.819 7.206-2.144 1.381-3.984.462-7.76-2.861-14.784-9.124c-5.465-4.873-9.154-10.891-10.228-12.73s-.114-2.835.808-3.751c.825-.820 1.838-2.147 2.759-3.22s1.224-1.84 1.836-3.065.307-2.301-.153-3.22-4.032-10.011-5.67-13.696z" />
+            </svg>
+        </a>
+    </div>
+
     <script type="module" src="/js/gallery.js" defer></script>
     <script>
         const btn = document.getElementById('mobile-menu-button');
         const menu = document.getElementById('mobile-menu');
+
         btn.addEventListener('click', () => menu.classList.toggle('hidden'));
     </script>
 

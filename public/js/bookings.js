@@ -33,7 +33,7 @@ dom.dateInput.addEventListener("change", () => {
 
   resetSummaryUI();
 
-  if (!date) return; // ⛔ guard
+  if (!date) return; //guard
 
   updateAvailableSlots();
 });
@@ -66,8 +66,7 @@ function updateSummary() {
   const total = hours * 1000;
   const advance = Math.round(total * 0.3);
 
-  dom.selectedTime.textContent =
-    `${startTime} - ${endTime} (${hours} hrs)`;
+  dom.selectedTime.textContent = `${startTime} - ${endTime} (${hours} hrs)`;
 
   dom.bookingFees.textContent = `₹${total}`;
   dom.advanceAmount.textContent = `₹${advance}`;
@@ -76,7 +75,6 @@ function updateSummary() {
   state.booking.totalFee = total;
   state.booking.advance = advance;
 }
-
 
 /* ===============================
    HELPERS
