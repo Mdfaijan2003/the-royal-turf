@@ -252,6 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
         customerPhone: state.booking.phone,
       };
 
+      console.log("Payload for holdSlot:", payload);
+
       const { lockId, expiresAt } = await holdSlot(payload);
 
       state.holdLockId = lockId;

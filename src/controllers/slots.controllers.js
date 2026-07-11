@@ -102,7 +102,7 @@ export async function getSlots(req, res) {
 
 // POST /slots/hold
 export async function holdSlot(req, res) {
-  const { start, end } = req.body;
+  const { start, end, customerName, customerEmail, customerPhone } = req.body;
 
   if (!start || !end) {
     return res.status(400).json({
@@ -113,7 +113,8 @@ export async function holdSlot(req, res) {
   const newStart = new Date(start);
   const newEnd = new Date(end);
 
-  console.log("Hold Slot Request:", { newStart, newEnd });
+  console.log("Payload", req.body);
+
   if (isNaN(newStart) || isNaN(newEnd)) {
     return res.status(400).json({ error: "Invalid date format" });
   }
@@ -167,12 +168,18 @@ export async function holdSlot(req, res) {
       start: newStart,
       end: newEnd,
       expiresAt,
+      customerName,
+      customerEmail,
+      customerPhone,
     });
 
     // ✅ Return lockId (NOT bookingId)
     res.status(201).json({
       lockId: lock._id,
       expiresAt,
+      customerName,
+      customerEmail,
+      customerPhone,
     });
   } catch (error) {
     console.error("Hold Slot Error:", error);

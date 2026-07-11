@@ -22,6 +22,10 @@ const slotLockSchema = new mongoose.Schema({
     default: "HELD",
   },
 
+  customerName: { type: String, required: true },
+  customerEmail: { type: String, required: true },
+  customerPhone: { type: String, required: true },
+
   razorpayOrderId: {
     type: String,
     default: null,

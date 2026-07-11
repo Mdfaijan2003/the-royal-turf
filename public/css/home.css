@@ -334,7 +334,7 @@ body {
   margin-top: 3px;
 }
 
-/* right — image side */
+/* right — image side (desktop default) */
 .hero-image {
   position: relative;
   overflow: hidden;
@@ -348,7 +348,7 @@ body {
   display: block;
 }
 
-/* overlay so image edges blend */
+/* overlay so image edges blend — desktop */
 .hero-image::before {
   content: '';
   position: absolute;
@@ -751,27 +751,6 @@ body {
   box-shadow: 0 8px 24px rgba(5, 150, 105, 0.25);
 }
 
-/* #slotsLoading {
-
-  text-align: center;
-  color: var(--muted);
-  padding: 3rem 0;
-}
-
-
-#slotsEmpty {
-
-  text-align: center;
-  padding: 3rem 0;
-}
-
-
-
-#slotsEmpty p {
-  font-size: 1rem;
-  color: var(--muted);
-} */
-
 #slotsContainer {
   margin-top: 2rem;
   display: grid;
@@ -972,6 +951,28 @@ footer {
   animation: fadeUp 0.55s ease forwards;
 }
 
+/* staggered entrance for hero text block — same fadeUp keyframe,
+   just offset so each element arrives a beat after the last */
+.hero-badge.fade-up {
+  animation-delay: 0s;
+}
+
+.hero-text h1.fade-up {
+  animation-delay: 0.1s;
+}
+
+.hero-text p.fade-up {
+  animation-delay: 0.22s;
+}
+
+.hero-actions.fade-up {
+  animation-delay: 0.34s;
+}
+
+.hero-stats.fade-up {
+  animation-delay: 0.46s;
+}
+
 .google-reviews-section {
   padding: 90px 20px;
   background: var(--green-xlight);
@@ -984,282 +985,181 @@ footer {
 }
 
 .review-badge {
-
   display: inline-flex;
   align-items: center;
   gap: 8px;
-
   padding: 8px 18px;
-
   border-radius: 999px;
-
   background: var(--green-light);
-
   color: var(--green);
-
   font-weight: 600;
-
   margin-bottom: 18px;
 }
 
 .review-badge img {
-
   width: 18px;
 }
 
 .reviews-header h2 {
-
   font-size: 2.3rem;
-
   color: var(--text-dark);
-
   margin-bottom: 10px;
 }
 
 .reviews-header p {
-
   color: var(--text-light);
-
   margin-bottom: 25px;
 }
 
 .review-summary {
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 14px;
-
   flex-wrap: wrap;
-
   margin-bottom: 45px;
 }
 
 .rating {
-
   font-size: 42px;
-
   font-weight: 700;
-
   color: var(--green);
 }
 
 .stars {
-
   font-size: 24px;
-
   color: #fbbf24;
 }
 
 .review-slider {
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 20px;
-
   max-width: 900px;
-
   margin: auto;
 }
 
 .review-card {
-
   background: white;
-
   border-radius: 20px;
-
   padding: 35px;
-
   max-width: 650px;
-
   width: 100%;
-
   box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
-
   min-height: 250px;
-
   display: flex;
-
   flex-direction: column;
-
   justify-content: space-between;
-
   transition: .3s;
 }
 
 .review-stars {
-
   color: #fbbf24;
-
   font-size: 24px;
-
   margin-bottom: 20px;
 }
 
 .review-card p {
-
   line-height: 1.8;
-
   color: var(--text-dark);
-
   font-size: 1.05rem;
 }
 
 .review-user {
-
   display: flex;
-
   align-items: center;
-
   gap: 15px;
-
   margin-top: 30px;
 }
 
 .review-avatar {
-
   width: 52px;
-
   height: 52px;
-
   border-radius: 50%;
-
   background: var(--green);
-
   color: white;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   font-weight: 700;
-
   font-size: 18px;
 }
 
 .review-user h4 {
-
   margin: 0;
 }
 
 .review-user span {
-
   color: var(--text-light);
-
   font-size: .9rem;
 }
 
 .review-nav {
-
   width: 45px;
-
   height: 45px;
-
   border: none;
-
   border-radius: 50%;
-
   background: white;
-
   cursor: pointer;
-
   box-shadow: 0 5px 15px rgba(0, 0, 0, .12);
-
   transition: .25s;
 }
 
 .review-nav:hover {
-
   background: var(--green);
-
   color: white;
 }
 
 .review-dots {
-
   display: flex;
-
   justify-content: center;
-
   gap: 10px;
-
   margin: 35px 0;
 }
 
 .review-dot {
-
   width: 10px;
-
   height: 10px;
-
   border-radius: 50%;
-
   background: #cbd5e1;
-
   cursor: pointer;
 }
 
 .review-dot.active {
-
   background: var(--green);
 }
 
 .google-review-btn {
-
   display: block;
-
   width: max-content;
-
   margin: auto;
-
   padding: 14px 28px;
-
   border-radius: 999px;
-
   background: var(--green);
-
   color: white;
-
   text-decoration: none;
-
   font-weight: 600;
-
   transition: .3s;
 }
 
 .google-review-btn:hover {
-
   transform: translateY(-2px);
-
   background: var(--green-mid);
 }
 
 @media(max-width:768px) {
-
   .review-slider {
-
     gap: 10px;
   }
 
   .review-card {
-
     padding: 25px;
   }
 
   .review-nav {
-
     display: none;
   }
-
 }
 
 .wa-container {
@@ -1313,7 +1213,6 @@ footer {
   transform: scale(1.07);
 }
 
-
 @media (max-width: 640px) {
   .wa-tooltip {
     display: none;
@@ -1325,7 +1224,6 @@ footer {
   }
 }
 
-
 @keyframes fadeUp {
   to {
     opacity: 1;
@@ -1333,10 +1231,36 @@ footer {
   }
 }
 
+/* ── MOBILE HERO BACKGROUND IMAGE (fixed) ── */
+/* fade-in on load: image eases in from invisible to its resting
+   opacity, then heroDrift takes over forever after. Two separate
+   animations on two separate properties, so they never fight. */
+@keyframes heroImageIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.55;
+  }
+}
+
+@keyframes heroDrift {
+  from {
+    transform: scale(1.1) translate(0, 0);
+  }
+
+  to {
+    transform: scale(1.18) translate(-1.2%, -1%);
+  }
+}
+
 /* ── RESPONSIVE ── */
 @media(max-width:960px) {
   .hero-section {
     grid-template-columns: 1fr;
+    position: relative;
+    overflow: hidden;
   }
 
   .hero-text {
@@ -1344,7 +1268,36 @@ footer {
   }
 
   .hero-image {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-image img {
+    filter: blur(5px) brightness(0.92) saturate(1.15);
+    transform: scale(1.1);
+    opacity: 0;
+    animation:
+      heroImageIn 1.3s ease 0.15s forwards,
+      heroDrift 24s ease-in-out 1.3s infinite alternate;
+  }
+
+  /* lighter overlay — keeps the photo actually visible while still
+     fading it into the page bg at the very top/bottom edges */
+  .hero-image::before {
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 0%, rgba(5, 150, 105, 0.10) 0%, transparent 60%),
+      linear-gradient(to bottom,
+        var(--bg) 0%,
+        rgba(248, 255, 254, 0.35) 22%,
+        rgba(248, 255, 254, 0.4) 60%,
+        var(--bg) 100%);
+  }
+
+  .hero-float-card {
     display: none;
+    /* not in the client's mobile mock — add back if they want it */
   }
 
   .steps-grid {
@@ -1359,7 +1312,6 @@ footer {
   #slotsContainer {
     grid-template-columns: 1fr 1fr;
   }
-
 
   .section-intro,
   .steps-wrap,
@@ -1383,6 +1335,13 @@ footer {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image img {
+    animation: none;
+    opacity: 0.55;
   }
 }
 
@@ -1414,7 +1373,6 @@ footer {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
-
 
   .section-intro {
     flex-direction: column;

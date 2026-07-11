@@ -65,13 +65,13 @@ export const env = cleanEnv(process.env, {
 
   ADMIN_PHONE: str(),
 
-  ADMIN_PASSWORD: str(),
-
   /* ---------- Razorpay ---------- */
 
   RAZORPAY_KEY_ID: str(),
 
   RAZORPAY_KEY_SECRET: str(),
+
+  RAZORPAY_WEBHOOK_SECRET: str(),
 
   /* ---------- Cloudinary ---------- */
 
