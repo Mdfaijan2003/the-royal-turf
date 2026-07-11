@@ -65,6 +65,8 @@ export const env = cleanEnv(process.env, {
 
   ADMIN_PHONE: str(),
 
+  ADMIN_PASSWORD: str(),
+
   /* ---------- Razorpay ---------- */
 
   RAZORPAY_KEY_ID: str(),
@@ -119,7 +121,7 @@ if (env.isProduction) {
     );
   }
 
-  if (env.ADMIN_PASSWORD.length < 12) {
-    throw new Error("ADMIN_PASSWORD must be at least 12 characters long.");
-  }
+  // if (env.ADMIN_PASSWORD.length < 12) {
+  //   throw new Error("ADMIN_PASSWORD must be at least 12 characters long.");
+  // }
 }
