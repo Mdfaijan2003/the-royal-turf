@@ -16,7 +16,7 @@ async function startServer() {
     //app.set("trust proxy", 1);
 
     // Start Express server
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, "0.0.0.0", () => {
       console.log("🚀 Server is running!");
       console.log(`➡️  API Base: http://localhost:${PORT}/api`);
       console.log(`➡️  Frontend: http://localhost:${PORT}/`);
