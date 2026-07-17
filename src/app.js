@@ -182,6 +182,10 @@ servePage("/features", "features.html");
 
 servePage("/about", "about.html");
 
+app.get("/booking-confirmation/:token", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "public", "booking-confirmation.html"));
+});
+
 /* ==========================
    ADMIN PAGES
 ========================== */

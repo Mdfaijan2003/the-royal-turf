@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmed - The Royal Turf</title>
+
+  <meta name="description"
+    content="Your Royal Turf slot is confirmed. View your booking details and download your slip." />
+  <meta property="og:title" content="Booking Confirmed - The Royal Turf" />
+  <meta property="og:description" content="Your slot is reserved." />
+  <meta property="og:image" content="/img/MainImg2.png" />
+  <meta property="og:url" content="https://theroyalturf.in/booking-success" />
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+
+  <link rel="stylesheet" href="/css/booking.css">
+  <link rel="stylesheet" href="/css/modal.css">
+  <link rel="stylesheet" href="/css/success.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+  <div class="pitch-bg"></div>
+
+  <!-- ── HEADER (same as booking.html) ── -->
+  <header id="site-header">
+    <div id="header-inner">
+      <a href="/" id="header-brand">
+        <span id="header-title">The Royal Turf</span>
+      </a>
+
+      <nav id="desktop-menu">
+        <a href="/">Home</a>
+        <a href="/features">Features</a>
+        <a href="/booking">Bookings</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/contact">Contact</a>
+        <a href="/faq">FAQ</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="/booking" id="header-cta">Book Your Slot</a>
+        <button id="mobile-menu-button" aria-label="Open menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden">
+      <nav>
+        <a href="/">Home</a>
+        <a href="/features">Features</a>
+        <a href="/booking">Bookings</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/contact">Contact</a>
+        <a href="/faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <main class="success-main">
+
+      <!-- ── SUCCESS HERO ── -->
+      <section class="success-hero">
+        <div class="success-check-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+
+        <h1>Booking Confirmed!</h1>
+        <p>Thanks, <strong id="success-name">Zaid Shakil</strong> — your slot at The Royal Turf is locked
+          in. See you on the pitch.</p>
+
+        <div class="success-id-pill">
+          <span class="material-symbols-outlined" style="font-size:14px;">confirmation_number</span>
+          Booking ID: <span id="success-booking-id">RT-8F3A21</span>
+        </div>
+      </section>
+
+      <!-- ── BOOKING DETAILS CARD ── -->
+      <div class="b-card success-card">
+        <div class="b-card-label">Confirmation</div>
+        <h2>Booking Details</h2>
+
+        <div class="success-detail-grid">
+          <div class="success-detail-item">
+            <label>Date</label>
+            <span id="success-date">Sun, 20 Jul 2026</span>
+          </div>
+          <div class="success-detail-item">
+            <label>Time Slot</label>
+            <span id="success-time">6:00 PM – 7:00 PM</span>
+          </div>
+          <div class="success-detail-item">
+            <label>Phone Number</label>
+            <span id="success-phone">+91 98765 41234</span>
+          </div>
+          <div class="success-detail-item">
+            <label>Payment Status</label>
+            <span id="success-status-wrap">
+              <span class="success-status-pill partial" id="success-status">Advance Paid</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <div class="summary-row">
+            <span class="summary-label">Booking Fees</span>
+            <span class="summary-val" id="success-total-fee">₹2,500</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Advance Paid</span>
+            <span class="summary-val" id="success-advance-paid">₹1,000</span>
+          </div>
+          <div class="summary-total-row">
+            <span class="summary-total-label">Balance Due</span>
+            <span class="summary-total-val" id="success-balance-due">₹1,500</span>
+          </div>
+        </div>
+
+        <div class="success-actions">
+          <button type="button" id="download-slip" class="success-btn primary">
+            <span class="material-symbols-outlined">download</span>
+            Download Booking Slip
+          </button>
+
+          <a href="#" id="add-to-calendar" class="success-btn secondary">
+            <span class="material-symbols-outlined">calendar_add_on</span>
+            Add to Calendar
+          </a>
+
+          <a href="#" id="share-whatsapp" class="success-btn whatsapp" target="_blank" rel="noopener noreferrer">
+            <span class="material-symbols-outlined">share</span>
+            Share on WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- ── WHAT TO EXPECT CARD ── -->
+      <div class="b-card success-next-card">
+        <div class="b-card-label">Before You Arrive</div>
+        <h2>What to Expect</h2>
+
+        <div class="success-next-list">
+          <div class="success-next-item">
+            <div class="icon-dot">
+              <span class="material-symbols-outlined">schedule</span>
+            </div>
+            <p><strong>Arrive 10 minutes early</strong> so you can get changed and warmed up before your
+              slot starts.</p>
+          </div>
+          <div class="success-next-item">
+            <div class="icon-dot">
+              <span class="material-symbols-outlined">badge</span>
+            </div>
+            <p>Carry a <strong>valid photo ID</strong> — it may be requested at entry.</p>
+          </div>
+          <div class="success-next-item">
+            <div class="icon-dot">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <p>Pay the <strong>remaining balance</strong> in cash or UPI directly at the venue before
+              play begins.</p>
+          </div>
+          <div class="success-next-item">
+            <div class="icon-dot">
+              <span class="material-symbols-outlined">event_busy</span>
+            </div>
+            <p>Need to reschedule? Cancellations are accepted up to <strong>4 hours before</strong> your
+              slot.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-footer-link">
+        <a href="/booking">← Book another slot</a>
+      </div>
+
+    </main>
+
+    <!-- ── FOOTER (same as booking.html) ── -->
+    <footer>
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <h3>The Royal Turf</h3>
+          <p>Providing premium turf booking services for all your sporting needs.</p>
+          <div class="footer-socials">
+            <a href="https://www.youtube.com/@royal_turf" target="_blank" rel="noopener noreferrer"
+              aria-label="YouTube">
+              <svg width="24" height="24" fill="#ef4444" viewBox="0 0 24 24">
+                <path
+                  d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/_royal.turf_/#" target="_blank" rel="noopener noreferrer"
+              aria-label="Instagram">
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <defs>
+                  <linearGradient id="insta-grad-2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#833AB4" />
+                    <stop offset="50%" stop-color="#E1306C" />
+                    <stop offset="100%" stop-color="#FFDC80" />
+                  </linearGradient>
+                </defs>
+                <path fill="url(#insta-grad-2)"
+                  d="M12 0C8.74 0 8.33.01 7.05.05 3.17.23.23 3.17.05 7.05.01 8.33 0 8.74 0 12s.01 3.67.05 4.95c.18 3.88 3.12 6.82 6.95 7 1.28.04 1.69.05 4.95.05s3.67-.01 4.95-.05c3.88-.18 6.82-3.12 7-6.95.04-1.28.05-1.69.05-4.95s-.01-3.67-.05-4.95C23.77 3.17 20.83.23 17 .05 15.67.01 15.26 0 12 0zm0 2.16c3.2 0 3.56.02 4.82.07 3.19.14 4.64 1.59 4.78 4.78.05 1.26.07 1.62.07 4.82s-.02 3.56-.07 4.82c-.14 3.19-1.59 4.64-4.78 4.78-1.26.05-1.62.07-4.82.07s-3.56-.02-4.82-.07c-3.19-.14-4.64-1.59-4.78-4.78-.05-1.26-.07-1.62-.07-4.82s.02-3.56.07-4.82c.14-3.19 1.59-4.64 4.78-4.78 1.26-.05 1.62-.07 4.82-.07zM5.66 12a6.34 6.34 0 1 1 12.68 0 6.34 6.34 0 0 1-12.68 0zm6.34-4.88a4.88 4.88 0 1 0 0 9.76 4.88 4.88 0 0 0 0-9.76zM16.88 5.56a1.48 1.48 0 1 1-2.96 0 1.48 1.48 0 0 1 2.96 0z" />
+              </svg>
+            </a>
+            <a href="https://share.google/bRLocWkXIdii6uodS" target="_blank" rel="noopener noreferrer"
+              aria-label="Google">
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <path fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                <path fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/features">Features</a></li>
+            <li><a href="/booking">Bookings</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Opening Hours</h3>
+          <ul class="footer-hours">
+            <li><span>Monday – Friday</span><span>6:00 AM – 1:00 AM</span></li>
+            <li><span>Saturday</span><span>6:00 AM – 1:00 AM</span></li>
+            <li><span>Sunday</span><span>6:00 AM – 1:00 AM</span></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Contact Us</h3>
+          <ul class="footer-contact-list">
+            <li>
+              <span class="material-symbols-outlined">location_on</span>
+              <span>36, Topsia Road, Uttar Panchannogram Kolkata – 39</span>
+            </li>
+            <li>
+              <span class="material-symbols-outlined">phone</span>
+              <span>+91 7980925034 / +91 7044385501</span>
+            </li>
+            <li>
+              <span class="material-symbols-outlined">email</span>
+              <span>info@royalturf.com</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="current-year"></span> The Royal Turf. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="wa-container">
+    <div class="wa-tooltip">
+      <span class="wa-dot"></span>
+      Need help? Chat with us
+    </div>
+    <a href="https://wa.me/917980925034?text=Hi%20Royal%20Turf,%20I%20need%20help%20with%20my%20booking." class="wa-btn"
+      target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 175.216 175.552" width="30" height="30" aria-hidden="true">
+        <path fill="#fff"
+          d="M87.184 25.227c-33.733 0-61.166 27.423-61.178 61.13a60.98 60.98 0 0 0 8.177 30.544L24.79 149.138l33.139-8.6a61.126 61.126 0 0 0 29.255 7.456c33.724 0 61.17-27.426 61.17-61.135 0-16.335-6.35-31.666-17.895-43.251A60.985 60.985 0 0 0 87.184 25.227z" />
+        <path fill="#25D366"
+          d="M87.184 30.634c-30.769 0-55.77 24.99-55.78 55.723a55.595 55.595 0 0 0 7.464 27.821l1.16 1.842-4.923 17.97 18.467-4.833 1.78 1.055a55.659 55.659 0 0 0 31.832 9.891c30.76 0 55.77-24.992 55.77-55.724a55.382 55.382 0 0 0-16.298-39.424 55.381 55.381 0 0 0-39.472-16.32z" />
+        <path fill="#fff"
+          d="M68.772 55.603c-1.378-3.061-2.828-3.123-4.137-3.176l-3.524-.043c-1.226 0-3.218.46-4.902 2.3s-6.435 6.287-6.435 15.332 6.588 17.785 7.506 19.013 12.718 20.381 31.405 27.75c15.529 6.124 18.689 4.906 22.061 4.6s10.877-4.447 12.408-8.74 1.533-7.971 1.073-8.74-1.685-1.226-3.525-2.146-10.877-5.367-12.562-5.981-2.91-.919-4.137.921-4.746 5.979-5.819 7.206-2.144 1.381-3.984.462-7.76-2.861-14.784-9.124c-5.465-4.873-9.154-10.891-10.228-12.73s-.114-2.835.808-3.751c.825-.820 1.838-2.147 2.759-3.22s1.224-1.84 1.836-3.065.307-2.301-.153-3.22-4.032-10.011-5.67-13.696z" />
+      </svg>
+    </a>
+  </div>
+
+  <script type="module" src="/js/booking-confirmation.js"></script>
+
+</body>
+
+</html>

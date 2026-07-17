@@ -59,6 +59,8 @@ export const env = cleanEnv(process.env, {
 
   REFRESH_TOKEN_EXPIRATION: jwtExpiry(),
 
+  BOOKING_ACCESS_TOKEN_SECRET: str(),
+
   /* ---------- Admin ---------- */
 
   ADMIN_EMAIL: email(),

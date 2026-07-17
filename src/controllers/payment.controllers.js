@@ -9,6 +9,7 @@ import { calculateBookingAmount } from "../utils/pricing.js";
 import { completeSuccessfulPayment } from "../services/payment.service.js";
 import { sendBookingConfirmationNotifications } from "../services/notification.service.js";
 
+import { createBookingAccessToken } from "../services/bookingToken.service.js";
 /**
  * ================================
  * CREATE RAZORPAY ORDER
@@ -128,11 +129,12 @@ export const verifyPayment = async (req, res) => {
 
     console.log("Payment verification result:", result);
 
+    const bookingAccessToken = createBookingAccessToken(result.bookingId);
+
     return res.json({
       success: true,
-      bookingId: result.bookingId,
-      advancePaid: result.advancePaid,
-      remainingToPay: result.remainingToPay,
+      booking: result,
+      bookingAccessToken,
       alreadyProcessed: result.alreadyProcessed,
     });
   } catch (err) {

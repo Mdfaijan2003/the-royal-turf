@@ -10,6 +10,7 @@ export const state = {
     endTime: "",
     totalFee: 0,
     advance: 0,
+    remainingToPay: 0,
   },
 
   holdLockId: null,

@@ -63,11 +63,11 @@ export const sendBookingConfirmationNotifications = async booking => {
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">Start Time:</td>
-                    <td>${start}</td>
+                    <td>${startTime}</td>
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">End Time:</td>
-                    <td>${end}</td>
+                    <td>${endTime}</td>
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">Amount Paid:</td>
@@ -163,11 +163,11 @@ export const sendBookingConfirmationNotifications = async booking => {
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">Start Time:</td>
-                    <td>${start}</td>
+                    <td>${startTime}</td>
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">End Time:</td>
-                    <td>${end}</td>
+                    <td>${endTime}</td>
                   </tr>
                   <tr>
                     <td style="font-weight:bold;">Amount Paid:</td>

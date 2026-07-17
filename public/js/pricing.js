@@ -44,12 +44,12 @@ export function calculateAmount(start, end) {
     let rate = 0;
 
     // day band
-    if (currentHour >= 6 && currentHour < 17) {
+    if (currentHour >= 6 && currentHour < 18) {
       rate = isWeekendDay ? 1000 : 800;
     }
     // evening / night band
     else if (
-      (currentHour >= 17 && currentHour < 24) ||
+      (currentHour >= 18 && currentHour < 24) ||
       (currentHour >= 0 && currentHour < 1)
     ) {
       rate = isWeekendDay ? 1300 : 1100;

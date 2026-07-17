@@ -1,14 +1,9 @@
-import booking from "../../../src/models/booking.js";
 import { dom } from "./dom.dashboard.js";
 
 const slotState = {
   currentDate: null,
   modal: null,
 };
-
-/* ===============================
-   UTILS
-================================ */
 
 function formatTimeForInput(dateString) {
   const date = new Date(dateString);
@@ -78,10 +73,6 @@ function calculateAmount(start, end) {
     advance: Math.round(total * 0.3),
   };
 }
-
-/* ===============================
-   COUNTDOWNS
-================================ */
 
 function startCountdowns() {
   const countdowns = document.querySelectorAll(".countdown");
@@ -310,58 +301,51 @@ function createSlotCard(slot) {
 
   if (slot.status === "BOOKED") {
     const customerName = slot.customerName;
-
     const bookingId = `BT-${String(slot.bookingId).slice(-4).toUpperCase()}`;
-
     const status = slot.paymentStatus === "PARTIAL" ? "Adv Paid" : "Full Paid";
+    const statusColor =
+      slot.paymentStatus === "PARTIAL" ? "text-orange-400" : "text-emerald-400";
 
     return `
-    <div 
-      class="bg-slate-900 rounded-[2rem] p-6 text-white relative group overflow-hidden bento-card border-slate-900"
-      data-start="${slot.start}"
-      data-end="${slot.end}"
-
-      data-booking-id="${slot.bookingId || ""}"
-      data-customer="${slot.customerName || ""}"
-      data-phone="${slot.customerPhone || ""}"
-      data-email="${slot.customerEmail || ""}"
-
-      data-total="${slot.totalAmount || 0}"
-      data-advance="${slot.advanceAmount || 0}"
-      data-remaining="${slot.remainingAmount || 0}"
-    >
-
-      <div class="flex justify-between items-start mb-4">
-        <div>
-          <p class="text-3xl font-black">${startTime}</p>
-        </div>
-
-        <span class="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider text-slate-300">
-          Turf A
-        </span>
-      </div>
-
-      <div class="space-y-1 mb-4">
-        <p class="text-sm font-bold text-yellow-400">${customerName}</p>
-
-        <p class="text-xs text-slate-400">
-          #${bookingId} • ${status}
-        </p>
-      </div>
-
-      <div class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 gap-2">
-
-        <button class="view-booking-btn bg-white text-slate-900 px-4 py-2 rounded-xl text-xs font-bold w-32">
-          View Booking
-        </button>
-
-        <button class="cancel-booking-btn bg-red-500/20 text-red-400 border border-red-500/50 px-4 py-2 rounded-xl text-xs font-bold w-32">
-          Cancel
-        </button>
-
-      </div>
+<div 
+  class="bg-slate-900 rounded-[2rem] p-6 text-white relative overflow-hidden bento-card border-slate-900"
+  data-start="${slot.start}"
+  data-end="${slot.end}"
+  data-booking-id="${slot.bookingId || ""}"
+  data-customer="${slot.customerName || ""}"
+  data-phone="${slot.customerPhone || ""}"
+  data-email="${slot.customerEmail || ""}"
+  data-total="${slot.totalAmount || 0}"
+  data-advance="${slot.advanceAmount || 0}"
+  data-remaining="${slot.remainingAmount || 0}"
+>
+  <div class="flex justify-between items-start mb-4">
+    <div>
+      <p class="text-3xl font-black">${startTime}</p>
     </div>
-  `;
+    <span class="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-bold uppercase tracking-wider text-slate-300">
+      Turf A
+    </span>
+  </div>
+
+  <div class="space-y-1 mb-4">
+    <p class="text-sm font-bold text-yellow-400">${customerName}</p>
+    <p class="text-xs text-slate-400">
+      #${bookingId} • <span class="${statusColor}">${status}</span>
+    </p>
+  </div>
+
+  <!-- Always-visible action row, no hover needed -->
+  <div class="flex gap-2 mt-2">
+    <button class="view-booking-btn flex-1 bg-white/10 active:bg-white/20 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-colors">
+      View
+    </button>
+    <button class="cancel-booking-btn flex-1 bg-red-500/10 active:bg-red-500/20 text-red-400 border border-red-500/30 px-4 py-2.5 rounded-xl text-xs font-bold transition-colors">
+      Cancel
+    </button>
+  </div>
+</div>
+`;
   }
 
   if (slot.status === "AVAILABLE") {
@@ -486,8 +470,8 @@ function createBookingModal() {
           </h2>
         </div>
 
-        <button 
-          type="button" 
+        <button
+          type="button"
           id="close-modal"
           class="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors flex items-center justify-center font-bold"
         >
@@ -505,7 +489,7 @@ function createBookingModal() {
               Start Time
             </label>
 
-            <input 
+            <input
               type="time"
               id="modal-start-time"
               name="startTime"
@@ -519,7 +503,7 @@ function createBookingModal() {
               End Time
             </label>
 
-            <input 
+            <input
               type="time"
               id="modal-end-time"
               name="endTime"
@@ -663,6 +647,210 @@ function createBookingModal() {
 
   return modal;
 }
+
+// function createBookingModal() {
+//   const modal = document.createElement("div");
+
+//   modal.id = "booking-modal";
+
+//   // Mobile: bottom-sheet backdrop, no padding (sheet is full-bleed)
+//   // Desktop: centered modal with padding around it
+//   modal.className =
+//     "fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-end sm:items-center justify-center sm:p-4 transition-opacity duration-200";
+
+//   modal.innerHTML = `
+//     <div class="w-full sm:max-w-lg bg-white rounded-t-[1.75rem] sm:rounded-[2rem] shadow-2xl border border-slate-100 flex flex-col max-h-[94vh] sm:max-h-[88vh] overflow-hidden">
+
+//       <!-- Drag handle, mobile only -->
+//       <div class="sm:hidden flex justify-center pt-2.5 pb-1 shrink-0">
+//         <div class="w-10 h-1 rounded-full bg-slate-200"></div>
+//       </div>
+
+//       <div class="px-5 py-3 sm:px-6 sm:py-4 border-b border-slate-100 flex items-center justify-between bg-white shrink-0">
+
+//         <h2 class="text-lg sm:text-xl font-black text-slate-800">
+//           Manual Slot Booking
+//         </h2>
+
+//         <button
+//           type="button"
+//           id="close-modal"
+//           class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 active:bg-red-50 transition-colors flex items-center justify-center font-bold text-sm"
+//         >
+//           ✕
+//         </button>
+
+//       </div>
+
+//       <form id="booking-form" class="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto grow">
+
+//         <div class="bg-slate-50 border border-slate-100 rounded-2xl p-3 sm:p-4 grid grid-cols-2 gap-3 sm:gap-4">
+
+//           <div>
+//             <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+//               Start Time
+//             </label>
+
+//             <input
+//               type="time"
+//               id="modal-start-time"
+//               name="startTime"
+//               class="w-full bg-transparent text-sm sm:text-base font-black outline-none"
+//               required
+//             />
+//           </div>
+
+//           <div>
+//             <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+//               End Time
+//             </label>
+
+//             <input
+//               type="time"
+//               id="modal-end-time"
+//               name="endTime"
+//               class="w-full bg-transparent text-sm sm:text-base font-black outline-none"
+//               required
+//             />
+//           </div>
+
+//         </div>
+
+//         <div>
+//           <label class="block text-xs font-bold text-slate-600 mb-1.5 sm:mb-2">
+//             Customer Name
+//           </label>
+
+//           <input
+//             type="text"
+//             name="customerName"
+//             class="w-full h-11 sm:h-12 rounded-xl border border-slate-200 px-4 text-sm"
+//             required
+//           />
+//         </div>
+
+//         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+
+//           <div>
+//             <label class="block text-xs font-bold text-slate-600 mb-1.5 sm:mb-2">
+//               Mobile Number
+//             </label>
+
+//             <input
+//               type="tel"
+//               name="phone"
+//               class="w-full h-11 sm:h-12 rounded-xl border border-slate-200 px-4 text-sm"
+//               required
+//             />
+//           </div>
+
+//           <div>
+//             <label class="block text-xs font-bold text-slate-600 mb-1.5 sm:mb-2">
+//               Email Address
+//             </label>
+
+//             <input
+//               type="email"
+//               name="email"
+//               class="w-full h-11 sm:h-12 rounded-xl border border-slate-200 px-4 text-sm"
+//             />
+//           </div>
+
+//         </div>
+
+//         <div>
+//           <label class="block text-xs font-bold text-slate-600 mb-1.5 sm:mb-2">
+//             Payment Status
+//           </label>
+
+//           <div class="grid grid-cols-2 gap-2 sm:gap-3">
+
+//             <label class="flex items-center gap-2 border-2 border-slate-200 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 cursor-pointer text-xs sm:text-sm font-bold text-slate-700 transition-colors">
+
+//               <input
+//                 type="radio"
+//                 name="paymentStatus"
+//                 value="PARTIAL"
+//                 checked
+//                 class="accent-emerald-600"
+//               />
+
+//               Advance Paid
+
+//             </label>
+
+//             <label class="flex items-center gap-2 border-2 border-slate-200 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 cursor-pointer text-xs sm:text-sm font-bold text-slate-700 transition-colors">
+
+//               <input
+//                 type="radio"
+//                 name="paymentStatus"
+//                 value="FULL"
+//                 class="accent-emerald-600"
+//               />
+
+//               Full Paid
+
+//             </label>
+
+//           </div>
+//         </div>
+
+//         <div>
+
+//           <label class="block text-xs font-bold text-slate-600 mb-1.5 sm:mb-2">
+//             Amount Received
+//           </label>
+
+//           <input
+//             type="number"
+//             name="amount"
+//             class="w-full h-11 sm:h-12 rounded-xl border border-slate-200 px-4 text-sm"
+//             required
+//           />
+
+//         </div>
+
+//         <div>
+
+//           <label class="block text-xs font-bold text-slate-600 mb-1.5 sm:mb-2">
+//             Internal Notes
+//           </label>
+
+//           <textarea
+//             name="notes"
+//             rows="2"
+//             class="w-full rounded-xl border border-slate-200 p-3 sm:p-4 text-sm"
+//           ></textarea>
+
+//         </div>
+
+//         <div class="flex gap-3 pt-1 sm:pt-2 pb-1 sm:pb-0">
+
+//           <button
+//             type="button"
+//             id="cancel-modal-btn"
+//             class="flex-1 h-11 sm:h-12 rounded-xl border border-slate-200 text-sm font-bold active:bg-slate-50"
+//           >
+//             Cancel
+//           </button>
+
+//           <button
+//             type="submit"
+//             class="flex-1 h-11 sm:h-12 rounded-xl bg-emerald-600 text-white font-black text-sm active:bg-emerald-700"
+//           >
+//             Confirm
+//           </button>
+
+//         </div>
+
+//       </form>
+//     </div>
+//   `;
+
+//   document.body.appendChild(modal);
+
+//   return modal;
+// }
 
 function openBookingModal(startTime, endTime) {
   document.getElementById("modal-start-time").value =

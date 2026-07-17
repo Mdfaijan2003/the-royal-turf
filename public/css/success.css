@@ -1,0 +1,299 @@
+/* ── SUCCESS PAGE ── */
+/* Extends booking.css — relies on its :root tokens, .b-card, .summary-box,
+   .summary-row, .trust-bar, .legend-pill etc. Load booking.css BEFORE this file. */
+
+.success-main {
+  padding: 8rem 5rem 5rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+  .success-main {
+    padding: 7rem 2.5rem 4rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .success-main {
+    padding: 6.5rem 1.25rem 3rem;
+  }
+}
+
+/* ── HERO MOMENT ── */
+.success-hero {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.success-check-wrap {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: var(--green-xlight);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: successPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.success-check-wrap svg {
+  width: 40px;
+  height: 40px;
+  color: var(--green);
+}
+
+.success-check-wrap svg path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: successDraw 0.45s ease 0.3s forwards;
+}
+
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes successDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-hero h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2.4rem, 5vw, 3.2rem);
+  letter-spacing: 0.02em;
+  color: var(--text);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  animation: fadeUp 0.5s ease 0.15s both;
+}
+
+.success-hero p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto;
+  animation: fadeUp 0.5s ease 0.22s both;
+}
+
+.success-hero p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.success-id-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--green);
+  background: var(--green-xlight);
+  border: 1px solid var(--border);
+  padding: 6px 16px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+  animation: fadeUp 0.5s ease 0.28s both;
+}
+
+/* ── DETAILS CARD ── */
+.success-card {
+  animation: fadeUp 0.5s ease 0.34s both;
+}
+
+.success-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .success-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.success-detail-item label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+.success-detail-item span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.success-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.success-status-pill.partial {
+  background: var(--amber-soft);
+  color: var(--amber-text);
+}
+
+.success-status-pill.full {
+  background: var(--green-xlight);
+  color: #065f46;
+}
+
+/* ── ACTION BUTTONS ── */
+.success-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 480px) {
+  .success-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.success-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px;
+  border-radius: 100px;
+  font-family: var(--font-head);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+
+.success-btn .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.success-btn.primary {
+  background: var(--green);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+  grid-column: 1 / -1;
+}
+
+.success-btn.primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+}
+
+.success-btn.secondary {
+  background: var(--white);
+  color: var(--text);
+  border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.success-btn.secondary:hover {
+  background: var(--green-xlight);
+  border-color: var(--border);
+}
+
+.success-btn.whatsapp {
+  background: #25d366;
+  color: #fff;
+}
+
+.success-btn.whatsapp:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+}
+
+/* ── WHAT TO EXPECT CARD ── */
+.success-next-card {
+  animation: fadeUp 0.5s ease 0.4s both;
+}
+
+.success-next-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.success-next-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.success-next-item .icon-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--green-xlight);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.success-next-item .icon-dot .material-symbols-outlined {
+  font-size: 15px;
+  color: var(--green);
+}
+
+.success-next-item p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.success-next-item p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ── BOOK ANOTHER ── */
+.success-footer-link {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.success-footer-link a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--green);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.success-footer-link a:hover {
+  color: var(--green-dark);
+  border-color: var(--green);
+}

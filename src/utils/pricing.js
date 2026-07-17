@@ -25,9 +25,9 @@ export function calculateBookingAmount(start, end) {
 
     let rate = 0;
 
-    if (hour >= 6 && hour < 17) {
+    if (hour >= 6 && hour < 18) {
       rate = isWeekend ? 1000 : 800;
-    } else if ((hour >= 17 && hour < 24) || (hour >= 0 && hour < 1)) {
+    } else if ((hour >= 18 && hour < 24) || (hour >= 0 && hour < 1)) {
       rate = isWeekend ? 1300 : 1100;
     }
 
