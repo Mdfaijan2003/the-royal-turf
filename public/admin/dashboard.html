@@ -32,6 +32,93 @@
             background: #e2e8f0;
             border-radius: 10px;
         }
+
+        /* Active tab indicator */
+        #bottom-tabbar #active-tab .tab-icon,
+        #bottom-tabbar #active-tab .tab-label {
+            color: #0f172a;
+        }
+
+        #bottom-tabbar #active-tab .tab-label {
+            font-weight: 700;
+        }
+
+        #bottom-tabbar #active-tab::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            border-radius: 0 0 3px 3px;
+            background: #059669;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        /* Bottom tab bar — written as plain CSS (not Tailwind utility classes) so it
+       renders correctly even if /css/output.css hasn't been rebuilt yet to include
+       new classes like bottom-0, grid-cols-5, or the arbitrary-value utilities. */
+        #bottom-tabbar {
+            display: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -4px 16px -4px rgba(0, 0, 0, 0.06);
+        }
+
+        #bottom-tabbar .tabbar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        #bottom-tabbar .tab-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 4px;
+            text-decoration: none;
+        }
+
+        #bottom-tabbar .tab-icon {
+            width: 20px;
+            height: 20px;
+            color: #94a3b8;
+        }
+
+        #bottom-tabbar .tab-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        /* Show the bar only on small screens, same breakpoint as Tailwind's lg (1024px) */
+        @media (max-width: 1023px) {
+            #bottom-tabbar {
+                display: block;
+            }
+        }
+
+        /* Hidden whenever a modal is open (JS toggles .modal-open on <body>) */
+        body.modal-open #bottom-tabbar {
+            display: none;
+        }
     </style>
 </head>
 
@@ -40,7 +127,7 @@
     <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
         <div class="mb-10 px-2">
             <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
-                <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
+                <span class="bg-emerald-500 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
                 THE ROYAL TURF
             </h2>
         </div>
@@ -49,7 +136,8 @@
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-2">Management</p>
 
             <a href="dashboard.html"
-                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+                data-page="dashboard">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
@@ -58,7 +146,8 @@
             </a>
 
             <a href="booking.html"
-                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+                data-page="booking">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -67,7 +156,8 @@
             </a>
 
             <a href="slots.html"
-                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+                data-page="slots">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -76,7 +166,8 @@
             </a>
 
             <a href="finance.html"
-                class="flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition">
+                class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+                data-page="finance">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -87,7 +178,8 @@
             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-6 mb-3 px-2">Configuration</p>
 
             <a href="setting.html"
-                class="flex items-center space-x-3 bg-slate-900 text-white p-3 rounded-2xl shadow-lg shadow-slate-200">
+                class="nav-link flex items-center space-x-3 text-slate-500 hover:bg-slate-50 p-3 rounded-2xl transition"
+                data-page="setting">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -114,15 +206,15 @@
 
         <header
             class="sticky top-0 z-30 bg-white/70 backdrop-blur-xl px-6 py-6 lg:px-12 flex justify-between items-center">
-            <h1 class="text-xl font-extrabold text-slate-800 lg:hidden">Dashboard</h1>
+            <h1 class="text-xl font-extrabold text-slate-800 lg:hidden">Management</h1>
             <div class="hidden lg:flex items-center space-x-2 text-sm font-medium text-slate-400">
-                <span>Dashboard</span>
+                <span>Management</span>
                 <span>/</span>
-                <span class="text-slate-900 font-bold">Home</span>
+                <span class="text-slate-900 font-bold">Overview</span>
             </div>
             <div class="flex items-center space-x-4">
                 <button
-                    class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center">
+                    class="bg-emerald-500 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -135,15 +227,15 @@
 
             <section id="dashboard" class="grid grid-cols-4 gap-6">
                 <div
-                    class="col-span-4 lg:col-span-2 bg-yellow-400 rounded-[2.5rem] p-8 bento-card flex justify-between items-end overflow-hidden relative">
+                    class="col-span-4 lg:col-span-2 bg-emerald-400 rounded-[2.5rem] p-8 bento-card flex justify-between items-end overflow-hidden relative">
                     <div>
-                        <h3 class="text-yellow-900/60 font-bold uppercase tracking-widest text-xs">Today's Revenue</h3>
-                        <p id="stat-revenue" class="text-4xl font-black text-yellow-950 mt-2"></p>
-                        <p class="text-sm font-bold text-yellow-800/80 mt-1"> <span id="stat-revenue-change"
+                        <h3 class="text-emerald-900/60 font-bold uppercase tracking-widest text-xs">Today's Revenue</h3>
+                        <p id="stat-revenue" class="text-4xl font-black text-emerald-950 mt-2"></p>
+                        <p class="text-sm font-bold text-emerald-800/80 mt-1"> <span id="stat-revenue-change"
                                 class="font-extrabold"></span> from yesterday</p>
                     </div>
-                    <div class="bg-yellow-950 text-white px-4 py-2 rounded-2xl text-xs font-bold z-10">Live Stats</div>
-                    <svg class="absolute -right-10 -top-10 w-48 h-48 text-yellow-500/20" fill="currentColor"
+                    <div class="bg-emerald-950 text-white px-4 py-2 rounded-2xl text-xs font-bold z-10">Live Stats</div>
+                    <svg class="absolute -right-10 -top-10 w-48 h-48 text-emerald-500/20" fill="currentColor"
                         viewBox="0 0 24 24">
                         <path d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
@@ -164,7 +256,7 @@
 
                 <div
                     class="col-span-2 lg:col-span-1 bg-[#1e293b] p-8 rounded-[2.5rem] bento-card flex flex-col justify-between text-white">
-                    <div class="text-yellow-400"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <div class="text-emerald-400"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2L1 21h22L12 2z" />
                         </svg></div>
                     <div>
@@ -179,7 +271,7 @@
                 <div class="flex items-center justify-between">
                     <h2 class="text-xl font-extrabold tracking-tight">Slot Management</h2>
                     <input type="date" name="slot-date" id="slot-date"
-                        class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-yellow-400 outline-none">
+                        class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-emerald-400 outline-none">
                     <button class="text-sm font-bold text-red-500 flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -201,7 +293,7 @@
                         <h3 class="font-extrabold text-lg">Booking Ledger</h3>
                         <div class="flex space-x-2">
                             <input id="ledger-search" type="text" placeholder="Search customer..."
-                                class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-yellow-400 outline-none w-40">
+                                class="bg-slate-50 border-none text-xs p-3 rounded-xl focus:ring-2 ring-emerald-400 outline-none w-40">
                         </div>
                     </div>
                     <!-- List data as per search -->
@@ -265,39 +357,50 @@
         </div>
     </main>
 
-    <nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-6">
-        <div class="bg-[#1A1C1E]/95 backdrop-blur-xl px-10 py-4 rounded-[2rem] flex items-center space-x-12 shadow-2xl">
-            <a href="/admin/dashboard.html" class="text-yellow-400">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+    <nav id="bottom-tabbar">
+        <div class="tabbar-grid">
+
+            <a href="dashboard.html" id="active-tab" class="tab-item">
+                <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
                 </svg>
-            </a>
-            <a href="/admin/booking.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10" />
-                </svg>
-            </a>
-            <a href="/admin/slots.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-            </a>
-            <a href="/admin/finance.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 9V7a5 5 0 00-10 0v2m2 4h10a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm7 5v2m-3-2h6" />
-                </svg>
+                <span class="tab-label">Overview</span>
             </a>
 
-            <a href="/admin/setting.html" class="text-slate-500 hover:text-white transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <a href="booking.html" class="tab-item">
+                <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="3" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
                 </svg>
+                <span class="tab-label">Bookings</span>
             </a>
+
+            <a href="slots.html" aria-current="page" class="tab-item">
+                <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span class="tab-label">Slots</span>
+            </a>
+
+            <a href="finance.html" class="tab-item">
+                <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M21 7H5a2 2 0 00-2 2v6h18a2 2 0 002-2V9a2 2 0 00-2-2z" />
+                    <path d="M3 11h14a3 3 0 013 3v1a2 2 0 01-2 2H3z" />
+                    <circle cx="16" cy="14" r="1" />
+                </svg>
+                <span class="tab-label">Finance</span>
+            </a>
+
+            <a href="setting.html" class="tab-item">
+                <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.7 1.7 0 00.3-1.95l-.02-.04a1.7 1.7 0 00-1.3-1.21l-.04-.01a6 6 0 00-1.7-1.23l-.06-.02a1.7 1.7 0 00-2.02-.68l-.05.02a6 6 0 00-1.8.99l-.04.04A1.7 1.7 0 009 9.5l-.02.05a6 6 0 00-.98 1.8l-.02.05a1.7 1.7 0 00.68 2.02l.04.02a6 6 0 001.23 1.7l.01.04a1.7 1.7 0 001.95.3z" />
+                </svg>
+                <span class="tab-label">Setting</span>
+            </a>
+
         </div>
     </nav>
 

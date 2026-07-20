@@ -26,7 +26,7 @@ import healthRoutes from "./routes/healthcheck.routes.js";
 import webHookrouter from "./routes/webhook.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import contactRouter from "./routes/contact.routes.js";
-import adminRoutes from "./routes/admin.routes.js";
+import adminRouter from "./routes/admin.routes.js";
 import galleryRoutes from "./routes/gallery.routes.js";
 
 import {
@@ -134,11 +134,11 @@ app.use(
    API ROUTES
 ===================================================== */
 
-app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminRouter);
 
 app.use("/api/admin/bookings", verifyAdminJWT, requireAdminRole, bookingRouter);
 
-app.use("/api/admin/finance", verifyAdminJWT, requireAdminRole, adminRoutes);
+app.use("/api/admin/finance", verifyAdminJWT, requireAdminRole, adminRouter);
 
 app.use("/api/v1/healthcheck", healthRoutes);
 

@@ -752,15 +752,15 @@ export const adminManualBookingCreate = async (req, res) => {
        CREATE SLOT LOCK
     ============================== */
 
-    slotLock = await SlotLock.create({
-      start: startTime,
+    // slotLock = await SlotLock.create({
+    //   start: startTime,
 
-      end: endTime,
+    //   end: endTime,
 
-      status: "CONSUMED",
+    //   status: "CONSUMED",
 
-      expiresAt: new Date("2099-12-31"),
-    });
+    //   expiresAt: new Date("2099-12-31"),
+    // });
 
     /* ===============================
        PAYMENT CALCULATION
@@ -775,8 +775,6 @@ export const adminManualBookingCreate = async (req, res) => {
     ============================== */
 
     const booking = await Booking.create({
-      slotLock: slotLock._id,
-
       start: startTime,
 
       end: endTime,

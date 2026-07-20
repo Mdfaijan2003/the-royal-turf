@@ -38,16 +38,161 @@
       background-image: linear-gradient(45deg, #fee2e2 25%, #fef2f2 25%, #fef2f2 50%, #fee2e2 50%, #fee2e2 75%, #fef2f2 75%, #fef2f2 100%);
       background-size: 20px 20px;
     }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Bottom tab bar — written as plain CSS (not Tailwind utility classes) so it
+       renders correctly even if /css/output.css hasn't been rebuilt yet to include
+       new classes like bottom-0, grid-cols-5, or the arbitrary-value utilities. */
+    #bottom-tabbar {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 16px -4px rgba(0, 0, 0, 0.06);
+    }
+
+    #bottom-tabbar .tabbar-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    #bottom-tabbar .tab-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 4px;
+      text-decoration: none;
+    }
+
+    #bottom-tabbar .tab-icon {
+      width: 20px;
+      height: 20px;
+      color: #94a3b8;
+    }
+
+    #bottom-tabbar .tab-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    /* Show the bar only on small screens, same breakpoint as Tailwind's lg (1024px) */
+    @media (max-width: 1023px) {
+      #bottom-tabbar {
+        display: block;
+      }
+    }
+
+    /* Hidden whenever a modal is open (JS toggles .modal-open on <body>) */
+    body.modal-open #bottom-tabbar {
+      display: none;
+    }
+
+    /* Modal open/close animation — plain CSS, not Tailwind utility classes
+       (translate-y-full/translate-y-0 etc. won't work until output.css is
+       rebuilt; these rules work immediately regardless of build state).
+
+       Apply class="rt-modal-backdrop" to the modal's outer fixed wrapper and
+       class="rt-modal-panel" to the white panel inside it. To open, add
+       "is-open" to the backdrop element; to close, remove it. */
+    .rt-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .rt-modal-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .rt-modal-panel {
+      position: relative;
+      width: min(95vw, 720px);
+      max-height: 90dvh;
+      background: #fff;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(100%);
+      transition: transform .3s ease;
+    }
+
+    .rt-modal-backdrop.is-open .rt-modal-panel {
+      transform: translateY(0);
+    }
+
+    @media (max-width:639px) {
+
+      .rt-modal-backdrop {
+        align-items: center;
+        padding: 16px;
+      }
+
+      .rt-modal-panel {
+        width: 95vw;
+        max-height: 90dvh;
+        border-radius: 24px;
+      }
+
+    }
+
+    /* Active tab indicator */
+    #bottom-tabbar #active-tab .tab-icon,
+    #bottom-tabbar #active-tab .tab-label {
+      color: #0f172a;
+    }
+
+    #bottom-tabbar #active-tab .tab-label {
+      font-weight: 700;
+    }
+
+    #bottom-tabbar #active-tab::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: #059669;
+    }
   </style>
 </head>
 
 <body class="bg-[#F8FAFC] text-[#1e293b] flex">
 
-
   <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
     <div class="mb-10 px-2">
       <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
-        <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
+        <span class="bg-emerald-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
         THE ROYAL TURF
       </h2>
     </div>
@@ -121,13 +266,12 @@
   </aside>
 
 
-
-  <main class="flex-1 min-h-screen relative pb-32 lg:pb-12">
+  <main class="flex-1 min-h-screen relative pb-24 lg:pb-12">
 
     <header
-      class="sticky top-0 z-30 bg-white/80 backdrop-blur-xl px-6 py-6 lg:px-12 flex justify-between items-center border-b border-slate-100/50">
+      class="sticky top-0 z-20 bg-white/80 backdrop-blur-xl px-6 py-6 lg:px-8 flex justify-between items-center border-b border-slate-100/50">
       <h1 class="text-xl font-extrabold text-slate-800 lg:hidden">Slots</h1>
-      <div class="hidden lg:flex items-center space-x-2 text-sm font-medium text-slate-400">
+      <div class="hidden lg:flex items-center space-x-2 text-sm font-small text-slate-400">
         <span>Management</span>
         <span>/</span>
         <span class="text-slate-900 font-bold">Slot Control</span>
@@ -150,7 +294,7 @@
 
         <div
           class="flex-1 bg-white p-2 rounded-[1.5rem] border border-slate-100 shadow-sm flex items-center justify-between">
-          <button class="p-3 hover:bg-slate-50 rounded-2xl text-slate-400 hover:text-slate-900 transition">
+          <button class="p-3 hover:bg-slate-50 rounded-xl text-slate-400 hover:text-slate-900 transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -159,10 +303,10 @@
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Selected Date</p>
             <div class="flex items-center justify-center space-x-2 mt-1 cursor-pointer group">
               <input id="date-picker" type="date"
-                class="text-lg font-extrabold text-slate-800 group-hover:text-yellow-600 transition" />
+                class="text-lg font-extrabold text-slate-800 group-hover:text-emerald-600 transition" />
             </div>
           </div>
-          <button class="p-3 hover:bg-slate-50 rounded-2xl text-slate-400 hover:text-slate-900 transition">
+          <button class="p-3 hover:bg-slate-50 rounded-xl text-slate-400 hover:text-slate-900 transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -171,21 +315,10 @@
 
         <div
           class="flex-1 bg-white p-2 rounded-[1.5rem] border border-slate-100 shadow-sm flex gap-2 overflow-x-auto custom-scrollbar pb-1 xl:pb-0">
-          <!-- <div class="relative min-w-[140px] flex-1">
-            <select
-              class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
-              <option>All Turfs</option>
-              <option>Turf A (5v5)</option>
-              <option>Turf B (7v7)</option>
-            </select>
-            <svg class="w-4 h-4 absolute right-4 top-3.5 text-slate-500 pointer-events-none" fill="none"
-              stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div> -->
+
           <div class="relative min-w-[140px] flex-1 text-center">
             <select
-              class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-yellow-400 cursor-pointer">
+              class="w-full appearance-none bg-slate-50 text-slate-700 py-3 pl-4 pr-10 rounded-2xl text-sm font-bold focus:outline-none focus:ring-2 ring-emerald-400 cursor-pointer">
               <option>All Status</option>
               <option>Available</option>
               <option>Booked</option>
@@ -209,81 +342,70 @@
 
         <div id="slots-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <!-- Slots will be dynamically inserted here -->
+        </div>
       </section>
-
 
     </div>
   </main>
 
-  <nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-4">
-    <div
-      class="bg-[#0b0f14]/90 backdrop-blur-md border border-zinc-700/60 rounded-3xl px-4 py-3 flex items-center space-x-2 shadow-2xl">
-      <a href="dashboard.html" aria-label="Overview" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#3b82f6] to-[#8b5cf6] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h7V3H3v9z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 3h7v9h-7V3z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 21h7" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h7" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Overview</span>
+
+  <!-- Flipkart-style bottom tab bar: full-width, solid, hidden automatically while a modal is open.
+       Styled with plain CSS above (not Tailwind utilities) so it works without a rebuild. -->
+  <nav id="bottom-tabbar">
+    <div class="tabbar-grid">
+
+      <a href="dashboard.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
+        </svg>
+        <span class="tab-label">Overview</span>
       </a>
 
-      <a href="booking.html" aria-label="Bookings" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#f472b6] to-[#f59e0b] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="18" rx="3" />
-            <path d="M16 2v4M8 2v4M3 10h18" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Bookings</span>
+      <a href="booking.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="3" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+        <span class="tab-label">Bookings</span>
       </a>
 
-      <a href="slots.html" aria-label="Slot Control" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#10b981] to-[#34d399] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h12M4 12h7m-7 6h4" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M20 6h0" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Slot Control</span>
+      <a href="slots.html" id="active-tab" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <span class="tab-label">Slots</span>
       </a>
 
-      <a href="finance.html" aria-label="Finance" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#f59e0b] to-[#f472b6] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path d="M21 7H5a2 2 0 00-2 2v6h18a2 2 0 002-2V9a2 2 0 00-2-2z" />
-            <path d="M3 11h14a3 3 0 013 3v1a2 2 0 01-2 2H3z" />
-            <circle cx="16" cy="14" r="1" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Finance</span>
+      <a href="finance.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 7H5a2 2 0 00-2 2v6h18a2 2 0 002-2V9a2 2 0 00-2-2z" />
+          <path d="M3 11h14a3 3 0 013 3v1a2 2 0 01-2 2H3z" />
+          <circle cx="16" cy="14" r="1" />
+        </svg>
+        <span class="tab-label">Finance</span>
       </a>
 
-      <a href="setting.html" aria-label="Setting" aria-current="page"
-        class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#334155] to-[#0f172a] text-white shadow-lg ring-2 ring-white/20 hover:scale-105 transform transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3" />
-            <path
-              d="M19.4 15a1.7 1.7 0 00.3-1.95l-.02-.04a1.7 1.7 0 00-1.3-1.21l-.04-.01a6 6 0 00-1.7-1.23l-.06-.02a1.7 1.7 0 00-2.02-.68l-.05.02a6 6 0 00-1.8.99l-.04.04A1.7 1.7 0 009 9.5l-.02.05a6 6 0 00-.98 1.8l-.02.05a1.7 1.7 0 00.68 2.02l.04.02a6 6 0 001.23 1.7l.01.04a1.7 1.7 0 001.95.3z" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Setting</span>
+      <a href="setting.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.7 1.7 0 00.3-1.95l-.02-.04a1.7 1.7 0 00-1.3-1.21l-.04-.01a6 6 0 00-1.7-1.23l-.06-.02a1.7 1.7 0 00-2.02-.68l-.05.02a6 6 0 00-1.8.99l-.04.04A1.7 1.7 0 009 9.5l-.02.05a6 6 0 00-.98 1.8l-.02.05a1.7 1.7 0 00.68 2.02l.04.02a6 6 0 001.23 1.7l.01.04a1.7 1.7 0 001.95.3z" />
+        </svg>
+        <span class="tab-label">Setting</span>
       </a>
+
     </div>
   </nav>
+
+
+  <!-- Dedicated portal for the modal. Always the LAST element in <body>, never nested
+       inside <main> or <aside>, so `position: fixed` on the modal is guaranteed to be
+       relative to the real viewport and always renders above everything else.
+       In your JS, mount the modal like this:
+         document.getElementById('modal-root').appendChild(modal);
+       NOT document.body.appendChild(modal) into some other container. -->
+  <div id="modal-root"></div>
 
   <script type="module" src="/js/admin/slots.js"></script>
 

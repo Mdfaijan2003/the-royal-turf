@@ -23,6 +23,93 @@
     .toggle-checkbox:checked+.toggle-label {
       background-color: #EAB308;
     }
+
+    /* Active tab indicator */
+    #bottom-tabbar .tab-item[aria-current="page"] .tab-icon,
+    #bottom-tabbar .tab-item[aria-current="page"] .tab-label {
+      color: #0f172a;
+    }
+
+    #bottom-tabbar .tab-item[aria-current="page"] .tab-label {
+      font-weight: 700;
+    }
+
+    #bottom-tabbar .tab-item[aria-current="page"]::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: #eab308;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Bottom tab bar — written as plain CSS (not Tailwind utility classes) so it
+       renders correctly even if /css/output.css hasn't been rebuilt yet to include
+       new classes like bottom-0, grid-cols-5, or the arbitrary-value utilities. */
+    #bottom-tabbar {
+      display: none;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 16px -4px rgba(0, 0, 0, 0.06);
+    }
+
+    #bottom-tabbar .tabbar-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    #bottom-tabbar .tab-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 4px;
+      text-decoration: none;
+    }
+
+    #bottom-tabbar .tab-icon {
+      width: 20px;
+      height: 20px;
+      color: #94a3b8;
+    }
+
+    #bottom-tabbar .tab-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    /* Show the bar only on small screens, same breakpoint as Tailwind's lg (1024px) */
+    @media (max-width: 1023px) {
+      #bottom-tabbar {
+        display: block;
+      }
+    }
+
+    /* Hidden whenever a modal is open (JS toggles .modal-open on <body>) */
+    body.modal-open #bottom-tabbar {
+      display: none;
+    }
   </style>
 </head>
 
@@ -31,7 +118,7 @@
   <aside class="hidden lg:flex flex-col w-72 bg-white h-screen sticky top-0 border-r border-slate-200 px-6 py-8 z-40">
     <div class="mb-10 px-2">
       <h2 class="text-xl font-extrabold tracking-tighter text-slate-900 flex items-center">
-        <span class="bg-yellow-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
+        <span class="bg-emerald-400 w-8 h-8 rounded-lg mr-2 flex items-center justify-center text-xs">RT</span>
         THE ROYAL TURF
       </h2>
     </div>
@@ -145,7 +232,7 @@
               </div>
             </div>
             <span
-              class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-[10px] font-bold uppercase tracking-wider">Super
+              class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-[10px] font-bold uppercase tracking-wider">Super
               Admin</span>
           </div>
 
@@ -187,7 +274,7 @@
                   class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
                   checked />
                 <label for="toggle1"
-                  class="toggle-label block overflow-hidden h-5 rounded-full bg-yellow-400 cursor-pointer"></label>
+                  class="toggle-label block overflow-hidden h-5 rounded-full bg-emerald-400 cursor-pointer"></label>
               </div>
             </div>
             <hr class="border-slate-50">
@@ -201,7 +288,7 @@
                   class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer"
                   checked />
                 <label for="toggle2"
-                  class="toggle-label block overflow-hidden h-5 rounded-full bg-yellow-400 cursor-pointer"></label>
+                  class="toggle-label block overflow-hidden h-5 rounded-full bg-emerald-400 cursor-pointer"></label>
               </div>
             </div>
             <hr class="border-slate-50">
@@ -223,7 +310,7 @@
         <section class="bg-slate-900 rounded-[2.5rem] shadow-lg p-8 h-full text-white relative overflow-hidden">
           <div class="relative z-10">
             <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
               </svg>
@@ -232,7 +319,7 @@
             <p class="text-sm text-slate-400 mt-1 mb-6">Need help with a bug or a new feature? Contact the technical
               team directly.</p>
             <button
-              class="w-full bg-yellow-400 text-yellow-900 py-3 rounded-xl text-sm font-bold hover:bg-yellow-500 transition">Contact
+              class="w-full bg-emerald-400 text-emerald-900 py-3 rounded-xl text-sm font-bold hover:bg-emerald-500 transition">Contact
               Developer</button>
             <button
               class="w-full mt-3 bg-white/5 text-slate-300 py-3 rounded-xl text-sm font-bold hover:bg-white/10 transition border border-white/10">Report
@@ -322,73 +409,50 @@
     </div>
   </main>
 
-  <nav class="lg:hidden fixed bottom-6 inset-x-0 flex justify-center z-50 px-4">
-    <div
-      class="bg-[#0b0f14]/90 backdrop-blur-md border border-zinc-700/60 rounded-3xl px-4 py-3 flex items-center space-x-2 shadow-2xl">
-      <a href="dashboard.html" aria-label="Overview" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#3b82f6] to-[#8b5cf6] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h7V3H3v9z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 3h7v9h-7V3z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14 21h7" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21h7" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Overview</span>
+  <nav id="bottom-tabbar">
+    <div class="tabbar-grid">
+
+      <a href="dashboard.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 12l2-2 7-7 7 7 2 2v8a2 2 0 01-2 2h-3m-4 0V11m-4 0v10" />
+        </svg>
+        <span class="tab-label">Overview</span>
       </a>
 
-      <a href="booking.html" aria-label="Bookings" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#f472b6] to-[#f59e0b] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="18" rx="3" />
-            <path d="M16 2v4M8 2v4M3 10h18" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Bookings</span>
+      <a href="booking.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="3" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+        <span class="tab-label">Bookings</span>
       </a>
 
-      <a href="slots.html" aria-label="Slot Control" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#10b981] to-[#34d399] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h12M4 12h7m-7 6h4" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M20 6h0" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Slot Control</span>
+      <a href="slots.html" aria-current="page" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <span class="tab-label">Slots</span>
       </a>
 
-      <a href="finance.html" aria-label="Finance" class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#f59e0b] to-[#f472b6] text-white shadow-lg hover:scale-105 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path d="M21 7H5a2 2 0 00-2 2v6h18a2 2 0 002-2V9a2 2 0 00-2-2z" />
-            <path d="M3 11h14a3 3 0 013 3v1a2 2 0 01-2 2H3z" />
-            <circle cx="16" cy="14" r="1" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Finance</span>
+      <a href="finance.html" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 7H5a2 2 0 00-2 2v6h18a2 2 0 002-2V9a2 2 0 00-2-2z" />
+          <path d="M3 11h14a3 3 0 013 3v1a2 2 0 01-2 2H3z" />
+          <circle cx="16" cy="14" r="1" />
+        </svg>
+        <span class="tab-label">Finance</span>
       </a>
 
-      <a href="setting.html" aria-label="Setting" aria-current="page"
-        class="flex flex-col items-center group text-white transition">
-        <span
-          class="w-10 h-10 rounded-xl inline-flex items-center justify-center bg-gradient-to-br from-[#334155] to-[#0f172a] text-white shadow-lg ring-2 ring-white/20 hover:scale-105 transform transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3" />
-            <path
-              d="M19.4 15a1.7 1.7 0 00.3-1.95l-.02-.04a1.7 1.7 0 00-1.3-1.21l-.04-.01a6 6 0 00-1.7-1.23l-.06-.02a1.7 1.7 0 00-2.02-.68l-.05.02a6 6 0 00-1.8.99l-.04.04A1.7 1.7 0 009 9.5l-.02.05a6 6 0 00-.98 1.8l-.02.05a1.7 1.7 0 00.68 2.02l.04.02a6 6 0 001.23 1.7l.01.04a1.7 1.7 0 001.95.3z" />
-          </svg>
-        </span>
-        <span class="mt-1 text-[10px] text-gray-200">Setting</span>
+      <a href="setting.html" id="active-tab" class="tab-item">
+        <svg class="tab-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.7 1.7 0 00.3-1.95l-.02-.04a1.7 1.7 0 00-1.3-1.21l-.04-.01a6 6 0 00-1.7-1.23l-.06-.02a1.7 1.7 0 00-2.02-.68l-.05.02a6 6 0 00-1.8.99l-.04.04A1.7 1.7 0 009 9.5l-.02.05a6 6 0 00-.98 1.8l-.02.05a1.7 1.7 0 00.68 2.02l.04.02a6 6 0 001.23 1.7l.01.04a1.7 1.7 0 001.95.3z" />
+        </svg>
+        <span class="tab-label">Setting</span>
       </a>
+
     </div>
   </nav>
 

@@ -5,10 +5,27 @@ import {
   fetchDashboardSummary,
   fetchDashboardBookings,
 } from "./api.dashboard.js";
-import { renderSlots } from "./slots.js";
 import { renderGallery } from "./gallery.dashboard.js";
 
-document.addEventListener("DOMContentLoaded", initDashboard);
+document.addEventListener("DOMContentLoaded", () => {
+  const currentPage = window.location.pathname
+    .split("/")
+    .pop()
+    .replace(".html", "");
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+    const page = link.dataset.page;
+
+    if (page === currentPage) {
+      link.classList.remove("text-slate-500");
+      link.classList.add("bg-emerald-500", "text-white", "shadow-lg");
+    } else {
+      link.classList.remove("bg-emerald-500", "text-white", "shadow-lg");
+      link.classList.add("text-slate-500");
+    }
+  });
+  initDashboard();
+});
 
 function initDashboard() {
   const today = new Date().toISOString().slice(0, 10);
@@ -165,19 +182,74 @@ async function loadSlots() {
     const res = await fetch(`/api/slots?date=${state.selectedSlotDate}`);
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error);
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to load slots");
+    }
 
-    state.slots = data.slots;
+    state.slots = data.slots || [];
 
-    renderSlots({
-      container: dom.slotGrid,
-      slots: state.slots,
-      onBlock: handleBlock,
-      onUnblock: handleUnblock,
+    dom.slotGrid.innerHTML = "";
+
+    if (state.slots.length === 0) {
+      dom.slotGrid.innerHTML = `
+        <div class="rounded-xl border border-slate-200 bg-white p-6 text-center text-slate-500">
+          No slots available.
+        </div>
+      `;
+      return;
+    }
+
+    state.slots.forEach((slot, index) => {
+      dom.slotGrid.insertAdjacentHTML("beforeend", createSlotCard(slot, index));
     });
   } catch (err) {
     console.error("Slot load error:", err);
+
+    dom.slotGrid.innerHTML = `
+      <div class="rounded-xl border border-red-200 bg-red-50 p-6 text-center text-red-600">
+        Failed to load slots.
+      </div>
+    `;
   }
+}
+
+function createSlotCard(slot, index) {
+  const badgeClasses = {
+    AVAILABLE: "bg-emerald-100 text-emerald-700",
+    BOOKED: "bg-red-100 text-red-700",
+    HELD: "bg-yellow-100 text-yellow-700",
+    BLOCKED: "bg-slate-200 text-slate-700",
+  };
+
+  return `
+    <button
+      type="button"
+      class="slot-card w-full rounded-2xl border bg-white p-4 text-left transition hover:shadow-md"
+      data-index="${index}"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-lg font-bold">
+            ${new Date(slot.start).toLocaleTimeString("en-IN", {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </p>
+
+          <p class="text-sm text-slate-500">
+            ${slot.customerName || "Available"}
+          </p>
+        </div>
+
+        <span class="rounded-full px-3 py-1 text-xs font-semibold ${
+          badgeClasses[slot.status] || "bg-slate-100 text-slate-700"
+        }">
+          ${slot.status}
+        </span>
+      </div>
+    </button>
+  `;
 }
 
 async function handleBlock(slot) {

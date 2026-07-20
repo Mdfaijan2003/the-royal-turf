@@ -574,6 +574,23 @@ function getDateFunction(e) {
 document.addEventListener("DOMContentLoaded", async () => {
   const range = getThisMonthRange();
 
+  const currentPage = window.location.pathname
+    .split("/")
+    .pop()
+    .replace(".html", "");
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+    const page = link.dataset.page;
+
+    if (page === currentPage) {
+      link.classList.remove("text-slate-500");
+      link.classList.add("bg-emerald-500", "text-white", "shadow-lg");
+    } else {
+      link.classList.remove("bg-emerald-500", "text-white", "shadow-lg");
+      link.classList.add("text-slate-500");
+    }
+  });
+
   const startInput = document.getElementById("start-date");
   const endInput = document.getElementById("end-date");
 

@@ -2,6 +2,7 @@ import Booking from "../../models/booking.js";
 import SlotLock from "../../models/slotlock.js";
 import dayjs from "dayjs";
 import { logAdminAction } from "../audit.service.js";
+import AdminBlockedSlot from "../../models/adminBlockedSlot.js";
 
 export const getSlotsByDate = async (req, res) => {
   try {
@@ -40,15 +41,20 @@ export const getSlotsByDate = async (req, res) => {
       end: { $gt: startOfDay },
     }).lean();
 
-    // HELD / BLOCKED LOCKS
-    const locks = await SlotLock.find({
+    // HELD /  LOCKS
+    const heldLocks = await SlotLock.find({
+      status: "HELD",
+      expiresAt: { $gt: now },
       start: { $lt: endOfDay },
       end: { $gt: startOfDay },
-      $or: [{ status: "BLOCKED" }, { status: "HELD", expiresAt: { $gt: now } }],
+    }).lean();
+
+    const blockedSlots = await AdminBlockedSlot.find({
+      start: { $lt: endOfDay },
+      end: { $gt: startOfDay },
     })
       .populate("blockedBy", "name email")
       .lean();
-
     // Build slots
     const slots = [];
     let cursor = new Date(startOfDay);
@@ -80,8 +86,9 @@ export const getSlotsByDate = async (req, res) => {
       }
 
       // BLOCKED?
-      const blocked = locks.find(
-        l => l.status === "BLOCKED" && slotStart < l.end && slotEnd > l.start
+
+      const blocked = blockedSlots.find(
+        b => slotStart < b.end && slotEnd > b.start
       );
 
       if (blocked) {
@@ -97,7 +104,7 @@ export const getSlotsByDate = async (req, res) => {
       }
 
       // HELD?
-      const held = locks.find(
+      const held = heldLocks.find(
         l => l.status === "HELD" && slotStart < l.end && slotEnd > l.start
       );
 

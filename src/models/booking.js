@@ -5,7 +5,7 @@ const bookingSchema = new mongoose.Schema(
     slotLock: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "SlotLock",
-      required: true,
+      default: null,
     },
 
     start: { type: Date, required: true },

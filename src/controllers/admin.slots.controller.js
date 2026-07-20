@@ -129,7 +129,7 @@ export const unblockSlot = async (req, res) => {
 export const blockSlot = async (req, res) => {
   try {
     const { start, end } = req.body;
-    const adminId = req.user._id;
+    const adminId = req.admin._id;
 
     await SlotService.blockSlot(start, end, adminId);
 
