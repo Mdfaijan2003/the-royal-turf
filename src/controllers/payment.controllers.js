@@ -57,15 +57,15 @@ export const createOrder = async (req, res) => {
     const totalAmount = pricing.total;
     const advanceAmount = pricing.advance;
 
-    // if (lock.razorpayOrderId) {
-    //   return res.json({
-    //     orderId: lock.razorpayOrderId,
-    //     advanceAmount,
-    //     totalAmount,
-    //     currency: "INR",
-    //     key: process.env.RAZORPAY_KEY_ID,
-    //   });
-    // }
+    if (lock.razorpayOrderId) {
+      return res.json({
+        orderId: lock.razorpayOrderId,
+        advanceAmount,
+        totalAmount,
+        currency: "INR",
+        key: process.env.RAZORPAY_KEY_ID,
+      });
+    }
 
     // Razorpay order ONLY for advance
     const order = await razorpay.orders.create({
