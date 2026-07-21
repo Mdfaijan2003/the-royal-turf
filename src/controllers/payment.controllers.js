@@ -37,6 +37,20 @@ export const createOrder = async (req, res) => {
       return res.status(400).json({ error: "Slot lock expired or invalid" });
     }
 
+    const booked = await Booking.findOne({
+      status: "PAID",
+      start: { $lt: end },
+      end: { $gt: start },
+    });
+
+    if (booked) {
+      return res.status(409).json({
+        success: false,
+        message:
+          "Sorry, this slot has already been booked by another customer.",
+      });
+    }
+
     // 🧮 Calculate advance (30%)
     const pricing = calculateBookingAmount(lock.start, lock.end);
 

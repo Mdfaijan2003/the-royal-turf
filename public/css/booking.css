@@ -607,6 +607,172 @@ select option:disabled {
   background: #ef4444;
 }
 
+/* Price Chart */
+/* ── BOOKING CHART (PRICING) ── */
+.booking-chart {
+  margin-top: 1.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.chart-head {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.chart-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 1px solid var(--border);
+  background: var(--green-xlight);
+  padding: 4px 14px;
+  border-radius: 100px;
+  margin-bottom: 0.6rem;
+}
+
+.chart-head h3 {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.chart-col {
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 1.25rem;
+  position: relative;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.chart-col:hover {
+  border-color: rgba(5, 150, 105, 0.3);
+  box-shadow: 0 8px 24px rgba(5, 150, 105, 0.08);
+  transform: translateY(-2px);
+}
+
+.chart-col-highlight {
+  background: var(--green-xlight);
+  border-color: var(--border);
+}
+
+.chart-badge {
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  background: var(--green);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  box-shadow: 0 3px 10px rgba(5, 150, 105, 0.35);
+}
+
+.chart-col-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.chart-col-head .material-symbols-outlined {
+  width: 34px;
+  height: 34px;
+  background: var(--green-light);
+  color: var(--green);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.chart-col-head h4 {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+
+.chart-col-head span {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0;
+}
+
+.chart-row+.chart-row {
+  border-top: 1px solid rgba(5, 150, 105, 0.07);
+}
+
+.chart-row-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.chart-row-label .material-symbols-outlined {
+  font-size: 16px;
+  color: var(--green);
+  background: none;
+  width: auto;
+  height: auto;
+}
+
+.chart-row-price {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--green);
+}
+
+.chart-row-price span {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--muted-light);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+@media (max-width: 480px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-col-highlight {
+    order: -1;
+  }
+}
+
+
 /* ── SUMMARY BOX ── */
 .summary-box {
   background: var(--bg);

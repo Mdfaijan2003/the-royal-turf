@@ -358,63 +358,125 @@ document?.addEventListener("DOMContentLoaded", () => {
   });
 
   let currentReview = 0;
+  const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
 
-  const reviewText = document.getElementById("review-text");
-  const reviewName = document.getElementById("review-name");
-  const reviewAvatar = document.getElementById("review-avatar");
-  const dots = document.getElementById("review-dots");
+  const track = document.getElementById("review-track");
+  const dotsWrap = document.getElementById("review-dots");
+  let autoTimer = null;
 
-  function renderReview(index) {
-    const r = reviews[index];
+  function buildCards() {
+    track.innerHTML = "";
+    reviews.forEach(r => {
+      const card = document.createElement("div");
+      card.className = "review-card";
 
-    reviewText.textContent = r.review;
+      const initials = r.name
+        .split(" ")
+        .map(n => n[0])
+        .join("")
+        .substring(0, 2);
 
-    reviewName.textContent = r.name;
+      card.innerHTML = `
+      <div class="review-stars">★★★★★</div>
+      <p>${r.review}</p>
+      <div class="review-user">
+        <div class="review-avatar">${initials}</div>
+        <div>
+          <h4>${r.name}</h4>
+          <span>Google Review</span>
+        </div>
+      </div>
+    `;
+      track.appendChild(card);
+    });
+    buildDots();
+  }
 
-    reviewAvatar.textContent = r.name
-      .split(" ")
-      .map(n => n[0])
-      .join("")
-      .substring(0, 2);
-
-    dots.innerHTML = "";
-
+  function buildDots() {
+    dotsWrap.innerHTML = "";
     reviews.forEach((_, i) => {
       const dot = document.createElement("div");
-
       dot.className = "review-dot";
-
-      if (i === index) {
-        dot.classList.add("active");
-      }
-
-      dot.onclick = () => {
-        currentReview = i;
-
-        renderReview(i);
-      };
-
-      dots.appendChild(dot);
+      if (i === currentReview) dot.classList.add("active");
+      dot.onclick = () => goTo(i);
+      dotsWrap.appendChild(dot);
     });
   }
 
-  document.querySelector(".next").onclick = () => {
-    currentReview = (currentReview + 1) % reviews.length;
+  function updateActiveCard() {
+    const cards = track.querySelectorAll(".review-card");
+    cards.forEach((c, i) => c.classList.toggle("active", i === currentReview));
 
-    renderReview(currentReview);
-  };
+    const dots = dotsWrap.querySelectorAll(".review-dot");
+    dots.forEach((d, i) => d.classList.toggle("active", i === currentReview));
+  }
 
-  document.querySelector(".prev").onclick = () => {
-    currentReview = (currentReview - 1 + reviews.length) % reviews.length;
+  function goTo(index) {
+    currentReview = (index + reviews.length) % reviews.length;
 
-    renderReview(currentReview);
-  };
+    if (isMobile()) {
+      const card = track.children[currentReview];
+      if (card)
+        card.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+    } else {
+      updateActiveCard();
+    }
+  }
 
-  setInterval(() => {
-    currentReview = (currentReview + 1) % reviews.length;
+  document.querySelector(".next").onclick = () => goTo(currentReview + 1);
+  document.querySelector(".prev").onclick = () => goTo(currentReview - 1);
 
-    renderReview(currentReview);
-  }, 5000);
+  function startAutoplay() {
+    stopAutoplay();
+    if (!isMobile()) {
+      autoTimer = setInterval(() => goTo(currentReview + 1), 5000);
+    }
+  }
+  function stopAutoplay() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = null;
+  }
 
-  renderReview(0);
+  // Sync dots to manual swipe on mobile
+  let scrollTimeout;
+  track.addEventListener("scroll", () => {
+    if (!isMobile()) return;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const cards = [...track.children];
+      const trackCenter = track.scrollLeft + track.clientWidth / 2;
+      let closest = 0,
+        closestDist = Infinity;
+      cards.forEach((c, i) => {
+        const dist = Math.abs(c.offsetLeft + c.offsetWidth / 2 - trackCenter);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = i;
+        }
+      });
+      currentReview = closest;
+      dotsWrap
+        .querySelectorAll(".review-dot")
+        .forEach((d, i) => d.classList.toggle("active", i === closest));
+    }, 100);
+  });
+
+  // Rebuild behavior on breakpoint cross
+  let wasMobile = isMobile();
+  window.addEventListener("resize", () => {
+    if (isMobile() !== wasMobile) {
+      wasMobile = isMobile();
+      currentReview = 0;
+      updateActiveCard();
+      startAutoplay();
+    }
+  });
+
+  buildCards();
+  updateActiveCard();
+  startAutoplay();
 });

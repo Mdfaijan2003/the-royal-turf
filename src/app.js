@@ -103,6 +103,18 @@ app.use(
 
 app.use(cookieParser());
 
+/* =====================================================
+   WEBHOOK
+===================================================== */
+
+app.use(
+  "/webhook",
+  express.raw({
+    type: "application/json",
+  }),
+  webHookrouter
+);
+
 app.use(
   express.json({
     limit: "10kb",
@@ -117,18 +129,6 @@ app.use(
 );
 
 app.use(hpp());
-
-/* =====================================================
-   WEBHOOK
-===================================================== */
-
-app.use(
-  "/webhook",
-  express.raw({
-    type: "application/json",
-  }),
-  webHookrouter
-);
 
 /* =====================================================
    API ROUTES
