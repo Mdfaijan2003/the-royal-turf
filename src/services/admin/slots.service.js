@@ -4,6 +4,11 @@ import dayjs from "dayjs";
 import { logAdminAction } from "../audit.service.js";
 import AdminBlockedSlot from "../../models/adminBlockedSlot.js";
 
+function startOfISTDay(dateStr) {
+  const d = new Date(dateStr + "T00:00:00Z"); // interpret date as UTC midnight
+  return new Date(d.getTime() - IST_OFFSET);
+}
+
 export const getSlotsByDate = async (req, res) => {
   try {
     const { date } = req.query;
@@ -13,25 +18,16 @@ export const getSlotsByDate = async (req, res) => {
 
     // Slot config
     const SLOT_MINUTES = 60;
-    const OPEN_HOUR = 6; // 06:00 AM
-    const CLOSE_HOUR = 1; // 01:00 AM next day
+    const OPEN_HOUR = 6;
+    const CLOSE_HOUR = 1;
 
-    const baseDate = dayjs(date, "YYYY-MM-DD").startOf("day");
+    const base = startOfISTDay(date);
 
-    const startOfDay = baseDate
-      .hour(OPEN_HOUR)
-      .minute(0)
-      .second(0)
-      .millisecond(0)
-      .toDate();
-    const endOfDay = baseDate
-      .add(1, "day")
-      .hour(CLOSE_HOUR)
-      .minute(0)
-      .second(0)
-      .millisecond(0)
-      .toDate();
+    const startOfDay = new Date(base.getTime() + OPEN_HOUR * 3600000);
 
+    const endOfDay = new Date(
+      base.getTime() + 24 * 3600000 + CLOSE_HOUR * 3600000
+    );
     const now = new Date();
 
     // PAID BOOKINGS
