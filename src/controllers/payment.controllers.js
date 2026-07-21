@@ -39,8 +39,8 @@ export const createOrder = async (req, res) => {
 
     const booked = await Booking.findOne({
       status: "PAID",
-      start: { $lt: end },
-      end: { $gt: start },
+      start: { $lt: lock.end },
+      end: { $gt: lock.start },
     });
 
     if (booked) {
