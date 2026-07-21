@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { logAdminAction } from "../audit.service.js";
 import AdminBlockedSlot from "../../models/adminBlockedSlot.js";
 
+const IST_OFFSET = 5.5 * 60 * 60 * 1000;
 function startOfISTDay(dateStr) {
   const d = new Date(dateStr + "T00:00:00Z"); // interpret date as UTC midnight
   return new Date(d.getTime() - IST_OFFSET);
