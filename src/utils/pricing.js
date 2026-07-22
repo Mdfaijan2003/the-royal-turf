@@ -6,8 +6,8 @@ const formatISTTime = date =>
     hour12: true,
   });
 export function calculateBookingAmount(start, end) {
-  startEarlier = new Date(start);
-  endEarlier = new Date(end);
+  const startEarlier = new Date(start);
+  const endEarlier = new Date(end);
 
   start = formatISTTime(start);
   end = formatISTTime(end);
