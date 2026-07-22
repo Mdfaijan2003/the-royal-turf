@@ -57,6 +57,8 @@ export const createOrder = async (req, res) => {
     const totalAmount = pricing.total;
     const advanceAmount = pricing.advance;
 
+    console.log(totalAmount, advanceAmount);
+
     if (lock.razorpayOrderId) {
       return res.json({
         orderId: lock.razorpayOrderId,
