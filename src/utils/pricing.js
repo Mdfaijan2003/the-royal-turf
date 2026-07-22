@@ -1,6 +1,16 @@
+const formatISTTime = date =>
+  new Date(date).toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 export function calculateBookingAmount(start, end) {
-  start = new Date(start);
-  end = new Date(end);
+  startEarlier = new Date(start);
+  endEarlier = new Date(end);
+
+  start = formatISTTime(start);
+  end = formatISTTime(end);
 
   if (end <= start) {
     end = new Date(end);
@@ -26,9 +36,9 @@ export function calculateBookingAmount(start, end) {
     let rate = 0;
 
     if (hour >= 6 && hour < 18) {
-      rate = isWeekend ? 999 : 699;
+      rate = isWeekend ? 1000 : 700;
     } else if ((hour >= 18 && hour < 24) || (hour >= 0 && hour < 1)) {
-      rate = isWeekend ? 1199 : 899;
+      rate = isWeekend ? 1200 : 900;
     }
 
     total += rate * hours;
@@ -37,6 +47,12 @@ export function calculateBookingAmount(start, end) {
   }
 
   total = Math.round(total);
+
+  console.log("EarlierStart", startEarlier);
+  console.log("EarlierEnd", endEarlier);
+
+  console.log(start, end);
+  console.log(total);
 
   return {
     total,
