@@ -1,6 +1,12 @@
 import { sendEmail } from "./email.service.js";
 // import { sendSMS } from "./message.service.js";
-
+const formatISTTime = date =>
+  new Date(date).toLocaleTimeString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
 export const sendBookingConfirmationNotifications = async booking => {
   const { _id, customerName, customerEmail, start, end, advanceAmount } =
     booking;
@@ -9,14 +15,8 @@ export const sendBookingConfirmationNotifications = async booking => {
   const bookingId = _id.toString(); // Use MongoDB object ID as booking number
   const bookingDate = new Date(start).toLocaleDateString("en-IN");
 
-  const startTime = new Date(start).toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const endTime = new Date(end).toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const startTime = formatISTTime(start);
+  const endTime = formatISTTime(end);
   const bookingNumber = `BT-${bookingId.slice(-6).toUpperCase()}`; // Last 6 chars of ID
 
   const customerPhone = booking.customerPhone;
