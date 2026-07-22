@@ -6,57 +6,63 @@ const formatISTTime = date =>
     hour12: true,
   });
 export function calculateBookingAmount(start, end) {
-  const startEarlier = new Date(start);
-  const endEarlier = new Date(end);
+  if (!(start instanceof Date) || !(end instanceof Date)) {
+    return {
+      total: 0,
+      advance: 0,
+      remaining: 0,
+    };
+  }
 
-  start = formatISTTime(start);
-  end = formatISTTime(end);
+  // Clone dates so originals aren't modified
+  start = new Date(start);
+  end = new Date(end);
 
+  // Handle bookings crossing midnight
   if (end <= start) {
-    end = new Date(end);
     end.setDate(end.getDate() + 1);
   }
 
-  let total = 0;
+  // Decide weekend/weekday ONCE based on booking start day
+  const bookingDay = start.getDay();
+  const isWeekend = bookingDay === 0 || bookingDay === 6;
 
+  let total = 0;
   let current = new Date(start);
 
   while (current < end) {
     const nextHour = new Date(current);
     nextHour.setHours(current.getHours() + 1, 0, 0, 0);
 
-    const segmentEnd = nextHour > end ? end : nextHour;
-
-    const hours = (segmentEnd - current) / 36e5;
-
-    const isWeekend = [0, 6].includes(current.getDay());
+    const segmentEnd = nextHour < end ? nextHour : end;
+    const durationHours = (segmentEnd - current) / (1000 * 60 * 60);
 
     const hour = current.getHours();
 
-    let rate = 0;
+    let rate;
 
+    // 06:00 AM - 05:59 PM
     if (hour >= 6 && hour < 18) {
-      rate = isWeekend ? 1000 : 700;
-    } else if ((hour >= 18 && hour < 24) || (hour >= 0 && hour < 1)) {
-      rate = isWeekend ? 1200 : 900;
+      rate = isWeekend ? 900 : 700;
+    }
+    // 06:00 PM - 12:59 AM
+    else if ((hour >= 18 && hour < 24) || (hour >= 0 && hour < 1)) {
+      rate = isWeekend ? 1200 : 1000;
+    } else {
+      // Outside business hours
+      rate = 0;
     }
 
-    total += rate * hours;
-
-    current = nextHour;
+    total += rate * durationHours;
+    current = segmentEnd;
   }
 
   total = Math.round(total);
-
-  console.log("EarlierStart", startEarlier);
-  console.log("EarlierEnd", endEarlier);
-
-  console.log(start, end);
-  console.log(total);
+  const advance = Math.round(total * 0.3);
 
   return {
     total,
-    advance: Math.round(total * 0.3),
-    remaining: total - Math.round(total * 0.3),
+    advance,
+    remaining: total - advance,
   };
 }
