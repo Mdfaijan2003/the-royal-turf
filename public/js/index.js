@@ -13,7 +13,7 @@ const title = document.getElementById("header-title");
 
 const reviews = [
   {
-    name: "Rahul Sharma",
+    name: "Md Kaif",
     review:
       "Amazing turf with excellent floodlights and a smooth booking process. Highly recommended.",
   },
@@ -37,7 +37,7 @@ const reviews = [
   },
 
   {
-    name: "Ayan Mondal",
+    name: "Ammar Hussain",
     review:
       "Perfect place for weekend matches. Loved the atmosphere and management.",
   },
@@ -76,6 +76,8 @@ document?.addEventListener("DOMContentLoaded", () => {
   dom.checkSlotsBtn?.addEventListener("click", e => {
     loadSlots();
   });
+
+  // Fetch booking
   dom.fetchBookingBtn?.addEventListener("click", async () => {
     const email = document.getElementById("booking-email").value.trim();
     const results = document.getElementById("booking-results");
@@ -357,6 +359,7 @@ document?.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Review section
   let currentReview = 0;
   const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
 

@@ -1,7 +1,6 @@
 import { dom } from "./dom.js";
 import { state } from "./state.js";
 import { updateAvailableSlots } from "./slots.js";
-import { calculateAmount } from "./pricing.js";
 
 /* ===============================
    STATE SYNC FROM UI

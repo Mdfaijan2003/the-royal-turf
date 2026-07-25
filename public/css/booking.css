@@ -89,13 +89,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
   border: 1px solid var(--border-light);
   border-radius: 100px;
   padding: 0.6rem 1.5rem;
   box-shadow: 0 4px 24px rgba(5, 150, 105, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
   transition: all 0.3s;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 #header-brand {

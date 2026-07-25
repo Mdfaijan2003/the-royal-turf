@@ -71,6 +71,9 @@ export async function loadSlots() {
         hour12: true,
       });
 
+      empty.classList.remove("block", "w-full", "mt-6");
+      empty.classList.add("hidden");
+
       const card = document.createElement("div");
       card.className =
         "border rounded-lg p-4 shadow-md bg-red-100 border-red-300";
