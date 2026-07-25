@@ -99,6 +99,8 @@ export const env = cleanEnv(process.env, {
 
   FAIJAN_EMAIL: email(),
 
+  AMMAR_EMAIL: email(),
+
   /* ---------- Developer ---------- */
 
   // DEVELOPER_WHATSAPP: whatsapp(),

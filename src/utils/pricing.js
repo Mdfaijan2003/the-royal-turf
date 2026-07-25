@@ -1,10 +1,7 @@
-const formatISTTime = date =>
-  new Date(date).toLocaleTimeString("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
+import { toZonedTime } from "date-fns-tz";
+
+const IST = "Asia/Kolkata";
+
 export function calculateBookingAmount(start, end) {
   if (!(start instanceof Date) || !(end instanceof Date)) {
     return {
@@ -14,47 +11,79 @@ export function calculateBookingAmount(start, end) {
     };
   }
 
-  // Clone dates so originals aren't modified
-  start = new Date(start);
-  end = new Date(end);
+  // Convert UTC inputs to IST for calculation
+  let startIST = toZonedTime(start, IST);
+  let endIST = toZonedTime(end, IST);
 
-  // Handle bookings crossing midnight
-  if (end <= start) {
-    end.setDate(end.getDate() + 1);
+  // Handle next day if end <= start
+  if (endIST <= startIST) {
+    endIST = new Date(endIST);
+    endIST.setDate(endIST.getDate() + 1);
   }
 
-  // Decide weekend/weekday ONCE based on booking start day
-  const bookingDay = start.getDay();
-  const isWeekend = bookingDay === 0 || bookingDay === 6;
-
   let total = 0;
-  let current = new Date(start);
+  let current = new Date(startIST);
 
-  while (current < end) {
+  // Define operating hours in IST
+  const opening = new Date(startIST);
+  opening.setHours(6, 0, 0, 0);
+
+  const closing = new Date(startIST);
+  closing.setDate(startIST.getDate() + 1);
+  closing.setHours(1, 0, 0, 0); // Closed at 1 AM
+
+  // Clamp start to opening time
+  if (current > opening) {
+    current = new Date(Math.max(current.getTime(), opening.getTime()));
+  }
+
+  // Clamp end to closing time
+  if (endIST > closing) {
+    endIST = closing;
+  }
+
+  if (current >= endIST) {
+    return {
+      total: 0,
+      advance: 0,
+      remaining: 0,
+    };
+  }
+
+  // Determine the "business day" ONCE for the whole session.
+  // A session starting before 6AM (e.g. the 12AM-1AM closing hour)
+  // belongs to the PREVIOUS calendar day's late-night session.
+  const businessDayRef = new Date(startIST);
+  if (startIST.getHours() < 6) {
+    businessDayRef.setDate(businessDayRef.getDate() - 1);
+  }
+  const isWeekendDay = [0, 6].includes(businessDayRef.getDay());
+
+  while (current < endIST) {
     const nextHour = new Date(current);
     nextHour.setHours(current.getHours() + 1, 0, 0, 0);
 
-    const segmentEnd = nextHour < end ? nextHour : end;
-    const durationHours = (segmentEnd - current) / (1000 * 60 * 60);
+    const segmentEnd = nextHour > endIST ? endIST : nextHour;
+    const hours = (segmentEnd - current) / 36e5; // fraction of hour
 
-    const hour = current.getHours();
+    const currentHour = current.getHours();
+    let rate = 0;
 
-    let rate;
-
-    // 06:00 AM - 05:59 PM
-    if (hour >= 6 && hour < 18) {
-      rate = isWeekend ? 900 : 700;
+    // Day band: 6 AM - 6 PM
+    if (currentHour >= 6 && currentHour < 18) {
+      rate = isWeekendDay ? 900 : 700; // Sat/Sun vs Mon-Fri
     }
-    // 06:00 PM - 12:59 AM
-    else if ((hour >= 18 && hour < 24) || (hour >= 0 && hour < 1)) {
-      rate = isWeekend ? 1200 : 1000;
-    } else {
-      // Outside business hours
-      rate = 0;
+    // Night band: 6 PM - 1 AM (next day)
+    else if (
+      (currentHour >= 18 && currentHour < 24) ||
+      (currentHour >= 0 && currentHour < 1)
+    ) {
+      rate = isWeekendDay ? 1200 : 1000; // Sat/Sun vs Mon-Fri
     }
+    // 1 AM - 6 AM: CLOSED (should never reach here due to clamping)
 
-    total += rate * durationHours;
-    current = segmentEnd;
+    total += rate * hours;
+    current = nextHour;
   }
 
   total = Math.round(total);
