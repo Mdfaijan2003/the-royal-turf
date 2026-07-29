@@ -249,7 +249,7 @@
                 <p>Book your slot today — available 7 days a week with instant confirmation.</p>
             </div>
             <div>
-                <a href="/booking" class="cta-btn">Book Your Slot</a>
+                <a href="/booking" class="cta-btn" onclick="showLoaderBeforeNav(event)">Book Your Slot</a>
                 <p class="cta-note">No hidden fees · Instant confirmation</p>
             </div>
         </div>
@@ -274,6 +274,20 @@
             </svg>
         </a>
     </div>
+
+    <script type="module">
+        import loader from "./loader.js";
+
+        window.showLoaderBeforeNav = (e) => {
+            e.preventDefault();
+            loader.show('Loading booking page...');
+
+            // Navigate after showing loader for 500ms
+            setTimeout(() => {
+                window.location.href = '/booking';
+            }, 50000);
+        };
+    </script>
 
 </body>
 

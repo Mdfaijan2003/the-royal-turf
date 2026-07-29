@@ -9,6 +9,13 @@ import PDFDocument from "pdfkit";
 import { logAdminAction } from "../services/audit.service.js";
 import booking from "../models/booking.js";
 import { sendBookingConfirmationNotifications } from "../services/notification.service.js";
+import {
+  startOfISTDay,
+  endOfISTDay,
+  formatISTDate,
+  formatISTTime,
+  nowIST,
+} from "../utils/date.js";
 
 export const adminListBookings = async (req, res) => {
   try {
@@ -203,17 +210,11 @@ export const adminGetBookingByDate = async (req, res) => {
       customerEmail: b.customerEmail,
       customerPhone: b.customerPhone,
 
-      date: b.start.toISOString().split("T")[0],
+      date: formatISTDate(b.start),
 
-      startTime: b.start.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      startTime: formatISTTime(b.start),
 
-      endTime: b.end.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+      endTime: formatISTTime(b.end),
 
       totalAmount: b.totalAmount,
       remainingAmount: b.remainingAmount,
@@ -256,7 +257,7 @@ export const adminCancelBooking = async (req, res) => {
         .json({ error: "Only paid bookings can be cancelled" });
     }
 
-    if (dayjs(booking.start).isBefore(dayjs())) {
+    if (booking.start < nowIST()) {
       return res
         .status(400)
         .json({ error: "Cannot cancel past or ongoing booking" });
@@ -283,68 +284,58 @@ export const adminCancelBooking = async (req, res) => {
   }
 };
 
-export const adminCompleteBooking = async (req, res) => {
+export const adminUpdateBooking = async (req, res) => {
   try {
     const { id } = req.params;
+    const {
+      paidOn = 0,
+      paymentMethod = "CASH",
+      isCompleted = false,
+    } = req.body;
+
     const booking = await Booking.findById(id);
 
     if (!booking) {
-      return res.status(404).json({ error: "Booking not found" });
+      return res.status(404).json({
+        success: false,
+        error: "Booking not found",
+      });
     }
 
-    // Cannot complete cancelled session
     if (booking.status === "CANCELLED") {
-      return res
-        .status(400)
-        .json({ error: "Cannot complete a cancelled booking" });
+      return res.status(400).json({
+        success: false,
+        error: "Cannot modify a cancelled booking",
+      });
     }
 
-    // Cannot complete before it has ended
-    if (dayjs(booking.end).isAfter(dayjs())) {
-      return res
-        .status(400)
-        .json({ error: "Cannot complete before session end" });
+    // Record manual payment
+    if (paidOn > 0) {
+      if (paidOn > booking.remainingAmount) {
+        return res.status(400).json({
+          success: false,
+          error: "Amount exceeds remaining due",
+        });
+      }
+
+      booking.remainingAmount -= paidOn;
+
+      booking.manualPayments.push({
+        amount: paidOn,
+        method: paymentMethod,
+        date: new Date(),
+      });
     }
 
-    booking.completed = true;
-    booking.completedAt = new Date();
+    // Mark booking completed if requested
+    if (isCompleted) {
+      if (booking.end > new Date()) {
+        return res.status(400).json({
+          success: false,
+          error: "Cannot complete before session end",
+        });
+      }
 
-    await booking.save();
-
-    return res.json({
-      message: "Booking marked as completed",
-      success: true,
-    });
-  } catch (err) {
-    console.error("adminCompleteBooking Error:", err);
-    return res.status(500).json({ error: "Failed to complete booking" });
-  }
-};
-
-export const adminManualPayment = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { amount, method = "CASH" } = req.body;
-
-    const booking = await Booking.findById(id);
-    if (!booking) return res.status(404).json({ error: "Booking not found" });
-
-    if (amount <= 0)
-      return res.status(400).json({ error: "Invalid payment amount" });
-
-    if (amount > booking.remainingAmount) {
-      return res.status(400).json({ error: "Amount exceeds remaining due" });
-    }
-
-    booking.remainingAmount -= amount;
-    booking.manualPayments.push({
-      amount,
-      method,
-      date: new Date(),
-    });
-
-    // Auto-complete booking if fully paid
-    if (booking.remainingAmount === 0) {
       booking.completed = true;
       booking.completedAt = new Date();
     }
@@ -353,12 +344,18 @@ export const adminManualPayment = async (req, res) => {
 
     return res.json({
       success: true,
-      message: "Payment recorded",
-      remaining: booking.remainingAmount,
+      message: "Booking updated successfully",
+      booking: {
+        completed: booking.completed,
+        remainingAmount: booking.remainingAmount,
+      },
     });
   } catch (err) {
-    console.error("manual payment error:", err);
-    return res.status(500).json({ error: "Failed to update payment" });
+    console.error("adminUpdateBooking Error:", err);
+    return res.status(500).json({
+      success: false,
+      error: "Failed to update booking",
+    });
   }
 };
 
@@ -500,16 +497,16 @@ export const adminExportBookings = async (req, res) => {
     // 2️⃣ DATE FILTER EXACT
     if (date) {
       query.start = {
-        $gte: dayjs(date).startOf("day").toDate(),
-        $lte: dayjs(date).endOf("day").toDate(),
+        $gte: startOfISTDay(date),
+        $lte: endOfISTDay(date),
       };
     }
 
     // Date range filter
     if (from || to) {
       query.start = {};
-      if (from) query.start.$gte = new Date(from);
-      if (to) query.start.$lte = new Date(to);
+      if (from) query.start.$gte = startOfISTDay(from);
+      if (to) query.start.$lte = endOfISTDay(to);
     }
 
     const bookings = await Booking.find(query).lean();
@@ -558,16 +555,16 @@ export const adminExportBookingsPDF = async (req, res) => {
     // 2️⃣ DATE FILTER EXACT
     if (date) {
       query.start = {
-        $gte: dayjs(date).startOf("day").toDate(),
-        $lte: dayjs(date).endOf("day").toDate(),
+        $gte: startOfISTDay(date),
+        $lte: endOfISTDay(date),
       };
     }
 
     // Date range filter
     if (from || to) {
       query.start = {};
-      if (from) query.start.$gte = new Date(from);
-      if (to) query.start.$lte = new Date(to);
+      if (from) query.start.$gte = startOfISTDay(from);
+      if (to) query.start.$lte = endOfISTDay(to);
     }
 
     const bookings = await Booking.find(query).lean();
@@ -597,7 +594,7 @@ export const adminExportBookingsPDF = async (req, res) => {
         .text(`Customer: ${b.customerName}`)
         .text(`Email: ${b.customerEmail}`)
         .text(`Phone: ${b.customerPhone}`)
-        .text(`Date: ${new Date(b.start).toLocaleString()}`)
+        .text(`Date: ${formatISTDate(b.start)}`)
         .text(`Status: ${b.status}`)
         .text(`Total: Rs. ${formatMoney(b.totalAmount)}`)
         .text(`Remaining: Rs. ${formatMoney(b.remainingAmount)}`)

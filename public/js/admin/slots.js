@@ -4,8 +4,10 @@ import {
   updateSlotModal,
   closeSlotModal,
 } from "./slotsModal.js";
-
+import { apiFetch } from "./api.js";
+import loader from "./loader.js";
 import { calculateAmount } from "../pricing.js";
+import { showModal } from "../newModal.js";
 
 const state = {
   currentDate: "",
@@ -28,18 +30,22 @@ function formatTime(dateString) {
 
 // Has an error
 async function refreshSlots(selectedSlotId = null) {
-  await fetchSlots(state.currentDate);
+  try {
+    await fetchSlots(state.currentDate);
 
-  renderSlots();
+    renderSlots();
 
-  if (!selectedSlotId) return;
+    if (!selectedSlotId) return;
 
-  const updatedSlot = state.slots.find(
-    slot => String(slot.slotId) === String(selectedSlotId)
-  );
+    const updatedSlot = state.slots.find(
+      slot => String(slot.slotId) === String(selectedSlotId)
+    );
 
-  if (updatedSlot) {
-    updateSlotModal(updatedSlot);
+    if (updatedSlot) {
+      updateSlotModal(updatedSlot);
+    }
+  } catch (error) {
+    showModal("Fetch error", error.message, "error");
   }
 }
 
@@ -87,7 +93,7 @@ function resetLoading(button) {
 }
 
 async function api(url, options = {}) {
-  const res = await fetch(url, options);
+  const res = await apiFetch(url, options);
 
   const data = await res.json();
   console.log("API Response:", data);
@@ -143,17 +149,24 @@ function createSlotCard(slot, index) {
 }
 
 async function fetchSlots(date) {
-  const res = await fetch(`/api/admin/slots?date=${date}`);
+  try {
+    const res = await apiFetch(`/api/admin/slots?date=${date}`);
+    const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch slots");
+    if (!res.ok) {
+      showModal("Error", data.error || "Something went wrong", "error");
+    }
+
+    state.slots = data.slots || [];
+
+    return state.slots;
+  } catch (error) {
+    showModal(
+      "Network Error",
+      "Unable to connect to the server. Please check your internet connection and try again.",
+      "error"
+    );
   }
-
-  const data = await res.json();
-
-  state.slots = data.slots || [];
-
-  return state.slots;
 }
 
 function renderSlots() {
@@ -408,7 +421,7 @@ async function submitManualBooking(e) {
   console.log("Manual Booking Payload:", payload);
 
   try {
-    const res = await fetch("/api/admin/V2/bookings/create", {
+    const res = await apiFetch("/api/admin/V2/bookings/create", {
       method: "POST",
 
       headers: {
@@ -422,7 +435,7 @@ async function submitManualBooking(e) {
     console.log(data);
 
     if (!res.ok) {
-      throw new Error(data.message || "Booking failed");
+      showModal("Error", data.message || "Booking failed", "error");
     }
 
     closeManualBooking();
@@ -431,7 +444,7 @@ async function submitManualBooking(e) {
   } catch (err) {
     console.error(err);
 
-    alert(err.message);
+    showModal("Failed to Update", err.message, "error");
   }
 }
 
@@ -443,7 +456,7 @@ async function onManualBooking(slot) {
 // Done
 async function onBlock(slot) {
   try {
-    await api("/api/admin/slots/block", {
+    const res = await apiFetch("/api/admin/slots/block", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -454,70 +467,132 @@ async function onBlock(slot) {
       }),
     });
 
+    const data = await res.json();
+    if (!res.ok) {
+      showModal("Failed to Block", data.error, "error");
+    }
+
     await refreshSlots(slot.slotId);
   } catch (err) {
-    console.error(err);
+    showModal(
+      "Network Error",
+      "Unable to connect to the server. Please check your internet connection and try again.",
+      "error"
+    );
   }
 }
 
 async function onReleaseHold(slot) {
-  await api(`/api/admin/slots/${slot.slotId}/release`, {
-    method: "PATCH",
-  });
+  try {
+    const res = await apiFetch(`/api/admin/slots/${slot.slotId}/release`, {
+      method: "PATCH",
+    });
 
-  closeSlotModal();
+    const data = await res.json();
+    if (!res.ok) {
+      showModal("Failed to Release hold", data.error, "error");
+    }
+    closeSlotModal();
 
-  await refreshSlots();
+    await refreshSlots();
+  } catch (error) {
+    showModal(
+      "Network Error",
+      "Unable to connect to the server. Please check your internet connection and try again.",
+      "error"
+    );
+  }
 }
 
 //Done
 async function onUnblock(slot) {
-  await api("/api/admin/slots/unblock", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      start: slot.start,
-      end: slot.end,
-    }),
-  });
-
-  closeSlotModal();
-
-  await refreshSlots();
-}
-
-async function onBookingAction(slot, payload) {
-  if (payload.action === "cancelBooking") {
-    await api(`/api/admin/bookings/${slot.bookingId}`, {
+  try {
+    const res = await apiFetch("/api/admin/slots/unblock", {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        start: slot.start,
+        end: slot.end,
+      }),
     });
+    const data = await res.json();
+    if (!res.ok) {
+      showModal("Failed to Unblock", data.error, "error");
+    }
 
     closeSlotModal();
 
     await refreshSlots();
+  } catch (error) {
+    showModal(
+      "Network Error",
+      "Unable to connect to the server. Please check your internet connection and try again.",
+      "error"
+    );
+  }
+}
 
-    return;
+async function onBookingAction(slot, payload) {
+  if (payload.action === "cancelBooking") {
+    try {
+      const res = await apiFetch(
+        `/api/admin/bookings/${slot.bookingId}/cancel`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) {
+        showModal("Failed to process request", data.error, "error");
+      }
+
+      closeSlotModal();
+
+      await refreshSlots();
+
+      return;
+    } catch (error) {
+      showModal(
+        "Network Error",
+        "Unable to connect to the server. Please check your internet connection and try again.",
+        "error"
+      );
+    }
   }
 
-  await api("/api/admin/V2/bookings/update", {
-    method: "PATCH",
+  try {
+    const res = await apiFetch(`/api/admin/bookings/${slot.bookingId}/update`, {
+      method: "PATCH",
 
-    headers: {
-      "Content-Type": "application/json",
-    },
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    body: JSON.stringify({
-      bookingId: slot.bookingId,
-      paidOn: payload.paidOnSpot,
-      isCompleted: payload.isCompleted,
-    }),
-  });
+      body: JSON.stringify({
+        bookingId: slot.bookingId,
+        paidOn: payload.paidOnSpot,
+        isCompleted: payload.isCompleted,
+      }),
+    });
 
-  closeSlotModal();
+    const data = await res.json();
+    if (!res.ok) {
+      showModal("Failed to process", data.error, "error");
+    }
 
-  await refreshSlots();
+    closeSlotModal();
+
+    await refreshSlots();
+  } catch (error) {
+    showModal(
+      "Network Error",
+      "Unable to connect to the server. Please check your internet connection and try again.",
+      "error"
+    );
+  }
 }
 
 function showError(error) {

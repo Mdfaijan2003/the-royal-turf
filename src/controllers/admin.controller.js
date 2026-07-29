@@ -185,6 +185,60 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
 });
 
 // /* ======================================================
+//    🔹 REFRESH ACCESS TOKEN
+// ====================================================== */
+
+export const refreshAdminToken = async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Refresh token missing",
+      });
+    }
+
+    const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const admin = await Admin.findById(decoded._id);
+
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: "Admin not found",
+      });
+    }
+
+    if (admin.refreshToken !== refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid refresh token",
+      });
+    }
+
+    const newAccessToken = admin.generateAccessToken();
+
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({
+      success: true,
+      message: "Access token refreshed",
+    });
+  } catch (err) {
+    return res.status(401).json({
+      success: false,
+      message: "Refresh failed",
+    });
+  }
+};
+
+// /* ======================================================
 //    🔹 CHANGE PASSWORD
 // ====================================================== */
 export const changeAdminPassword = asyncHandler(async (req, res) => {

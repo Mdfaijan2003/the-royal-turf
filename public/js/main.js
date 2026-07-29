@@ -6,6 +6,7 @@ import { showModal } from "./modal.js";
 import { startCountdown } from "./timer.js";
 import { startPayment } from "./payment.js";
 import { updateAvailableSlots, populateEndTimes } from "./slots.js";
+import loader from "./loader.js";
 
 /* ===============================
    MOBILE MENU
@@ -21,6 +22,37 @@ mobileMenuButton?.addEventListener("click", () => {
    DOM READY
 ================================ */
 document.addEventListener("DOMContentLoaded", () => {
+  /* ===============================
+     RESTORE Payment Page
+  ================================ */
+
+  const paymentInProgress = localStorage.getItem("paymentInProgress");
+
+  if (paymentInProgress) {
+    const paymentState = JSON.parse(paymentInProgress);
+    const elapsedTime = Date.now() - paymentState.timestamp;
+
+    // If payment was successful, redirect
+    if (paymentState.status === "success") {
+      loader.show("Completing your booking...");
+      setTimeout(() => {
+        window.location.href = `/booking-confirmation/${paymentState.bookingAccessToken}`;
+      }, 500);
+      return;
+    }
+
+    // If still verifying after 30 seconds, something went wrong
+    if (paymentState.status === "verifying" && elapsedTime > 30000) {
+      localStorage.removeItem("paymentInProgress");
+      showModal("Error", "Payment verification timeout", "error");
+      return;
+    }
+
+    // If still verifying within 30 seconds, show loader
+    if (paymentState.status === "verifying") {
+      loader.show("Completing payment verification...");
+    }
+  }
   /* ===============================
      RESTORE USER FORM
   ================================ */
@@ -83,24 +115,26 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===============================
      DATE CHANGE
   ================================ */
-  dom.dateInput.addEventListener("change", () => {
-    state.booking.date = dom.dateInput.value;
+  dom.dateInput.addEventListener("change", async () => {
+    await loader.execute(async () => {
+      state.booking.date = dom.dateInput.value;
 
-    state.booking.startTime = "";
-    state.booking.endTime = "";
+      state.booking.startTime = "";
+      state.booking.endTime = "";
 
-    dom.startTime.value = "";
-    dom.endTime.value = "";
+      dom.startTime.value = "";
+      dom.endTime.value = "";
 
-    resetSummary();
-    updateAvailableSlots();
-    saveForm();
+      resetSummary();
+      await updateAvailableSlots();
+      saveForm();
+    }, "Loading Slots please wait...");
   });
 
   /* ===============================
      TIME CHANGE
   ================================ */
-  dom.startTime.addEventListener("change", () => {
+  dom.startTime.addEventListener("change", async () => {
     state.booking.startTime = dom.startTime.value;
     state.booking.endTime = "";
     dom.endTime.value = "";
@@ -203,121 +237,127 @@ document.addEventListener("DOMContentLoaded", () => {
   ================================ */
   dom.bookingForm.addEventListener("submit", async e => {
     e.preventDefault();
-
-    if (!validateBookingForm()) {
-      return;
-    }
-    if (dom.confirmButton) {
-      dom.confirmButton.disabled = true;
-      dom.confirmButton.classList.add("opacity-50", "cursor-not-allowed");
-      dom.confirmButton.textContent = "Please wait...";
-    }
-
-    let { date, startTime, endTime } = state.booking;
-
-    if (!startTime || !endTime) {
-      showModal("Error", "Select valid time range", "error");
-      return;
-    }
-
-    try {
-      // ✅ ISO ONLY for backend — SAFE VERSION
-      const OPENING_HOUR = 6;
-
-      const [sh, sm] = startTime.split(":").map(Number);
-      const [eh, em] = endTime.split(":").map(Number);
-
-      // Start datetime
-      const startDateTime = new Date(date);
-      startDateTime.setHours(sh, sm, 0, 0);
-
-      // End datetime
-      const endDateTime = new Date(date);
-      endDateTime.setHours(eh, em, 0, 0);
-
-      //Edge Case - If end time is less than or equal to start time, it means the booking crosses midnight. In that case, we add 1 day to the end date.
-      if (sh < OPENING_HOUR) {
-        startDateTime.setDate(startDateTime.getDate() + 1);
+    await loader.execute(async () => {
+      if (!validateBookingForm()) {
+        return;
+      }
+      if (dom.confirmButton) {
+        dom.confirmButton.disabled = true;
+        dom.confirmButton.classList.add("opacity-50", "cursor-not-allowed");
+        dom.confirmButton.textContent = "Please wait...";
       }
 
-      console.log("Parsed startDateTime:", startDateTime);
+      let { date, startTime, endTime } = state.booking;
 
-      // Handle cross-midnight correctly
-      if (endDateTime <= startDateTime) {
-        endDateTime.setDate(endDateTime.getDate() + 1);
+      if (!startTime || !endTime) {
+        showModal("Error", "Select valid time range", "error");
+        return;
       }
 
-      const startISO = startDateTime.toISOString();
-      const endISO = endDateTime.toISOString();
+      try {
+        // ✅ ISO ONLY for backend — SAFE VERSION
+        const OPENING_HOUR = 6;
 
-      console.log("Holding slot with:", { startISO, endISO });
+        const [sh, sm] = startTime.split(":").map(Number);
+        const [eh, em] = endTime.split(":").map(Number);
 
-      const payload = {
-        start: startISO,
-        end: endISO,
-        customerName: state.booking.name,
-        customerEmail: state.booking.email,
-        customerPhone: state.booking.phone,
-      };
+        // Start datetime
+        const startDateTime = new Date(date);
+        startDateTime.setHours(sh, sm, 0, 0);
 
-      console.log("Payload for holdSlot:", payload);
+        // End datetime
+        const endDateTime = new Date(date);
+        endDateTime.setHours(eh, em, 0, 0);
 
-      const { lockId, expiresAt } = await holdSlot(payload);
+        //Edge Case - If end time is less than or equal to start time, it means the booking crosses midnight. In that case, we add 1 day to the end date.
+        if (sh < OPENING_HOUR) {
+          startDateTime.setDate(startDateTime.getDate() + 1);
+        }
 
-      state.holdLockId = lockId;
+        console.log("Parsed startDateTime:", startDateTime);
 
-      localStorage.setItem(
-        "heldLock",
-        JSON.stringify({
-          lockId,
-          expiresAt,
-          bookingData: state.booking,
-        })
-      );
+        // Handle cross-midnight correctly
+        if (endDateTime <= startDateTime) {
+          endDateTime.setDate(endDateTime.getDate() + 1);
+        }
 
-      dom.bookingSection.classList.add("hidden");
-      dom.paymentSection.classList.remove("hidden");
+        const startISO = startDateTime.toISOString();
+        const endISO = endDateTime.toISOString();
 
-      showModal("Slot Held for 15 Minutes", "Proceed to payment", "success");
-      dom.confirmButton.textContent = "Confirm & Pay";
-      dom.confirmButton.disabled = false;
-      dom.confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
-      startCountdown(expiresAt);
-    } catch (err) {
-      dom.confirmButton.textContent = "Confirm & Pay";
-      dom.confirmButton.disabled = false;
-      dom.confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
-      showModal("Error", err.message, "error");
-    }
+        console.log("Holding slot with:", { startISO, endISO });
+
+        const payload = {
+          start: startISO,
+          end: endISO,
+          customerName: state.booking.name,
+          customerEmail: state.booking.email,
+          customerPhone: state.booking.phone,
+        };
+
+        console.log("Payload for holdSlot:", payload);
+
+        const { lockId, expiresAt } = await holdSlot(payload);
+
+        state.holdLockId = lockId;
+
+        localStorage.setItem(
+          "heldLock",
+          JSON.stringify({
+            lockId,
+            expiresAt,
+            bookingData: state.booking,
+          })
+        );
+
+        dom.bookingSection.classList.add("hidden");
+        dom.paymentSection.classList.remove("hidden");
+
+        showModal("Slot Held for 15 Minutes", "Proceed to payment", "success");
+        dom.confirmButton.textContent = "Confirm & Pay";
+        dom.confirmButton.disabled = false;
+        dom.confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
+        startCountdown(expiresAt);
+      } catch (err) {
+        dom.confirmButton.textContent = "Confirm & Pay";
+        dom.confirmButton.disabled = false;
+        dom.confirmButton.classList.remove("opacity-50", "cursor-not-allowed");
+        showModal("Error", err.message, "error");
+      }
+    }, "Processing your booking...");
   });
 
   /* ===============================
      PAYMENT
   ================================ */
   dom.paymentButton.addEventListener("click", async () => {
-    dom.paymentButton.disabled = true;
-    dom.paymentButton.textContent = "Redirecting...";
+    await loader.execute(async () => {
+      dom.paymentButton.disabled = true;
+      dom.paymentButton.textContent = "Redirecting...";
+      dom.cancelPaymentButton.disabled = true;
 
-    if (!state.holdLockId) {
-      showModal("Error", "No active booking", "error");
-      return;
-    }
-    try {
-      await startPayment(state.holdLockId, {
-        ...state.booking,
-        totalAmount: state.booking.totalFee,
-      });
-    } catch (error) {
-      showModal("Error", error.message, "error");
-    } finally {
-      dom.paymentButton.disabled = false;
-      dom.paymentButton.textContent = "Pay Now";
-    }
+      if (!state.holdLockId) {
+        showModal("Error", "No active booking", "error");
+        return;
+      }
+      try {
+        await startPayment(state.holdLockId, {
+          ...state.booking,
+          totalAmount: state.booking.totalFee,
+        });
+      } catch (error) {
+        showModal("Error", error.message, "error");
+      } finally {
+        dom.paymentButton.disabled = false;
+        dom.paymentButton.textContent = "Pay Now";
+        dom.cancelPaymentButton.disabled = false;
+      }
+    }, "Opening Razorpay please wait...");
   });
 
   dom.cancelPaymentButton.addEventListener("click", async () => {
     dom.cancelPaymentButton.disabled = true;
     dom.cancelPaymentButton.textContent = "Cancelling...";
+    dom.paymentButton.disabled = true;
 
     try {
       //Stop countdown
@@ -431,103 +471,3 @@ function validateBookingForm() {
 
   return true;
 }
-
-// function generatePDF() {
-//   if (!window.jspdf) return alert("PDF library not loaded");
-
-//   const { jsPDF } = window.jspdf;
-//   const doc = new jsPDF({ unit: "pt", format: "A4" });
-
-//   const b = state.booking;
-
-//   const bookingId = state.bookingId
-//     ? state.bookingId.slice(-6).toUpperCase()
-//     : "XXXXXX";
-
-//   let y = 50;
-
-//   /* ================= BRAND HEADER ================= */
-//   doc.setFont("helvetica", "bold");
-//   doc.setFontSize(26);
-//   doc.setTextColor("#145531");
-//   doc.text("THE ROYAL TURF", 40, y);
-
-//   doc.setFont("helvetica", "italic");
-//   doc.setFontSize(12);
-//   doc.setTextColor("#555");
-//   doc.text("Where Kings Play", 40, y + 18);
-
-//   doc.setDrawColor("#D4AF37");
-//   doc.setLineWidth(1.5);
-//   doc.line(40, y + 40, 555, y + 40);
-
-//   /* ================= INVOICE META ================= */
-//   doc.setFont("helvetica", "normal");
-//   doc.setFontSize(11);
-//   doc.setTextColor("#000");
-
-//   doc.text(`Invoice No: RT-${bookingId}`, 400, 55);
-//   doc.text(`Invoice Date: ${new Date().toLocaleDateString("en-IN")}`, 400, 70);
-//   doc.text(`Payment Status: Adv PAID`, 400, 85);
-
-//   /* ================= CUSTOMER DETAILS ================= */
-//   y = 120;
-//   doc.setFont("helvetica", "bold");
-//   doc.text("BILLED TO", 40, y);
-
-//   doc.setFont("helvetica", "normal");
-//   doc.text(`Name: ${b.name || "N/A"}`, 40, y + 18);
-//   doc.text(`Email: ${b.email || "N/A"}`, 40, y + 34);
-//   doc.text(`Phone: ${b.phone || "N/A"}`, 40, y + 50);
-
-//   /* ================= BOOKING DETAILS ================= */
-//   y = 200;
-//   doc.setFont("helvetica", "bold");
-//   doc.text("BOOKING DETAILS", 40, y);
-
-//   doc.setFont("helvetica", "normal");
-//   doc.text(`Date: ${b.date}`, 40, y + 20);
-//   doc.text(`Time Slot: ${b.startTime} – ${b.endTime}`, 40, y + 36);
-
-//   /* ================= AMOUNT SUMMARY ================= */
-//   y = 270;
-//   doc.setDrawColor("#E5E7EB");
-//   doc.rect(350, y - 30, 185, 120);
-
-//   doc.setFont("helvetica", "normal");
-//   doc.text("Booking Fee", 360, y);
-//   doc.text(`₹${b.totalFee.toLocaleString("en-IN")}`, 520, y, {
-//     align: "right",
-//   });
-
-//   doc.text("Advance Paid", 360, y + 25);
-//   doc.text(`₹${b.advance.toLocaleString("en-IN")}`, 520, y + 25, {
-//     align: "right",
-//   });
-
-//   doc.setFont("times", "bold");
-//   doc.text("Total Amount", 360, y + 60);
-//   doc.text(`₹${b.totalFee.toLocaleString("en-IN")}`, 520, y + 60, {
-//     align: "right",
-//   });
-
-//   /* ================= FOOTER ================= */
-//   y = 420;
-//   doc.setFontSize(9);
-//   doc.setFont("helvetica", "italic");
-//   doc.setTextColor("#666");
-
-//   doc.text(
-//     "This is a system-generated invoice and does not require a signature.",
-//     40,
-//     y
-//   );
-
-//   doc.text(
-//     "The Royal Turf | Contact: +91 8272952122 / 7044385501 | info@royalturf.com",
-//     40,
-//     y + 15
-//   );
-
-//   doc.save(`RoyalTurf_Invoice_${bookingId}.pdf`);
-// }

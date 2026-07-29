@@ -4,6 +4,7 @@ import { Router } from "express";
 import {
   // registerAdmin,
   loginAdmin,
+  refreshAdminToken,
   // logoutAdmin,
   // refreshAccessToken,
   // changeAdminPassword,
@@ -21,8 +22,7 @@ import {
   adminListBookings,
   adminGetBookingDetails,
   adminCancelBooking,
-  adminCompleteBooking,
-  adminManualPayment,
+  adminUpdateBooking,
   searchBookingsById,
 } from "../controllers/admin.booking.controller.js";
 
@@ -69,6 +69,7 @@ const adminRouter = Router();
 
 adminRouter.post("/login", loginAdmin);
 // adminRouter.get("/csrf", verifyAdminJWT, requireAdminRole, getCsrfToken);
+adminRouter.post("/refresh", refreshAdminToken);
 
 adminRouter.get(
   "/bookings",
@@ -88,27 +89,21 @@ adminRouter.get(
   requireAdminRole,
   searchBookingsById
 );
-adminRouter.post(
+adminRouter.delete(
   "/bookings/:id/cancel",
   verifyAdminJWT,
   requireAdminRole,
   // csrfSynchronisedProtection,
   adminCancelBooking
 );
-adminRouter.post(
-  "/bookings/:id/complete",
+adminRouter.patch(
+  "/bookings/:id/update",
   verifyAdminJWT,
   requireAdminRole,
   // csrfSynchronisedProtection,
-  adminCompleteBooking
+  adminUpdateBooking
 );
-adminRouter.post(
-  "/bookings/:id/manual-payment",
-  verifyAdminJWT,
-  requireAdminRole,
-  // csrfSynchronisedProtection,
-  adminManualPayment
-);
+
 adminRouter.get(
   "/V2/bookings",
   verifyAdminJWT,

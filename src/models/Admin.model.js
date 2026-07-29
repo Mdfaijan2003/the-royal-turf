@@ -52,7 +52,7 @@ const adminSchema = new Schema(
     otpExpiry: {
       type: Date,
       default: null,
-    }
+    },
   },
   { timestamps: true }
 );

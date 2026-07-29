@@ -71,7 +71,7 @@ app.use((req, res, next) => {
 
       "script-src 'self' https://checkout.razorpay.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
 
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css https://www.googletagmanager.com",
 
       "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:",
 

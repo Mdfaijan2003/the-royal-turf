@@ -6,6 +6,7 @@ import {
   fetchDashboardBookings,
 } from "./api.dashboard.js";
 import { renderGallery } from "./gallery.dashboard.js";
+import { apiFetch } from "./api.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = window.location.pathname
@@ -179,7 +180,7 @@ function renderBookings() {
 
 async function loadSlots() {
   try {
-    const res = await fetch(`/api/slots?date=${state.selectedSlotDate}`);
+    const res = await apiFetch(`/api/slots?date=${state.selectedSlotDate}`);
     const data = await res.json();
 
     if (!res.ok) {
@@ -255,7 +256,7 @@ function createSlotCard(slot, index) {
 async function handleBlock(slot) {
   if (!confirm("Block this slot?")) return;
 
-  await fetch("/api/admin/slots/block", {
+  await apiFetch("/api/admin/slots/block", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -270,7 +271,7 @@ async function handleBlock(slot) {
 async function handleUnblock(slot) {
   if (!confirm("Unblock this slot?")) return;
 
-  await fetch("/api/admin/slots/unblock", {
+  await apiFetch("/api/admin/slots/unblock", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -284,7 +285,7 @@ async function handleUnblock(slot) {
 
 async function loadGallery() {
   try {
-    const res = await fetch("/api/admin/gallery");
+    const res = await apiFetch("/api/admin/gallery");
     const data = await res.json();
     console.log("Gallery fetch response:", data);
     if (!res.ok) throw new Error(data.error);
@@ -307,7 +308,7 @@ async function deleteGalleryItem(item) {
   if (!confirm("Delete this media?")) return;
 
   try {
-    const res = await fetch(`/api/admin/gallery/${item._id}`, {
+    const res = await apiFetch(`/api/admin/gallery/${item._id}`, {
       method: "DELETE",
     });
 
@@ -333,7 +334,7 @@ async function uploadFiles(files) {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/admin/gallery", {
+      const res = await apiFetch("/api/admin/gallery", {
         method: "POST",
         body: formData,
       });
@@ -371,7 +372,7 @@ const handleSearch = debounce(async value => {
   }
 
   try {
-    const res = await fetch(
+    const res = await apiFetch(
       `/api/admin/bookings/search?q=${encodeURIComponent(value)}`
     );
     if (!res.ok) throw new Error("Search request failed");

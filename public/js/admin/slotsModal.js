@@ -613,7 +613,7 @@ function createModal() {
 
   // Mobile: anchor to bottom (items-end). Desktop (sm+): centered dialog.
   modal.className =
-    "rt-modal-backdrop fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-md opacity-0 pointer-events-none";
+    "rt-modal-backdrop fixed inset-0 z-[9000] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-md opacity-0 pointer-events-none";
 
   modal.setAttribute("role", "dialog");
   modal.setAttribute("aria-modal", "true");

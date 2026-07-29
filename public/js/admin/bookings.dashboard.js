@@ -1,4 +1,6 @@
 import { dom } from "./dom.dashboard.js";
+import { apiFetch } from "./api.js";
+import { showModal } from "../newModal.js";
 
 let clampDate = () => {
   let start = new Date();
@@ -92,18 +94,16 @@ async function fetchBookings(filter) {
   try {
     const queryParam = new URLSearchParams(filter);
 
-    const response = await fetch(
+    const response = await apiFetch(
       `/api/admin/V2/bookings?${queryParam.toString()}`
     );
 
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
+      showModal("Failed", `HTTP Error: ${response.status}`, "error");
     }
 
     const data = await response.json();
-    console.log("Raw API Response:", data);
     const bookings = data.bookings || [];
-    console.log("Fetched Bookings:", bookings);
 
     dom.bookingDataContainer.innerHTML = "";
 
@@ -305,23 +305,22 @@ async function fetchBookings(filter) {
       openBookingModal(booking);
     });
   } catch (error) {
-    console.error("Fetch Booking Error:", error);
+    showModal("Fetch Booking Error:", error, "error");
   }
 }
 async function fetchBookingsByDate(start, end, status) {
   try {
-    const response = await fetch(
+    const response = await apiFetch(
       `/api/admin/V2/bookings?start=${start}&end=${end}&status=${status}`
     );
 
     if (!response.ok) {
-      throw new Error(`HTTP Error: ${response.status}`);
+      showModal("Failed to process", `HTTP Error: ${response.status}`, "error");
     }
 
     const data = await response.json();
-    console.log("Raw API Response:", data);
+
     const bookings = data.bookings || [];
-    console.log("Fetched Bookings:", bookings);
 
     dom.bookingDataContainer.innerHTML = "";
 
@@ -523,7 +522,7 @@ async function fetchBookingsByDate(start, end, status) {
       openBookingModal(booking);
     });
   } catch (error) {
-    console.error("Fetch Booking Error:", error);
+    showModal("Fetch Booking Error:", error, "error");
   }
 }
 

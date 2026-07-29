@@ -108,9 +108,9 @@ export const sendBookingConfirmationNotifications = async booking => {
 
   await sendEmail({
     to: [
+      process.env.Faijan_Email,
       process.env.Zaid_Email,
       process.env.Ishtiyaque_Email,
-      process.env.Faijan_Email,
       process.env.Ammar_Email,
     ],
     subject: "New Booking Confirmed",

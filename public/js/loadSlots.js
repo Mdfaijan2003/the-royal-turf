@@ -58,6 +58,8 @@ export async function loadSlots() {
       return;
     }
 
+    console.log("Booked Slots", bookedSlots);
+
     bookedSlots.forEach(slot => {
       // Format the start and end times into a readable format (e.g., 10:00 AM — 11:00 AM).
       const startTime = new Date(slot.start).toLocaleTimeString("en-IN", {

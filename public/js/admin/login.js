@@ -1,4 +1,4 @@
-import { showModal } from "../modal.js";
+import { showModal } from "../newModal.js";
 function togglePassword() {
   const passwordInput = document.getElementById("password");
   const toggleIcon = document.getElementById("toggleIcon");

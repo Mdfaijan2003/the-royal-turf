@@ -45,7 +45,7 @@ export function showModal(title, message, type = "info") {
 
   if (!modal || !modalTitle || !modalMessage || !modalIcon) {
     console.warn("⚠️ Modal DOM elements missing");
-    return;
+    // return;
   }
 
   modalTitle.textContent = title;

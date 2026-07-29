@@ -1,3 +1,4 @@
+import loader from "./loader.js";
 import { showModal } from "./modal.js";
 
 const mobileMenuButton = document.getElementById("mobile-menu-button");
@@ -54,71 +55,74 @@ document.addEventListener("DOMContentLoaded", function () {
   contactForm.addEventListener("submit", async function (event) {
     event.preventDefault(); // Prevents the default form submission and page reload
     console.log("FORM SUBMIT TRIGGERED");
-    if (
-      !validateContactForm(
-        fullNameInput.value,
-        emailInput.value,
-        messageInput.value
-      )
-    ) {
-      return;
-    }
-    const submitButton = contactForm.querySelector("button[type='submit']");
-    submitButton.disabled = true;
-    submitButton.textContent = "Sending…"; // Optional: show loading text
-    submitButton.classList.add("opacity-50", "cursor-not-allowed");
 
-    const payload = {
-      name: fullNameInput.value,
-      email: emailInput.value,
-      message: messageInput.value,
-    };
-    try {
-      const response = await fetch("/api/contact/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    await loader.execute(async () => {
+      if (
+        !validateContactForm(
+          fullNameInput.value,
+          emailInput.value,
+          messageInput.value
+        )
+      ) {
+        return;
+      }
+      const submitButton = contactForm.querySelector("button[type='submit']");
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending…"; // Optional: show loading text
+      submitButton.classList.add("opacity-50", "cursor-not-allowed");
 
-      if (response.ok) {
-        localStorage.removeItem("contactFormData");
+      const payload = {
+        name: fullNameInput.value,
+        email: emailInput.value,
+        message: messageInput.value,
+      };
+      try {
+        const response = await fetch("/api/contact/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
 
-        contactForm.classList.add("hidden");
-        confirmationMessage.classList.remove("hidden");
+        if (response.ok) {
+          localStorage.removeItem("contactFormData");
 
-        showModal(
-          "Message Sent",
-          "Thank you for contacting us. We will get back to you soon.",
-          "success"
-        );
-      } else {
+          contactForm.classList.add("hidden");
+          confirmationMessage.classList.remove("hidden");
+
+          showModal(
+            "Message Sent",
+            "Thank you for contacting us. We will get back to you soon.",
+            "success"
+          );
+        } else {
+          showModal(
+            "Error",
+            "Failed to send message. Please try again later.",
+            "error"
+          );
+          submitButton.disabled = false; // Re-enable on error
+          submitButton.textContent = "Send Message";
+          submitButton.classList.remove("opacity-50", "cursor-not-allowed");
+        }
+      } catch (err) {
         showModal(
           "Error",
-          "Failed to send message. Please try again later.",
+          "Unable to send message right now. Please try again.",
           "error"
         );
+        console.error(err);
         submitButton.disabled = false; // Re-enable on error
         submitButton.textContent = "Send Message";
         submitButton.classList.remove("opacity-50", "cursor-not-allowed");
       }
-    } catch (err) {
-      showModal(
-        "Error",
-        "Unable to send message right now. Please try again.",
-        "error"
-      );
-      console.error(err);
-      submitButton.disabled = false; // Re-enable on error
-      submitButton.textContent = "Send Message";
-      submitButton.classList.remove("opacity-50", "cursor-not-allowed");
-    }
 
-    // Log the form data to the console (as a placeholder for backend logic)
-    console.log("--- NEW CONTACT FORM SUBMISSION ---");
-    console.log("Name:", document.getElementById("name").value);
-    console.log("Email:", document.getElementById("email").value);
-    console.log("Message:", document.getElementById("message").value);
-    console.log("-----------------------------------");
+      // Log the form data to the console (as a placeholder for backend logic)
+      console.log("--- NEW CONTACT FORM SUBMISSION ---");
+      console.log("Name:", document.getElementById("name").value);
+      console.log("Email:", document.getElementById("email").value);
+      console.log("Message:", document.getElementById("message").value);
+      console.log("-----------------------------------");
+    }, "Please wait...");
   });
 });
 

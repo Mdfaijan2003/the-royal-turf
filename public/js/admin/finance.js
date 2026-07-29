@@ -1,6 +1,7 @@
 /* =======================
    HELPERS
 ======================= */
+import { apiFetch } from "./api.js";
 let revenueExpenseChart;
 let profitTrendChart;
 let paymentSplitChart;
@@ -29,7 +30,7 @@ function formatMonth(ym) {
    Chart 
 ======================= */
 async function loadCharts(start, end) {
-  const res = await fetch(
+  const res = await apiFetch(
     `/api/admin/finance/charts?start=${start}&end=${end}`
   );
   if (!res.ok) throw new Error("Chart API failed");
@@ -101,7 +102,7 @@ function renderCharts(data) {
 }
 
 async function loadFinanceCharts(start, end) {
-  const res = await fetch(
+  const res = await apiFetch(
     `/api/admin/finance/charts?start=${start}&end=${end}`
   );
 
@@ -232,7 +233,7 @@ const endInput = document.getElementById("end-date");
 
 async function loadFinanceSummary(start, end) {
   try {
-    const res = await fetch(
+    const res = await apiFetch(
       `/api/admin/finance/summary?start=${start}&end=${end}`
     );
     if (!res.ok) {
@@ -264,7 +265,7 @@ async function loadFinanceSummary(start, end) {
 
 async function loadExpenses(start, end) {
   try {
-    const res = await fetch(
+    const res = await apiFetch(
       `/api/admin/finance/expenses?start=${start}&end=${end}`
     );
     if (!res.ok) {
@@ -310,7 +311,7 @@ async function loadExpenses(start, end) {
 
 async function loadSalarySummary() {
   try {
-    const res = await fetch("/api/admin/salaries/summary");
+    const res = await apiFetch("/api/admin/salaries/summary");
     const data = await res.json();
 
     document.getElementById("salary-total").textContent = `₹${data.total}`;
@@ -327,7 +328,7 @@ async function loadSalarySummary() {
 
 async function populateSalaryStaff() {
   try {
-    const res = await fetch("/api/admin/staff");
+    const res = await apiFetch("/api/admin/staff");
     const staff = await res.json();
 
     const select = document.getElementById("salary-staff");
@@ -352,8 +353,8 @@ async function populateSalaryStaff() {
 async function loadSalaryTable() {
   try {
     const [salaryRes, staffRes] = await Promise.all([
-      fetch("/api/admin/salaries"),
-      fetch("/api/admin/staff"),
+      apiFetch("/api/admin/salaries"),
+      apiFetch("/api/admin/staff"),
     ]);
 
     const { month, salaries } = await salaryRes.json();
@@ -453,7 +454,7 @@ if (saveSalaryBtn) {
       return;
     }
 
-    const res = await fetch("/api/admin/salaries", {
+    const res = await apiFetch("/api/admin/salaries", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -491,7 +492,7 @@ if (saveExpenseBtn) {
       return;
     }
 
-    const res = await fetch("/api/admin/expenses", {
+    const res = await apiFetch("/api/admin/expenses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

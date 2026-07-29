@@ -3,6 +3,79 @@
 // Thin wrapper around your existing endpoints. Centralizing these here
 // means slotModal.js and slots.js never touch `fetch` directly.
 
+import loader from "./loader.js";
+
+let refreshPromise = null;
+let activeRequests = 0;
+
+function showLoader() {
+  if (activeRequests++ === 0) {
+    loader.show();
+  }
+}
+
+function hideLoader() {
+  activeRequests--;
+
+  if (activeRequests <= 0) {
+    activeRequests = 0;
+    loader.hide();
+  }
+}
+
+async function refreshAccessToken() {
+  if (refreshPromise) {
+    return refreshPromise;
+  }
+
+  refreshPromise = (async () => {
+    const res = await fetch("/api/admin/refresh", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error("Refresh failed");
+    }
+
+    return true;
+  })();
+
+  try {
+    return await refreshPromise;
+  } finally {
+    refreshPromise = null;
+  }
+}
+
+export async function apiFetch(url, options = {}) {
+  showLoader();
+
+  try {
+    const config = {
+      credentials: "include",
+      ...options,
+    };
+
+    let response = await fetch(url, config);
+
+    if (response.status !== 401) {
+      return response;
+    }
+
+    await refreshAccessToken();
+
+    response = await fetch(url, config);
+
+    return response;
+  } catch (err) {
+    window.location.replace("/admin/login");
+    throw err;
+  } finally {
+    hideLoader();
+  }
+}
+
 async function request(url, options = {}) {
   const res = await fetch(url, {
     headers: { "Content-Type": "application/json" },
