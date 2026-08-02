@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -14,10 +14,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="The Royal Turf" />
 
-    <link rel="icon" type="image/png" href="/img/favicon.png">
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
 
-    <link rel="stylesheet" href="/css/output.css">
-    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/output.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+    <link rel="stylesheet" href="/css/offer.css" />
+    <!-- <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" /> -->
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
         rel="stylesheet" />
@@ -33,18 +36,36 @@
             dataLayer.push(arguments);
         }
 
-        gtag('js', new Date());
+        gtag("js", new Date());
 
-        gtag('config', 'G-8ABC123XYZ');
+        gtag("config", "G-8ABC123XYZ");
     </script>
-
 </head>
 
 <body>
-
     <div class="pitch-bg"></div>
 
     <div class="page">
+        <!-- Add this right at the top of your HTML body, before your header -->
+        <div class="offer-bar">
+            <div class="offer-wrapper">
+                <div class="offer-content">
+                    <span class="offer-item"> INDEPENDENCE WEEK SPECIAL • 03–14 AUGUST</span>
+                    <span class="offer-item"> Morning Special (6 AM – 6 PM) • Play for just
+                        <strong>₹699</strong></span>
+                    <span class="offer-item"> Night Special (6 PM – 1 AM) • Get <strong>₹100 OFF</strong> Every
+                        Booking</span>
+
+                    <span class="offer-item"> Limited Period • Reserve Your Turf Now! </span>
+                    <span class="offer-item"> INDEPENDENCE WEEK SPECIAL • 03–14 AUGUST</span>
+                    <span class="offer-item"> Morning Special (6 AM – 6 PM) • Play for just
+                        <strong>₹699</strong></span>
+                    <span class="offer-item"> Night Special (6 PM – 1 AM) • Get <strong>₹100 OFF</strong> Every
+                        Booking</span>
+                    <span class="offer-item"> Limited Period • Reserve Your Turf Now! </span>
+                </div>
+            </div>
+        </div>
 
         <!-- ── HEADER ── -->
         <header id="site-header">
@@ -62,7 +83,7 @@
                     <a href="/faq">FAQ</a>
                 </nav>
 
-                <div style="display:flex;align-items:center;gap:12px;">
+                <div style="display: flex; align-items: center; gap: 12px">
                     <a href="/booking" id="header-cta">Book Your Slot</a>
                     <button id="mobile-menu-button" aria-label="Open menu">
                         <span class="material-symbols-outlined">menu</span>
@@ -84,24 +105,27 @@
 
         <!-- ── HERO ── -->
         <section class="hero-section">
-
             <!-- Text side -->
             <div class="hero-text">
-                <div class="hero-badge fade-up">Premium Sports Facility · Kolkata</div>
+                <div class="hero-badge fade-up">
+                    Premium Sports Facility · Kolkata
+                </div>
                 <h1 class="fade-up">
-                    The Royal<br>
+                    The Royal<br />
                     <span>Turf</span>
                 </h1>
-                <p class="fade-up">Book your slot at the finest sporting turf in the city — FIFA-certified, always
-                    ready, always yours.</p>
+                <p class="fade-up">
+                    Book your slot at the finest sporting turf in the city —
+                    FIFA-certified, always ready, always yours.
+                </p>
                 <div class="hero-actions fade-up">
                     <a href="/booking" class="btn-primary">
-                        <span class="material-symbols-outlined" style="font-size:1.1rem;">calendar_month</span>
+                        <span class="material-symbols-outlined" style="font-size: 1.1rem">calendar_month</span>
                         Book Your Slot
                     </a>
                     <a href="/features" class="btn-secondary">
                         Explore Facilities
-                        <span class="material-symbols-outlined" style="font-size:1rem;">arrow_forward</span>
+                        <span class="material-symbols-outlined" style="font-size: 1rem">arrow_forward</span>
                     </a>
                 </div>
                 <div class="hero-stats fade-up">
@@ -129,7 +153,6 @@
                     <span class="hfc-sub">7 days a week · No rest days</span>
                 </div>
             </div>
-
         </section>
 
         <div class="wave-divider"></div>
@@ -139,43 +162,48 @@
             <div class="section-intro">
                 <div>
                     <div class="section-label">How It Works</div>
-                    <div class="section-heading">Simple, Fast<br>Booking</div>
+                    <div class="section-heading">Simple, Fast<br />Booking</div>
                 </div>
                 <span class="section-sub">3 steps to play</span>
             </div>
 
             <div class="steps-wrap">
                 <div class="steps-grid">
-
                     <a href="/booking" class="step-card fade-up">
                         <span class="step-num">01</span>
                         <div class="step-icon">
                             <span class="material-symbols-outlined">calendar_month</span>
                         </div>
                         <div class="step-title">Select a Slot</div>
-                        <p class="step-desc">Choose your preferred date and time from our real-time availability
-                            calendar.</p>
+                        <p class="step-desc">
+                            Choose your preferred date and time from our real-time
+                            availability calendar.
+                        </p>
                     </a>
 
-                    <div class="step-card fade-up" style="animation-delay:0.1s">
+                    <div class="step-card fade-up" style="animation-delay: 0.1s">
                         <span class="step-num">02</span>
                         <div class="step-icon">
                             <span class="material-symbols-outlined">credit_card</span>
                         </div>
                         <div class="step-title">Pay Securely</div>
-                        <p class="step-desc">Enter your details and complete your booking with our secure online payment
-                            system.</p>
+                        <p class="step-desc">
+                            Enter your details and complete your booking with our secure
+                            online payment system.
+                        </p>
                     </div>
 
-                    <div class="step-card fade-up" style="animation-delay:0.2s">
+                    <div class="step-card fade-up" style="animation-delay: 0.2s">
                         <span class="step-num">03</span>
                         <div class="step-icon">
                             <span class="material-symbols-outlined">receipt_long</span>
                         </div>
                         <div class="step-title">Get Your Receipt</div>
-                        <p class="step-desc">Receive your unique booking ID via email and you're all set to play!</p>
+                        <p class="step-desc">
+                            Receive your unique booking ID via email and you're all set to
+                            play!
+                        </p>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -183,12 +211,15 @@
         <!-- ── BOOKING LOOKUP ── -->
         <section class="lookup-section">
             <div class="lookup-inner">
-
                 <div class="lookup-text">
                     <div class="section-label">My Bookings</div>
-                    <div class="section-heading" style="margin-bottom:0.75rem;">Track Your<br>Reservations</div>
-                    <p>Already booked a slot? Enter your email address below and we'll pull up all your Royal Turf
-                        bookings instantly.</p>
+                    <div class="section-heading" style="margin-bottom: 0.75rem">
+                        Track Your<br />Reservations
+                    </div>
+                    <p>
+                        Already booked a slot? Enter your email address below and we'll
+                        pull up all your Royal Turf bookings instantly.
+                    </p>
                 </div>
 
                 <div class="lookup-form">
@@ -200,31 +231,30 @@
 
                     <!-- Skeleton — preserved for JS -->
                     <div id="booking-skeleton" class="hidden">
-                        <div class="skeleton-bar" style="width:75%;"></div>
-                        <div class="skeleton-bar" style="width:100%;"></div>
-                        <div class="skeleton-bar" style="width:85%;"></div>
+                        <div class="skeleton-bar" style="width: 75%"></div>
+                        <div class="skeleton-bar" style="width: 100%"></div>
+                        <div class="skeleton-bar" style="width: 85%"></div>
                     </div>
                 </div>
-
             </div>
 
             <!-- Results container — preserved for JS -->
-            <div id="booking-results" class="hidden" style="margin-top:2rem;"></div>
+            <div id="booking-results" class="hidden" style="margin-top: 2rem"></div>
         </section>
 
         <!-- ── CTA STRIP ── -->
         <section class="cta-strip">
             <div class="cta-text">
                 <h2>Ready for the Royal Treatment?</h2>
-                <p>Book your slot now and experience premium turf like never before.</p>
+                <p>
+                    Book your slot now and experience premium turf like never before.
+                </p>
             </div>
             <div class="cta-actions">
                 <a href="/booking" class="cta-btn-primary">Book Now</a>
                 <a href="/contact" class="cta-btn-secondary">Contact Us</a>
             </div>
         </section>
-
-
 
         <section class="google-reviews-section">
             <div class="reviews-header">
@@ -235,9 +265,7 @@
 
                 <h2>What Players Say</h2>
 
-                <p>
-                    Trusted by players who have experienced Royal Turf firsthand.
-                </p>
+                <p>Trusted by players who have experienced Royal Turf firsthand.</p>
 
                 <div class="review-summary">
                     <!-- <span class="rating">4.7</span>
@@ -245,28 +273,42 @@
                     <div class="stars">
                         ★★★★★
                     </div> -->
-                    <div
-                        style="font-family: sans-serif; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                    <div style="
+                font-family: sans-serif;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              ">
                         <!-- Text Rating -->
-                        <span class="rating" style="font-weight: bold; color: #333;">4.7</span>
+                        <span class="rating" style="font-weight: bold; color: #333">4.7</span>
 
                         <!-- Star Group -->
-                        <div style="display: inline-flex; color: #fbbc04; font-size: 22px; letter-spacing: 2px;">
+                        <div style="
+                  display: inline-flex;
+                  color: #fbbc04;
+                  font-size: 22px;
+                  letter-spacing: 2px;
+                ">
                             <span>★</span><span>★</span><span>★</span><span>★</span>
                             <!-- The 70% Fractional Star -->
-                            <div style="display: inline-block; position: relative; color: #ccc;">
+                            <div style="display: inline-block; position: relative; color: #ccc">
                                 ★
-                                <div
-                                    style="position: absolute; top: 0; left: 0; width: 70%; overflow: hidden; color: #fbbc04;">
-                                    ★</div>
+                                <div style="
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      width: 70%;
+                      overflow: hidden;
+                      color: #fbbc04;
+                    ">
+                                    ★
+                                </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <span class="count">
-                        Based on Real Google Reviews
-                    </span>
+                    <span class="count"> Based on Real Google Reviews </span>
                 </div>
             </div>
 
@@ -288,11 +330,10 @@
 
         <!-- ── SLOT CHECKER ── -->
         <section class="slots-section section">
-
-            <div class="section-intro" style="padding:0 0 0 0;">
+            <div class="section-intro" style="padding: 0 0 0 0">
                 <div>
                     <div class="section-label">Live Availability</div>
-                    <div class="section-heading">Check Available<br>Slots</div>
+                    <div class="section-heading">Check Available<br />Slots</div>
                 </div>
             </div>
 
@@ -306,29 +347,35 @@
 
             <!-- Status containers-->
             <div id="slotsLoading" class="hidden">
-                <svg style="display:block;margin:0 auto 1rem;animation:spin 1s linear infinite;width:36px;height:36px;"
-                    viewBox="0 0 24 24" fill="none">
+                <svg style="
+              display: block;
+              margin: 0 auto 1rem;
+              animation: spin 1s linear infinite;
+              width: 36px;
+              height: 36px;
+            " viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="10" stroke="var(--green-light)" stroke-width="3" />
                     <path d="M4 12a8 8 0 018-8" stroke="var(--green)" stroke-width="3" stroke-linecap="round" />
                 </svg>
-                <p style="font-size:0.88rem;color:var(--muted);">Loading available slots...</p>
+                <p style="font-size: 0.88rem; color: var(--muted)">
+                    Loading available slots...
+                </p>
             </div>
 
-
-
-            <div id="slotsEmpty" class="hidden" style="margin-top: 20px;"></div>
+            <div id="slotsEmpty" class="hidden" style="margin-top: 20px"></div>
 
             <div id="slotsContainer"></div>
-
         </section>
 
         <!-- ── FOOTER ── -->
         <footer>
             <div class="footer-grid">
-
                 <div class="footer-brand">
                     <h3>The Royal Turf</h3>
-                    <p>Providing premium turf booking services for all your sporting needs.</p>
+                    <p>
+                        Providing premium turf booking services for all your sporting
+                        needs.
+                    </p>
                     <div class="footer-socials">
                         <a href="https://www.youtube.com/@royal_turf" target="_blank" rel="noopener noreferrer"
                             aria-label="YouTube">
@@ -381,7 +428,9 @@
                 <div class="footer-col">
                     <h3>Opening Hours</h3>
                     <ul class="footer-hours">
-                        <li><span>Monday – Friday</span><span>6:00 AM – 1:00 AM</span></li>
+                        <li>
+                            <span>Monday – Friday</span><span>6:00 AM – 1:00 AM</span>
+                        </li>
                         <li><span>Saturday</span><span>6:00 AM – 1:00 AM</span></li>
                         <li><span>Sunday</span><span>6:00 AM – 1:00 AM</span></li>
                     </ul>
@@ -404,13 +453,13 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
             <div class="footer-bottom">
-                <p>© <span id="current-year"></span> Royal Turf. All rights reserved.</p>
+                <p>
+                    © <span id="current-year"></span> Royal Turf. All rights reserved.
+                </p>
             </div>
         </footer>
-
     </div>
 
     <div class="wa-container">
@@ -433,9 +482,10 @@
     </div>
     <!-- Mobile menu toggle (lightweight, doesn't interfere with .js) -->
     <script>
-        document.getElementById('mobile-menu-button')
-            .addEventListener('click', function () {
-                document.getElementById('mobile-menu').classList.toggle('hidden');
+        document
+            .getElementById("mobile-menu-button")
+            .addEventListener("click", function () {
+                document.getElementById("mobile-menu").classList.toggle("hidden");
             });
     </script>
 

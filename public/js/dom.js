@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   dom.endTime = document.getElementById("end-time");
 
   dom.selectedTime = document.getElementById("selected-time");
+  dom.selectedDate = document.getElementById("selected-date");
   dom.bookingFees = document.getElementById("booking-fees");
   dom.advanceAmount = document.getElementById("advance-amount");
   dom.totalPayable = document.getElementById("total-payable");

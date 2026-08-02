@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="/css/booking.css">
     <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/offer.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
         rel="stylesheet">
@@ -44,6 +45,7 @@
 </head>
 
 <body>
+
 
     <div class="pitch-bg"></div>
 
@@ -96,6 +98,26 @@
     </header>
 
     <div class="page">
+        <!-- Add this right at the top of your HTML body, before your header -->
+        <div class="offer-bar">
+            <div class="offer-wrapper">
+                <div class="offer-content">
+                    <span class="offer-item">🇮🇳 INDEPENDENCE WEEK SPECIAL • 03–14 AUGUST</span>
+                    <span class="offer-item"> Morning Special (6 AM – 6 PM) • Play for just
+                        <strong>₹699</strong></span>
+                    <span class="offer-item"> Night Special (6 PM – 1 AM) • Get <strong>₹100 OFF</strong> Every
+                        Booking</span>
+
+                    <span class="offer-item"> Limited Period • Reserve Your Turf Now! </span>
+                    <span class="offer-item"> INDEPENDENCE WEEK SPECIAL • 03–14 AUGUST</span>
+                    <span class="offer-item"> Morning Special (6 AM – 6 PM) • Play for just
+                        <strong>₹699</strong></span>
+                    <span class="offer-item"> Night Special (6 PM – 1 AM) • Get <strong>₹100 OFF</strong> Every
+                        Booking</span>
+                    <span class="offer-item"> Limited Period • Reserve Your Turf Now! </span>
+                </div>
+            </div>
+        </div>
 
         <!-- ── HERO ── -->
         <section class="booking-hero">
@@ -158,6 +180,9 @@
                                 <label for="email">Email Address</label>
                                 <input type="email" id="email" name="email" placeholder="your.email@example.com"
                                     required>
+                                <small style="font-size: 12px; color: var(--muted); margin-top: 4px; display: block;">
+                                    We'll send your booking confirmation here
+                                </small>
                             </div>
                             <div class="field-group">
                                 <label for="phone">Phone Number</label>
@@ -213,68 +238,7 @@
                             </div>
                         </div>
 
-                        <div class="booking-chart">
-                            <div class="chart-head">
-                                <span class="chart-tag">Slot Pricing</span>
-                                <h3>Turf Rates</h3>
-                            </div>
 
-                            <div class="chart-grid">
-                                <div class="chart-col">
-                                    <div class="chart-col-head">
-                                        <span class="material-symbols-outlined">event</span>
-                                        <div>
-                                            <h4>Weekdays</h4>
-                                            <span>Mon – Fri</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="chart-row">
-                                        <div class="chart-row-label">
-                                            <span class="material-symbols-outlined">light_mode</span>
-                                            Day
-                                        </div>
-                                        <div class="chart-row-price">₹700<span>/hr</span></div>
-                                    </div>
-
-                                    <div class="chart-row">
-                                        <div class="chart-row-label">
-                                            <span class="material-symbols-outlined">dark_mode</span>
-                                            Night
-                                        </div>
-                                        <div class="chart-row-price">₹1000<span>/hr</span></div>
-                                    </div>
-                                </div>
-
-                                <div class="chart-col chart-col-highlight">
-                                    <span class="chart-badge">Weekend</span>
-
-                                    <div class="chart-col-head">
-                                        <span class="material-symbols-outlined">weekend</span>
-                                        <div>
-                                            <h4>Weekend</h4>
-                                            <span>Sat – Sun</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="chart-row">
-                                        <div class="chart-row-label">
-                                            <span class="material-symbols-outlined">light_mode</span>
-                                            Day
-                                        </div>
-                                        <div class="chart-row-price">₹900<span>/hr</span></div>
-                                    </div>
-
-                                    <div class="chart-row">
-                                        <div class="chart-row-label">
-                                            <span class="material-symbols-outlined">dark_mode</span>
-                                            Night
-                                        </div>
-                                        <div class="chart-row-price">₹1200<span>/hr</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Card 3: Booking Summary -->
@@ -286,6 +250,10 @@
                             <div class="summary-row">
                                 <span class="summary-label">Selected Time</span>
                                 <span id="selected-time" class="summary-val">–</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Selected Date</span>
+                                <span id="selected-date" class="summary-val">–</span>
                             </div>
                             <div class="summary-row">
                                 <span class="summary-label">Booking Fees</span>

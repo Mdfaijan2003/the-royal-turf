@@ -1,0 +1,100 @@
+/* ── OFFER BAR (PROPER MARQUEE) ── */
+.offer-bar {
+  background: linear-gradient(90deg, #FF6B35 0%, #FFC300 50%, #00A651 100%);
+  padding: 8px 0;
+  overflow: hidden;
+  width: 100%;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.offer-wrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.offer-content {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  padding-right: 60px;
+  flex-shrink: 0;
+  animation: marquee 30s linear infinite;
+}
+
+.offer-item {
+  color: white;
+  font-weight: 600;
+  white-space: nowrap;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── MOBILE (< 640px) ── */
+@media (max-width: 640px) {
+  .offer-bar {
+    padding: 6px 0;
+  }
+
+  .offer-wrapper {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  .offer-content {
+    gap: 30px;
+    padding-right: 30px;
+    animation: marquee 20s linear infinite;
+  }
+
+  .offer-item {
+    font-size: 11px;
+    font-weight: 700;
+  }
+}
+
+/* ── TABLET (641px - 1024px) ── */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .offer-content {
+    gap: 50px;
+    padding-right: 50px;
+    animation: marquee 25s linear infinite;
+  }
+
+  .offer-item {
+    font-size: 13px;
+  }
+}
+
+/* ── DESKTOP (1025px+) ── */
+@media (min-width: 1025px) {
+  .offer-item {
+    font-size: 15px;
+  }
+
+  .offer-content {
+    gap: 80px;
+    padding-right: 80px;
+    animation: marquee 30s linear infinite;
+  }
+}

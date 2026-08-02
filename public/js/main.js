@@ -97,6 +97,31 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Price toggle functionality
+  const toggleBtns = document.querySelectorAll(".toggle-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  toggleBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetTab = btn.dataset.tab;
+
+      // Update active button
+      toggleBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // Show/hide content
+      tabContents.forEach(content => {
+        if (content.dataset.tab === targetTab) {
+          content.style.display = "block";
+          content.classList.add("active");
+        } else {
+          content.style.display = "none";
+          content.classList.remove("active");
+        }
+      });
+    });
+  });
+
   dom.fullNameInput.addEventListener("input", e => {
     state.booking.name = e.target.value;
     saveForm();
@@ -166,6 +191,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const formattedDate = new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      weekday: "short",
+      month: "short",
+      year: "numeric",
+    });
+
     // parse start/end into real Date objects
     const [sh, sm] = startTime.split(":").map(Number);
     let start = new Date(date);
@@ -192,6 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dom.selectedTime.textContent = `${startTime} - ${endTime} (${hours.toFixed(
       2
     )} hrs)`;
+    dom.selectedDate.textContent = formattedDate;
     dom.bookingFees.textContent = `₹${total}`;
     dom.advanceAmount.textContent = `₹${advance}`;
     dom.totalPayable.textContent = `₹${advance}`;

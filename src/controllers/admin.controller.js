@@ -93,10 +93,13 @@ export const loginAdmin = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     };
 
-    res.cookie("accessToken", accessToken, cookieOptions);
+    res.cookie("accessToken", accessToken, {
+      ...cookieOptions,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
     res.cookie("refreshToken", refreshToken, {
       ...cookieOptions,
-      maxAge: 10 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
     const safeAdmin = await Admin.findById(admin._id).select(
@@ -176,7 +179,7 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
   res.cookie("accessToken", newAccess, cookieOpt);
   res.cookie("refreshToken", newRefresh, {
     ...cookieOpt,
-    maxAge: 10 * 24 * 60 * 60 * 1000,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
   return res

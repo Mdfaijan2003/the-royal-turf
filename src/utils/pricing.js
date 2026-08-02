@@ -71,14 +71,14 @@ export function calculateBookingAmount(start, end) {
 
     // Day band: 6 AM - 6 PM
     if (currentHour >= 6 && currentHour < 18) {
-      rate = isWeekendDay ? 900 : 700; // Sat/Sun vs Mon-Fri
+      rate = isWeekendDay ? 700 : 700; // Sat/Sun vs Mon-Fri // Day
     }
     // Night band: 6 PM - 1 AM (next day)
     else if (
       (currentHour >= 18 && currentHour < 24) ||
       (currentHour >= 0 && currentHour < 1)
     ) {
-      rate = isWeekendDay ? 1200 : 1000; // Sat/Sun vs Mon-Fri
+      rate = isWeekendDay ? 1100 : 900; // Sat/Sun vs Mon-Fri //night
     }
     // 1 AM - 6 AM: CLOSED (should never reach here due to clamping)
 

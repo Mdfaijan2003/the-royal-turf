@@ -171,6 +171,7 @@ const servePage = (route, file) => {
 servePage("/", "index.html");
 
 servePage("/booking", "booking.html");
+servePage("/booking-updates", "booking-updated.html");
 
 servePage("/gallery", "gallery.html");
 

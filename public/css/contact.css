@@ -55,8 +55,8 @@ body {
 
 /* ── HEADER ── */
 #site-header {
-  position: fixed;
-  top: 1rem;
+  position: absolute;
+  top: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
