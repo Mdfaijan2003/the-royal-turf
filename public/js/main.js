@@ -422,19 +422,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
       //Cleanup frontend state
       localStorage.removeItem("heldLock");
+
       state.holdLockId = null;
-      state.booking = {};
+
+      Object.assign(state.booking, {
+        startTime: "",
+        endTime: "",
+        totalFee: 0,
+        advance: 0,
+      });
+
+      dom.bookingForm.reset();
+
+      dom.startTime.innerHTML = '<option value="">Select start</option>';
+
+      dom.endTime.innerHTML = '<option value="">Select end</option>';
+
+      resetSummary();
 
       dom.paymentSection.classList.add("hidden");
       dom.bookingSection.classList.remove("hidden");
 
-      resetSummary();
+      await updateAvailableSlots();
+
       showModal("Cancelled", "Slot released successfully", "info");
     } catch (error) {
       showModal("Error", error.message, "error");
     } finally {
       dom.cancelPaymentButton.disabled = false;
       dom.cancelPaymentButton.textContent = "Cancel";
+
+      dom.paymentButton.disabled = false;
+      dom.paymentButton.textContent = "Pay Now";
     }
   });
 

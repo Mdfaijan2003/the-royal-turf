@@ -103,6 +103,9 @@ export async function startPayment(lockId, bookingData) {
 
       modal: {
         ondismiss: () => {
+          document.body.style.overflow = "";
+
+          document.documentElement.style.overflow = "";
           dom.paymentButton.disabled = false;
 
           showModal("Cancelled", "Payment cancelled", "warning");
