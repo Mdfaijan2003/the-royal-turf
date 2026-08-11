@@ -1,5 +1,54 @@
 import { state } from "./state.js";
 
+const OFFERS = [
+  {
+    from: "2026-08-02",
+    to: "2026-08-14",
+
+    day: {
+      weekday: 600,
+      weekend: 600,
+    },
+
+    night: {
+      weekday: 900,
+      weekend: 1100,
+    },
+  },
+];
+
+const NORMAL_RATES = {
+  day: {
+    weekday: 700,
+    weekend: 900,
+  },
+
+  night: {
+    weekday: 1000,
+    weekend: 1200,
+  },
+};
+
+function getRatesForDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const dateString = `${year}-${month}-${day}`;
+
+  const offer = OFFERS.find(
+    offer => dateString >= offer.from && dateString <= offer.to
+  );
+
+  // Offer exists for this date
+  if (offer) {
+    return offer;
+  }
+
+  // Otherwise use normal rates
+  return NORMAL_RATES;
+}
+
 export function calculateAmount(start, end) {
   if (!(start instanceof Date) || !(end instanceof Date)) return resetZero();
 
@@ -38,6 +87,8 @@ export function calculateAmount(start, end) {
   if (start.getHours() < 6) {
     businessDayRef.setDate(businessDayRef.getDate() - 1);
   }
+
+  const rates = getRatesForDate(businessDayRef);
   const isWeekendDay = [0, 6].includes(businessDayRef.getDay());
 
   while (current < end) {
@@ -52,14 +103,14 @@ export function calculateAmount(start, end) {
 
     // day band
     if (currentHour >= 6 && currentHour < 18) {
-      rate = isWeekendDay ? 700 : 700; // day
+      rate = isWeekendDay ? rates.day.weekend : rates.day.weekday; // day
     }
     // evening / night band
     else if (
       (currentHour >= 18 && currentHour < 24) ||
       (currentHour >= 0 && currentHour < 1)
     ) {
-      rate = isWeekendDay ? 1100 : 900; // night
+      rate = isWeekendDay ? rates.night.weekend : rates.night.weekday; // night
     }
 
     total += rate * hours;
