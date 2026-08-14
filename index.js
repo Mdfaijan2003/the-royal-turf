@@ -17,17 +17,17 @@ async function startServer() {
 
     // Start Express server
     const server = app.listen(PORT, "0.0.0.0", () => {
-      console.log("🚀 Server is running!");
-      console.log(`➡️  API Base: http://localhost:${PORT}/api`);
-      console.log(`➡️  Frontend: http://localhost:${PORT}/`);
-      console.log(`🌐 MODE: ${process.env.NODE_ENV || "development"}`);
+      console.log("Server is running!");
+      console.log(`API Base: http://localhost:${PORT}/api`);
+      console.log(`Frontend: http://localhost:${PORT}/`);
+      console.log(`MODE: ${process.env.NODE_ENV || "development"}`);
     });
 
     // Graceful shutdown
     const shutdown = () => {
-      console.log("\n🛑 Shutting down server ...");
+      console.log("\n Shutting down server ...");
       server.close(() => {
-        console.log("✅ HTTP server closed");
+        console.log(" HTTP server closed");
         process.exit(0);
       });
     };
@@ -35,7 +35,7 @@ async function startServer() {
     process.on("SIGINT", shutdown);
     process.on("SIGTERM", shutdown);
   } catch (err) {
-    console.error("❌ Server failed to start:", err.message);
+    console.error("Server failed to start:", err.message);
     process.exit(1);
   }
 }

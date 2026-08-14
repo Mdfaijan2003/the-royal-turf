@@ -76,7 +76,7 @@ body {
 /* ── HEADER (from contact) ── */
 #site-header {
   position: absolute;
-  top: 2.5rem;
+  top: 1rem;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
